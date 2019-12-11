@@ -7,3 +7,6 @@
 [submodule "superoptdbs"]
 	path = superoptdbs
 	url = https://bsorav@github.com/bsorav/superoptdbs
+[submodule "llvm-project"]
+	path = llvm-project
+	url = https://bsorav@github.com/bsorav/llvm-project

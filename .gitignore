@@ -1,6 +1,5 @@
 Makefile
 llvm-build
-llvm-project
 smpbench
 smpbench-build
 superopt-docs
