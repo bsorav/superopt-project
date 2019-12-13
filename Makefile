@@ -4,6 +4,10 @@ all::
 	make -C superopt debug
 	make -C llvm
 
+ci::
+	make install
+	make testinit
+
 install::
 	# XXX ln -s ../tars .
 	pushd superopt; ./configure --use-ninja; popd;
@@ -17,7 +21,7 @@ install::
 
 testinit::
 	pushd superopt-tests; ./configure && make; popd
-	make -C test
+	make test
 
 test::
 	SUPEROPT_ROOT=${PWD} python superopt/utils/eqbin.py -n superopt-tests/build/bzip2/{bzip2.bc.O0.s,bzip2.clang.eqchecker.O3.i386}
