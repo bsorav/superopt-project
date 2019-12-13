@@ -4,3 +4,6 @@ smpbench
 smpbench-build
 superopt-docs
 tars
+eq_funcs_*
+eqlogs_eq_funcs_*
+eqfiles
