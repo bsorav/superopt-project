@@ -1,12 +1,15 @@
 [submodule "llvm"]
 	path = llvm
-	url = https://bsorav@github.com/bsorav/llvm
+	url = https://github.com/bsorav/llvm
 [submodule "superopt"]
 	path = superopt
-	url = https://bsorav@github.com/bsorav/superopt
+	url = https://github.com/bsorav/superopt
 [submodule "superoptdbs"]
 	path = superoptdbs
-	url = https://bsorav@github.com/bsorav/superoptdbs
+	url = https://github.com/bsorav/superoptdbs
 [submodule "llvm-project"]
 	path = llvm-project
-	url = https://bsorav@github.com/bsorav/llvm-project
+	url = https://github.com/bsorav/llvm-project
+[submodule "superopt-tests"]
+	path = superopt-tests
+	url = https://github.com/iitd-plos/superopt-tests
