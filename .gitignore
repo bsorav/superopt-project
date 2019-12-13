@@ -1,4 +1,3 @@
-Makefile
 llvm-build
 smpbench
 smpbench-build
