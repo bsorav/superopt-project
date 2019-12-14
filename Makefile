@@ -5,11 +5,15 @@ all::
 	make -C llvm
 
 ci::
-	make install
+	make ci_install
 	make testinit
 
 install::
-	# XXX ln -s ../tars .
+	make ci_install
+	pushd llvm-project; make install; make first; popd
+
+ci_install::
+	ln -sf ${SUPEROPT_TARS_DIR} ./tars
 	pushd superopt; ./configure --use-ninja; popd;
 	pushd superopt; make solvers; popd;
 	cmake --build superopt/build/etfg_i386 --target eq
@@ -18,7 +22,6 @@ install::
 	cmake --build superopt/build/i386_i386 --target harvest
 	mkdir -p llvm-build
 	pushd llvm-build; bash ../llvm/build.sh; popd
-	pushd llvm-project; make install; make first; popd
 
 testinit::
 	pushd superopt-tests; ./configure && make; popd
