@@ -23,7 +23,7 @@ test: all
 	mv superopt-tests/build/tsvc/tsvc.clang.eqchecker.O3.i386.ALL.tfg eqfiles/tsvc.clang.eqchecker.O3.tfg
 	python superopt/utils/eqbin.py -n superopt-tests/build/tsvc/{tsvc.bc.O0.s,tsvc.gcc.eqchecker.O0.i386}
 	mv superopt-tests/build/tsvc/tsvc.gcc.eqchecker.O3.i386.ALL.tfg eqfiles/tsvc.gcc.eqchecker.O3.tfg
-	python superopt/utils/eqbin.py -n superopt-tests/build/tsvc/{tsvc.bc.O0.s,tsvc_icc.icc.eqchecker.O0.i386}
+	python superopt/utils/eqbin.py -n superopt-tests/build/tsvc/{tsvc_icc.bc.O0.s,tsvc_icc.icc.eqchecker.O0.i386}
 	mv superopt-tests/build/tsvc/tsvc_icc.icc.eqchecker.O3.i386.ALL.tfg eqfiles/tsvc.icc.eqchecker.O3.tfg
 	pushd superopt-tests/tsvc/scripts; bash run_all.sh; popd
 
