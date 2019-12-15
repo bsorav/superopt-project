@@ -13,7 +13,7 @@ install::
 	pushd llvm-project; make install; make first; popd
 
 ci_install::
-	ln -sf ${SUPEROPT_TARS_DIR} ./tars
+	ln -sfn ${SUPEROPT_TARS_DIR} ./tars
 	pushd superopt; ./configure --use-ninja; popd;
 	pushd superopt; make solvers; popd;
 	cmake --build superopt/build/etfg_i386 --target eq
