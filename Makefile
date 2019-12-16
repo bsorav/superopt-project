@@ -14,6 +14,7 @@ install::
 	cmake --build superopt/build/i386_i386 --target harvest
 	mkdir -p llvm-build
 	pushd llvm-build; bash ../llvm/build.sh; popd
+	pushd llvm-project; make install && make first && make all; popd
 
 testinit::
 	pushd superopt-tests; ./configure && make; popd
