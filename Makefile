@@ -4,8 +4,16 @@ all::
 	make -C superopt debug
 	make -C llvm
 
+ci::
+	make ci_install
+	make testinit
+
 install::
-	# XXX ln -s ../tars .
+	make ci_install
+	pushd llvm-project; make install; make first; popd
+
+ci_install::
+	ln -sfn ${SUPEROPT_TARS_DIR} ./tars
 	pushd superopt; ./configure --use-ninja; popd;
 	pushd superopt; make solvers; popd;
 	cmake --build superopt/build/etfg_i386 --target eq
@@ -18,7 +26,7 @@ install::
 
 testinit::
 	pushd superopt-tests; ./configure && make; popd
-	make -C test
+	make test
 
 test::
 	SUPEROPT_ROOT=${PWD} python superopt/utils/eqbin.py -n superopt-tests/build/bzip2/{bzip2.bc.O0.s,bzip2.clang.eqchecker.O3.i386}
