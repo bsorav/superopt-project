@@ -1,5 +1,6 @@
 SHELL := /bin/bash
-SUPEROPT_TARS_DIR := ~/tars
+SUPEROPT_TARS_DIR ?= ~/tars
+
 all::
 	make -C superopt debug
 	make -C llvm
@@ -13,15 +14,17 @@ install::
 	pushd llvm-project; make install; make first; popd
 
 ci_install::
-	ln -sfn ${SUPEROPT_TARS_DIR} ./tars
+	# build superopt
 	pushd superopt; ./configure --use-ninja; popd;
 	pushd superopt; make solvers; popd;
 	cmake --build superopt/build/etfg_i386 --target eq
 	cmake --build superopt/build/etfg_i386 --target smt_helper_process
 	cmake --build superopt/build/etfg_i386 --target eqgen
 	cmake --build superopt/build/i386_i386 --target harvest
+	# build llvm2tfg
 	mkdir -p llvm-build
 	pushd llvm-build; bash ../llvm/build.sh; popd
+	# build our llvm fork
 	pushd llvm-project; make install && make first && make all; popd
 
 testinit::
