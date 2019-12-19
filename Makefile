@@ -1,5 +1,6 @@
 SHELL := /bin/bash
 SUPEROPT_TARS_DIR ?= ~/tars
+SUPEROPT_ROOT := $(PWD)
 
 all::
 	make -C superopt debug
@@ -32,7 +33,7 @@ testinit::
 	make test
 
 test::
-	SUPEROPT_ROOT=${PWD} python superopt/utils/eqbin.py -n superopt-tests/build/bzip2/{bzip2.bc.O0.s,bzip2.clang.eqchecker.O3.i386}
+	python superopt/utils/eqbin.py -n superopt-tests/build/bzip2/{bzip2.bc.O0.s,bzip2.clang.eqchecker.O3.i386}
 	mkdir -p eqfiles
 	mv superopt-tests/build/bzip2/bzip2.bc.O0.s.ALL.etfg eqfiles/bzip2.etfg
 	mv superopt-tests/build/bzip2/bzip2.clang.eqchecker.O3.i386.ALL.tfg eqfiles/bzip2.clang.eqchecker.O3.tfg
@@ -41,8 +42,8 @@ test::
 	mv superopt-tests/build/tsvc/tsvc.clang.eqchecker.O3.i386.ALL.tfg eqfiles/tsvc.clang.eqchecker.O3.tfg
 	python superopt/utils/eqbin.py -n superopt-tests/build/tsvc/{tsvc.bc.O0.s,tsvc.gcc.eqchecker.O3.i386}
 	mv superopt-tests/build/tsvc/tsvc.gcc.eqchecker.O3.i386.ALL.tfg eqfiles/tsvc.gcc.eqchecker.O3.tfg
-	python superopt/utils/eqbin.py -n superopt-tests/build/tsvc/{tsvc_icc.bc.O0.s,tsvc_icc.icc.eqchecker.O3.i386}
-	mv superopt-tests/build/tsvc/tsvc_icc.icc.eqchecker.O3.i386.ALL.tfg eqfiles/tsvc.icc.eqchecker.O3.tfg
+	python superopt/utils/eqbin.py -n superopt-tests/build/tsvc/{tsvc_icc.bc.O0.s,tsvc_icc.icc.eqchecker.O2.i386}
+	mv superopt-tests/build/tsvc/tsvc_icc.icc.eqchecker.O3.i386.ALL.tfg eqfiles/tsvc.icc.eqchecker.O2.tfg
 	python superopt/utils/eqbin.py -n superopt-tests/build/semalign/{semalign_ex_src.bc.O0.s,semalign_ex_dst.gcc.eqchecker.O3.i386}
 	mv superopt-tests/build/semalign/semalign_ex_src.bc.O0.s.ALL.etfg eqfiles/semalign_ex.etfg
 	mv superopt-tests/build/semalign/semalign_ex_dst.gcc.eqchecker.O3.i386.ALL.tfg eqfiles/semalign_ex.gcc.eqchecker.O3.tfg
