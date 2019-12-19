@@ -1,6 +1,6 @@
 SHELL := /bin/bash
-SUPEROPT_TARS_DIR ?= ~/tars
-SUPEROPT_ROOT := $(PWD)
+export SUPEROPT_TARS_DIR ?= ~/tars
+export SUPEROPT_ROOT := $(PWD)
 
 all::
 	make -C superopt debug
