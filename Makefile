@@ -53,11 +53,11 @@ test::
 	python superopt/utils/eqbin.py -n superopt-tests/build/semalign/{semalign_ex_src.bc.O0.s,semalign_ex_dst.icc.eqchecker.O3.i386}
 	mv superopt-tests/build/semalign/semalign_ex_src.bc.O0.s.ALL.etfg eqfiles/semalign_ex.etfg
 	mv superopt-tests/build/semalign/semalign_ex_dst.icc.eqchecker.O3.i386.ALL.tfg eqfiles/semalign_ex.icc.eqchecker.O3.tfg
-	make -C eqtest
+	make eqtest
 
 eqtest::
 	pushd superopt-tests/bzip2/scripts; bash run_all.sh; popd
 	pushd superopt-tests/tsvc/scripts; bash run_all.sh; popd
 	pushd superopt-tests/semalign/scripts; bash run_all.sh; popd
 
-.PHONY: all test
+.PHONY: all ci install ci_install testinit test eqtest
