@@ -32,7 +32,7 @@ test::
 	mkdir -p eqfiles
 	mv superopt-tests/build/bzip2/bzip2.bc.O0.s.ALL.etfg eqfiles/bzip2.etfg
 	mv superopt-tests/build/bzip2/bzip2.clang.eqchecker.O3.i386.ALL.tfg eqfiles/bzip2.clang.eqchecker.O3.tfg
-	make -C eqtest
+	make eqtest
 
 eqtest::
 	pushd superopt-tests/bzip2/scripts; bash run_all.sh; popd
