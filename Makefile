@@ -61,4 +61,4 @@ eqtest::
 	pushd superopt-tests/tsvc/scripts; bash run_all.sh; popd
 	pushd superopt-tests/semalign/scripts; bash run_all.sh; popd
 
-.PHONY: all test
+.PHONY: all ci install ci_install testinit test eqtest
