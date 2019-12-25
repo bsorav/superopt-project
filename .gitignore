@@ -6,3 +6,5 @@ tars
 eq_funcs_*
 eqlogs_eq_funcs_*
 eqfiles
+*_result_cache
+eqlogs_*
