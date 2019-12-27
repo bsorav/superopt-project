@@ -2,6 +2,10 @@ SHELL := /bin/bash
 export SUPEROPT_TARS_DIR ?= ~/tars
 export SUPEROPT_ROOT := $(PWD)
 
+MAJOR_VERSION=0
+MINOR_VERSION=1
+PACKAGE_REVISION=0
+
 all::
 	make -C superopt debug
 	make -C llvm
@@ -59,5 +63,29 @@ eqtest::
 	pushd superopt-tests/bzip2/scripts; bash run_all.sh; popd
 	pushd superopt-tests/tsvc/scripts; bash run_all.sh; popd
 	pushd superopt-tests/semalign/scripts; bash run_all.sh; popd
+
+debian::
+	rm -rf qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/
+	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin
+	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386
+	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/i386_i386
+	cp superopt/build/etfg_i386/qcc superopt/build/etfg_i386/eq superopt/build/etfg_i386/eqgen qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386
+	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386/qcc
+	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386/eq
+	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386/eqgen
+	cp superopt/build/i386_i386/harvest qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/i386_i386
+	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/i386_i386/harvest
+	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-project/build/bin
+	cp llvm-project/build/bin/clang-8 qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-project/build/bin
+	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-project/build/bin/clang-8
+	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin
+	cp llvm-build/bin/llvm2tfg qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin
+	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin/llvm2tfg
+	ln -s qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin/clang-8 qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin/clang
+	ln -s ../superopt-project/llvm-build/bin/llvm2tfg qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/llvm2tfg
+	ln -s ../superopt-project/superopt/build/etfg_i386/qcc qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/qcc
+	ln -s ../superopt-project/superopt/build/etfg_i386/eq qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/eq
+	ln -s ../superopt-project/superopt/build/etfg_i386/eqgen qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/eqgen
+	ln -s ../superopt-project/superopt/build/i386_i386/harvest qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/harvest
 
 .PHONY: all ci install ci_install testinit test eqtest
