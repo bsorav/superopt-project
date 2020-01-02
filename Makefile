@@ -1,6 +1,8 @@
+SUPEROPT_PROJECT_DIR = $(PWD)
+
 SHELL := /bin/bash
 export SUPEROPT_TARS_DIR ?= ~/tars
-export SUPEROPT_ROOT := $(PWD)
+export SUPEROPT_ROOT := $(SUPEROPT_PROJECT_DIR)
 
 MAJOR_VERSION=0
 MINOR_VERSION=1
@@ -9,6 +11,29 @@ PACKAGE_REVISION=0
 all::
 	make -C superopt debug
 	make -C llvm
+
+release::
+	mkdir -p $(SUPEROPT_PROJECT_DIR)/usr/local/bin
+	mkdir -p $(SUPEROPT_PROJECT_DIR)/usr/local/lib
+	mkdir -p $(SUPEROPT_PROJECT_DIR)/usr/local/superoptdbs/etfg_i386
+	mkdir -p $(SUPEROPT_PROJECT_DIR)/usr/local/superoptdbs/i386_i386
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-link $(SUPEROPT_PROJECT_DIR)/usr/local/bin/llvm-link
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-as $(SUPEROPT_PROJECT_DIR)/usr/local/bin/llvm-as
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/opt $(SUPEROPT_PROJECT_DIR)/usr/local/bin/opt
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llc $(SUPEROPT_PROJECT_DIR)/usr/local/bin/llc
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/ld $(SUPEROPT_PROJECT_DIR)/usr/local/bin/qcc-ld
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMSuperopt.so $(SUPEROPT_PROJECT_DIR)/usr/local/lib/LLVMSuperopt.so
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_PROJECT_DIR)/usr/local/bin/eq
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_PROJECT_DIR)/usr/local/bin/eqgen
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc $(SUPEROPT_PROJECT_DIR)/usr/local/bin/qcc
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/smt_helper_process $(SUPEROPT_PROJECT_DIR)/usr/local/bin
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_PROJECT_DIR)/usr/local/bin/harvest
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm2tfg $(SUPEROPT_PROJECT_DIR)/usr/local/bin/llvm2tfg
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang-8 $(SUPEROPT_PROJECT_DIR)/usr/local/bin/clang-qcc
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_PROJECT_DIR)/usr/local/
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_PROJECT_DIR)/usr/local/
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_PROJECT_DIR)/usr/local/bin
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_PROJECT_DIR)/usr/local/bin
 
 ci::
 	make ci_install
