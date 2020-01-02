@@ -1,0 +1,9 @@
+Package: qcc
+Version: 0.0-1
+Section: base
+Priority: optional
+Architecture: i386
+Depends: z3 (>= 4.4.1-0.3build4), anotherDependency (>= 1.2.6)
+Maintainer: Sorav Bansal <sorav@compiler.ai>
+Description: QCC : Verifying and Optimizing Compiler
+ Use AI to generate verified and optimized compilations

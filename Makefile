@@ -1,4 +1,6 @@
 SUPEROPT_PROJECT_DIR = $(PWD)
+SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
+SUPEROPT_INSTALL_FILES_DIR ?= $(SUPEROPT_INSTALL_DIR)
 
 SHELL := /bin/bash
 export SUPEROPT_TARS_DIR ?= ~/tars
@@ -13,27 +15,27 @@ all::
 	make -C llvm
 
 release::
-	mkdir -p $(SUPEROPT_PROJECT_DIR)/usr/local/bin
-	mkdir -p $(SUPEROPT_PROJECT_DIR)/usr/local/lib
-	mkdir -p $(SUPEROPT_PROJECT_DIR)/usr/local/superoptdbs/etfg_i386
-	mkdir -p $(SUPEROPT_PROJECT_DIR)/usr/local/superoptdbs/i386_i386
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-link $(SUPEROPT_PROJECT_DIR)/usr/local/bin/llvm-link
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-as $(SUPEROPT_PROJECT_DIR)/usr/local/bin/llvm-as
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/opt $(SUPEROPT_PROJECT_DIR)/usr/local/bin/opt
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llc $(SUPEROPT_PROJECT_DIR)/usr/local/bin/llc
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/ld $(SUPEROPT_PROJECT_DIR)/usr/local/bin/qcc-ld
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMSuperopt.so $(SUPEROPT_PROJECT_DIR)/usr/local/lib/LLVMSuperopt.so
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_PROJECT_DIR)/usr/local/bin/eq
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_PROJECT_DIR)/usr/local/bin/eqgen
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc $(SUPEROPT_PROJECT_DIR)/usr/local/bin/qcc
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/smt_helper_process $(SUPEROPT_PROJECT_DIR)/usr/local/bin
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_PROJECT_DIR)/usr/local/bin/harvest
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm2tfg $(SUPEROPT_PROJECT_DIR)/usr/local/bin/llvm2tfg
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang-8 $(SUPEROPT_PROJECT_DIR)/usr/local/bin/clang-qcc
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_PROJECT_DIR)/usr/local/
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_PROJECT_DIR)/usr/local/
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_PROJECT_DIR)/usr/local/bin
-	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_PROJECT_DIR)/usr/local/bin
+	mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
+	mkdir -p $(SUPEROPT_INSTALL_DIR)/lib
+	mkdir -p $(SUPEROPT_INSTALL_DIR)/superoptdbs/etfg_i386
+	mkdir -p $(SUPEROPT_INSTALL_DIR)/superoptdbs/i386_i386
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-link $(SUPEROPT_INSTALL_DIR)/bin/llvm-link
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-as $(SUPEROPT_INSTALL_DIR)/bin/llvm-as
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/opt $(SUPEROPT_INSTALL_DIR)/bin/opt
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llc $(SUPEROPT_INSTALL_DIR)/bin/llc
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/ld $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMSuperopt.so $(SUPEROPT_INSTALL_DIR)/lib/LLVMSuperopt.so
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_INSTALL_DIR)/bin/eq
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_INSTALL_DIR)/bin/eqgen
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc $(SUPEROPT_INSTALL_DIR)/bin/qcc
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/smt_helper_process $(SUPEROPT_INSTALL_DIR)/bin
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_DIR)/bin/harvest
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm2tfg $(SUPEROPT_INSTALL_DIR)/bin/llvm2tfg
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang-8 $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_DIR)
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
+	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
 
 ci::
 	make ci_install
@@ -90,27 +92,19 @@ eqtest::
 	pushd superopt-tests/semalign/scripts; bash run_all.sh; popd
 
 debian::
-	rm -rf qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/
-	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin
-	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386
-	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/i386_i386
-	cp superopt/build/etfg_i386/qcc superopt/build/etfg_i386/eq superopt/build/etfg_i386/eqgen qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386
-	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386/qcc
-	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386/eq
-	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/etfg_i386/eqgen
-	cp superopt/build/i386_i386/harvest qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/i386_i386
-	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/superopt/build/i386_i386/harvest
-	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-project/build/bin
-	cp llvm-project/build/bin/clang-8 qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-project/build/bin
-	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-project/build/bin/clang-8
-	mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin
-	cp llvm-build/bin/llvm2tfg qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin
-	strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin/llvm2tfg
-	ln -s qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin/clang-8 qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/superopt-project/llvm-build/bin/clang
-	ln -s ../superopt-project/llvm-build/bin/llvm2tfg qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/llvm2tfg
-	ln -s ../superopt-project/superopt/build/etfg_i386/qcc qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/qcc
-	ln -s ../superopt-project/superopt/build/etfg_i386/eq qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/eq
-	ln -s ../superopt-project/superopt/build/etfg_i386/eqgen qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/eqgen
-	ln -s ../superopt-project/superopt/build/i386_i386/harvest qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/harvest
+	$(info Checking if SUPEROPT_INSTALL_DIR is equal to /usr/local)
+	@if [ "$(SUPEROPT_INSTALL_DIR)" = "/usr/local" ]; then\
+		echo "yes";\
+		rm -rf qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION);\
+		mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/DEBIAN;\
+		cp DEBIAN.control qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/DEBIAN/control;\
+		mkdir -p qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local;\
+		cp -r $(SUPEROPT_INSTALL_FILES_DIR)/* qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local;\
+		strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/*;\
+		strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/lib/*;\
+		dpkg-deb --build qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION);\
+	else\
+		echo "Rebuild with SUPEROPT_INSTALL_DIR=/usr/local to create a debian package";\
+	fi
 
 .PHONY: all ci install ci_install testinit test eqtest
