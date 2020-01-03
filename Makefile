@@ -60,7 +60,7 @@ ci_install::
 	pushd llvm-project; make install && make first && make all; popd
 
 testinit::
-	pushd superopt-tests; ./configure && make; popd
+	pushd superopt-tests; make clean && ./configure && make; popd
 	make test
 
 test::
