@@ -1,10 +1,9 @@
-SUPEROPT_PROJECT_DIR = $(PWD)
+export SUPEROPT_PROJECT_DIR = $(PWD)
 SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 SUPEROPT_INSTALL_FILES_DIR ?= $(SUPEROPT_INSTALL_DIR)
 
 SHELL := /bin/bash
 export SUPEROPT_TARS_DIR ?= ~/tars
-export SUPEROPT_ROOT := $(SUPEROPT_PROJECT_DIR)
 
 MAJOR_VERSION=0
 MINOR_VERSION=1
@@ -40,10 +39,8 @@ release::
 ci::
 	make ci_install
 	make testinit
-
-install::
-	make ci_install
-	pushd llvm-project; make install; make first; popd
+	make gentest
+	make eqtest
 
 ci_install::
 	# build superopt
@@ -59,37 +56,18 @@ ci_install::
 	# build our llvm fork
 	pushd llvm-project; make install && make first && make all; popd
 
+# multiple steps for jenkins pipeline view
 testinit::
 	pushd superopt-tests; make clean && ./configure && make; popd
-	make test
 
-test::
-	python superopt/utils/eqbin.py -n superopt-tests/build/bzip2/{bzip2.bc.O0.s,bzip2.clang.eqchecker.O3.i386}
-	mkdir -p eqfiles
-	mv superopt-tests/build/bzip2/bzip2.bc.O0.s.ALL.etfg eqfiles/bzip2.etfg
-	mv superopt-tests/build/bzip2/bzip2.clang.eqchecker.O3.i386.ALL.tfg eqfiles/bzip2.clang.eqchecker.O3.tfg
-	python superopt/utils/eqbin.py -n superopt-tests/build/tsvc/{tsvc.bc.O0.s,tsvc.clang.eqchecker.O3.i386}
-	mv superopt-tests/build/tsvc/tsvc.bc.O0.s.ALL.etfg eqfiles/tsvc.etfg
-	mv superopt-tests/build/tsvc/tsvc.clang.eqchecker.O3.i386.ALL.tfg eqfiles/tsvc.clang.eqchecker.O3.tfg
-	python superopt/utils/eqbin.py -n superopt-tests/build/tsvc/{tsvc.bc.O0.s,tsvc.gcc.eqchecker.O3.i386}
-	mv superopt-tests/build/tsvc/tsvc.gcc.eqchecker.O3.i386.ALL.tfg eqfiles/tsvc.gcc.eqchecker.O3.tfg
-	python superopt/utils/eqbin.py -n superopt-tests/build/tsvc/{tsvc_icc.bc.O0.s,tsvc_icc.icc.eqchecker.O2.i386}
-	mv superopt-tests/build/tsvc/tsvc_icc.icc.eqchecker.O2.i386.ALL.tfg eqfiles/tsvc.icc.eqchecker.O2.tfg
-	python superopt/utils/eqbin.py -n superopt-tests/build/semalign/{semalign_ex_src.bc.O0.s,semalign_ex_dst.gcc.eqchecker.O3.i386}
-	mv superopt-tests/build/semalign/semalign_ex_src.bc.O0.s.ALL.etfg eqfiles/semalign_ex.etfg
-	mv superopt-tests/build/semalign/semalign_ex_dst.gcc.eqchecker.O3.i386.ALL.tfg eqfiles/semalign_ex.gcc.eqchecker.O3.tfg
-	python superopt/utils/eqbin.py -n superopt-tests/build/semalign/{semalign_ex_src.bc.O0.s,semalign_ex_dst.clang.eqchecker.O3.i386}
-	mv superopt-tests/build/semalign/semalign_ex_src.bc.O0.s.ALL.etfg eqfiles/semalign_ex.etfg
-	mv superopt-tests/build/semalign/semalign_ex_dst.clang.eqchecker.O3.i386.ALL.tfg eqfiles/semalign_ex.clang.eqchecker.O3.tfg
-	python superopt/utils/eqbin.py -n superopt-tests/build/semalign/{semalign_ex_src.bc.O0.s,semalign_ex_dst.icc.eqchecker.O3.i386}
-	mv superopt-tests/build/semalign/semalign_ex_src.bc.O0.s.ALL.etfg eqfiles/semalign_ex.etfg
-	mv superopt-tests/build/semalign/semalign_ex_dst.icc.eqchecker.O3.i386.ALL.tfg eqfiles/semalign_ex.icc.eqchecker.O3.tfg
-	make eqtest
+gentest::
+	pushd superopt-tests; make gentest; popd
 
 eqtest::
-	pushd superopt-tests/bzip2/scripts; bash run_all.sh; popd
-	pushd superopt-tests/tsvc/scripts; bash run_all.sh; popd
-	pushd superopt-tests/semalign/scripts; bash run_all.sh; popd
+	pushd superopt-tests; make runtest; popd
+
+install::
+	make ci_install
 
 debian::
 	$(info Checking if SUPEROPT_INSTALL_DIR is equal to /usr/local)
@@ -107,4 +85,4 @@ debian::
 		echo "Rebuild with SUPEROPT_INSTALL_DIR=/usr/local to create a debian package";\
 	fi
 
-.PHONY: all ci install ci_install testinit test eqtest
+.PHONY: all ci install ci_install testinit gentest eqtest
