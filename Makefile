@@ -44,27 +44,27 @@ ci::
 
 ci_install::
 	# build superopt
-	pushd superopt; ./configure --use-ninja; popd;
-	pushd superopt; make solvers; popd;
+	pushd superopt && ./configure --use-ninja && popd;
+	make -C superopt solvers
 	cmake --build superopt/build/etfg_i386 --target eq
 	cmake --build superopt/build/etfg_i386 --target smt_helper_process
 	cmake --build superopt/build/etfg_i386 --target eqgen
 	cmake --build superopt/build/i386_i386 --target harvest
 	# build llvm2tfg
 	mkdir -p llvm-build
-	pushd llvm-build; bash ../llvm/build.sh; popd
+	pushd llvm-build && bash ../llvm/build.sh && popd
 	# build our llvm fork
-	pushd llvm-project; make install && make first && make all; popd
+	pushd llvm-project && make install && make first && make all && popd
 
 # multiple steps for jenkins pipeline view
 testinit::
-	pushd superopt-tests; make clean && ./configure && make; popd
+	pushd superopt-tests && make clean && ./configure && make && popd
 
 gentest::
-	pushd superopt-tests; make gentest; popd
+	make -C superopt-tests gentest
 
 eqtest::
-	pushd superopt-tests; make runtest; popd
+	make -C superopt-tests runtest
 
 install::
 	make ci_install
