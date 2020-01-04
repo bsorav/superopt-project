@@ -9,6 +9,7 @@
 [submodule "superoptdbs"]
 	path = superoptdbs
 	url = https://github.com/bsorav/superoptdbs
+	branch = perf
 [submodule "llvm-project"]
 	path = llvm-project
 	url = https://github.com/bsorav/llvm-project
@@ -16,4 +17,4 @@
 [submodule "superopt-tests"]
 	path = superopt-tests
 	url = https://github.com/iitd-plos/superopt-tests
-	branch = master
+	branch = perf
