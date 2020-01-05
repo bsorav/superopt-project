@@ -57,6 +57,11 @@ ci_install::
 	pushd llvm-build && bash ../llvm/build.sh && popd
 	# build our llvm fork
 	pushd llvm-project && make install && make first && make all && popd
+	# HACK copy smt_helper_process to new dir 'bin' so that it can be executed from ${SUPEROPT_INSTALL_DIR}/bin
+	mkdir -p ${SUPEROPT_INSTALL_DIR}/bin
+	cp ${SUPEROPT_INSTALL_DIR}/superopt/build/etfg_i386/smt_helper_process ${SUPEROPT_INSTALL_DIR}/bin
+	# ditto for yices_smt2 and cvc4
+	cp ${SUPEROPT_INSTALL_DIR}/superopt/build/third_party/{yices_smt2,cvc4} -t ${SUPEROPT_INSTALL_DIR}/bin
 
 # multiple steps for jenkins pipeline view
 testinit::
