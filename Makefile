@@ -58,6 +58,7 @@ ci_install::
 	pushd llvm && make build && popd
 	# build our llvm fork
 	pushd llvm-project && make install && make first && make all && popd
+	make release
 
 # multiple steps for jenkins pipeline view
 testinit::
