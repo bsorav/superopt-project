@@ -52,9 +52,10 @@ ci_install::
 	cmake --build superopt/build/etfg_i386 --target smt_helper_process
 	cmake --build superopt/build/etfg_i386 --target eqgen
 	cmake --build superopt/build/i386_i386 --target harvest
-	# build llvm2tfg
+	# build llvm2tfg and other custom llvm utils
 	mkdir -p llvm-build
 	pushd llvm-build && bash ../llvm/build.sh && popd
+	pushd llvm && make build && popd
 	# build our llvm fork
 	pushd llvm-project && make install && make first && make all && popd
 
