@@ -51,6 +51,7 @@ ci_install::
 	cmake --build superopt/build/etfg_i386 --target eq
 	cmake --build superopt/build/etfg_i386 --target smt_helper_process
 	cmake --build superopt/build/etfg_i386 --target eqgen
+	cmake --build superopt/build/etfg_i386 --target qcc
 	cmake --build superopt/build/i386_i386 --target harvest
 	# build llvm2tfg and other custom llvm utils
 	mkdir -p llvm-build
