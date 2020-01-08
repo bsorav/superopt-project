@@ -1,4 +1,4 @@
-export SUPEROPT_PROJECT_DIR = $(PWD)
+SUPEROPT_PROJECT_DIR ?= $(PWD)
 SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 SUPEROPT_INSTALL_FILES_DIR ?= $(SUPEROPT_INSTALL_DIR)
 
@@ -44,7 +44,7 @@ ci::
 	make gentest
 	make eqtest
 
-ci_install::
+build::
 	# build superopt
 	pushd superopt && ./configure --use-ninja && popd;
 	make -C superopt solvers
@@ -59,6 +59,9 @@ ci_install::
 	pushd llvm && make build && popd
 	# build our llvm fork
 	pushd llvm-project && make install && make first && make all && popd
+
+ci_install::
+	make build
 	make release
 
 # multiple steps for jenkins pipeline view
