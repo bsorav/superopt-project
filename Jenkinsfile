@@ -2,9 +2,14 @@ pipeline {
     agent any
     environment {
         SUPEROPT_TARS_DIR = '/opt/tars'
+        // sudo not available
+        SUDO = ''
+        // fix SUPEROPT_INSTALL_DIR to current dir (default is ${PWD}/usr/local)
+        SUPEROPT_INSTALL_DIR = "${WORKSPACE}"
+        SUPEROPT_PROJECT_DIR = "${WORKSPACE}"
     }
     options {
-        buildDiscarder(logRotator(numToKeepStr: '5'))
+        buildDiscarder(logRotator(numToKeepStr: '10'))
     }
     triggers {
         cron '@midnight'
@@ -18,23 +23,22 @@ pipeline {
         }
         stage('Build') {
             steps {
-                // fix SUPEROPT_INSTALL_DIR to current dir (default is ${PWD}/usr/local)
-                sh 'SUPEROPT_INSTALL_DIR=${PWD} make build'
+                sh 'make ci_install'
             }
         }
         stage('Build test') {
             steps {
-                sh 'SUPEROPT_INSTALL_DIR=${PWD} make testinit'
+                sh 'make testinit'
             }
         }
         stage('Gen test') {
             steps {
-                sh 'SUPEROPT_INSTALL_DIR=${PWD} SUPEROPT_PROJECT_DIR=${PWD} make gentest'
+                sh 'make gentest'
             }
         }
         stage('Run test') {
             steps {
-                sh 'SUPEROPT_PROJECT_DIR=${PWD} SUPEROPT_PROJECT_DIR=${PWD} make eqtest'
+                sh 'make eqtest'
             }
         }
     }
