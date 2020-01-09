@@ -29,12 +29,12 @@ pipeline {
         }
         stage('Gen test') {
             steps {
-                sh 'SUPEROPT_INSTALL_DIR=${PWD} make gentest'
+                sh 'SUPEROPT_INSTALL_DIR=${PWD} SUPEROPT_PROJECT_DIR=${PWD} make gentest'
             }
         }
         stage('Run test') {
             steps {
-                sh 'SUPEROPT_PROJECT_DIR=${PWD} make eqtest'
+                sh 'SUPEROPT_PROJECT_DIR=${PWD} SUPEROPT_PROJECT_DIR=${PWD} make eqtest'
             }
         }
     }
