@@ -4,6 +4,7 @@ SUPEROPT_PROJECT_DIR ?= $(PWD)
 SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 SUPEROPT_INSTALL_FILES_DIR ?= $(SUPEROPT_INSTALL_DIR)
 SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_DIR)/build
+SUDO ?= sudo # sudo is not available in CI
 
 SHELL := /bin/bash
 export SUPEROPT_TARS_DIR ?= ~/tars
@@ -22,45 +23,45 @@ $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 	chmod +x $@
 
 linkinstall::
-	sudo mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-link $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-as $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/opt $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llc $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/ld $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc-codegen $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/smt_helper_process $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm2tfg $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang-8 $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMSuperopt.so $(SUPEROPT_INSTALL_DIR)/lib/LLVMSuperopt.so
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_DIR)
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
-	sudo ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-link $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-as $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/opt $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llc $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/ld $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc-codegen $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/smt_helper_process $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm2tfg $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang-8 $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMSuperopt.so $(SUPEROPT_INSTALL_DIR)/lib/LLVMSuperopt.so
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_DIR)
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
 
 cleaninstall::
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-link
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-as
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/opt
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/llc
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/lib/LLVMSuperopt.so
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/eq
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/eqgen
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc-codegen
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/smt_helper_process
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm2tfg
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
-	sudo rm -rf $(SUPEROPT_INSTALL_DIR)/lib
-	sudo rm -rf $(SUPEROPT_INSTALL_DIR)/superoptdbs
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
-	sudo rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-link
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-as
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/opt
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llc
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/LLVMSuperopt.so
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/eq
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/eqgen
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc-codegen
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/smt_helper_process
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm2tfg
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
+	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/lib
+	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/superoptdbs
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc
 
 release::
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/bin
@@ -85,8 +86,8 @@ release::
 	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -rtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -rtv $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	sudo rsync -rtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
-	#echo "Run 'sudo cp -r $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)' to complete the release\n"
+	$(SUDO) rsync -rtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
+	#echo "Run '$(SUDO) cp -r $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)' to complete the release\n"
 
 ci::
 	make ci_install
