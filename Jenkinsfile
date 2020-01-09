@@ -19,7 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 // fix SUPEROPT_INSTALL_DIR to current dir (default is ${PWD}/usr/local)
-                sh 'SUPEROPT_INSTALL_DIR=${PWD} make ci_install'
+                sh 'SUPEROPT_INSTALL_DIR=${PWD} make build'
             }
         }
         stage('Build test') {
