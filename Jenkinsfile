@@ -3,7 +3,7 @@ pipeline {
     environment {
         SUPEROPT_TARS_DIR = "/opt/tars"
         // sudo not available
-        SUDO = ""
+        SUDO = "true; "
         // fix SUPEROPT_INSTALL_DIR to current dir (default is ${PWD}/usr/local)
         SUPEROPT_INSTALL_DIR = "${WORKSPACE}"
         SUPEROPT_PROJECT_DIR = "${WORKSPACE}"
