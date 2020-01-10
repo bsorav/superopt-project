@@ -110,6 +110,8 @@ build::
 	pushd llvm && make build && popd
 	# build our llvm fork
 	pushd llvm-project && make install && make first && make all && popd
+	# build qcc
+	make $(SUPEROPT_PROJECT_BUILD)/qcc
 
 ci_install::
 	make build
