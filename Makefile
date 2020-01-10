@@ -22,7 +22,7 @@ $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang-qcc $(CLANG_I386_EQCHECKER_FLAGS)" '$$*' > $@
 	chmod +x $@
 
-linkinstall:: $(SUPEROPT_PROJECT_BUILD)/qcc
+linkinstall::
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-link $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-as $(SUPEROPT_INSTALL_DIR)/bin
@@ -63,7 +63,7 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc
 
-release:: $(SUPEROPT_PROJECT_BUILD)/qcc
+release::
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/lib
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/superoptdbs/etfg_i386
