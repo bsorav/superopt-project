@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        SUPEROPT_TARS_DIR = '/opt/tars'
+        SUPEROPT_TARS_DIR = "/opt/tars"
         // sudo not available
-        SUDO = ''
+        SUDO = ""
         // fix SUPEROPT_INSTALL_DIR to current dir (default is ${PWD}/usr/local)
         SUPEROPT_INSTALL_DIR = "${WORKSPACE}"
         SUPEROPT_PROJECT_DIR = "${WORKSPACE}"
@@ -23,7 +23,11 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'make ci_install'
+                sh '''
+                echo "SUPEROPT_INSTALL_DIR is ${SUPEROPT_INSTALL_DIR}"
+                echo "SUDO is ${SUDO}"
+                make ci_install
+                '''
             }
         }
         stage('Build test') {
