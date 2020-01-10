@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        SUPEROPT_TARS_DIR = '/opt/tars'
+        SUPEROPT_TARS_DIR = "/opt/tars"
         // sudo not available
-        SUDO = ''
+        SUDO = "true; "
         // fix SUPEROPT_INSTALL_DIR to current dir (default is ${PWD}/usr/local)
         SUPEROPT_INSTALL_DIR = "${WORKSPACE}"
         SUPEROPT_PROJECT_DIR = "${WORKSPACE}"
@@ -18,12 +18,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 buildName '${PROJECT_DISPLAY_NAME}_${BUILD_NUMBER}'
-                checkout([$class: 'GitSCM', branches: [[name: '*/perf']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'iitd-plos-bot', url: 'https://github.com/bsorav/superopt-project']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/perf']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'compilerai-bot', url: 'https://github.com/bsorav/superopt-project']]])
             }
         }
         stage('Build') {
             steps {
-                sh 'make ci_install'
+                sh '''
+                echo "SUPEROPT_INSTALL_DIR is ${SUPEROPT_INSTALL_DIR}"
+                echo "SUDO is ${SUDO}"
+                make ci_install
+                '''
             }
         }
         stage('Build test') {
