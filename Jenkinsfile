@@ -10,9 +10,11 @@ pipeline {
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
+        disableConcurrentBuilds()
     }
     triggers {
-        cron '@midnight'
+        // build at midnight only if sources were changed
+        pollSCM('@midnight')
     }
     stages {
         stage('Checkout') {
