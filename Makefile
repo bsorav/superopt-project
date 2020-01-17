@@ -91,9 +91,7 @@ release::
 
 ci::
 	make ci_install
-	make testinit
-	make gentest
-	make eqtest
+	make ci_test
 
 build::
 	# build superopt
@@ -116,6 +114,11 @@ build::
 ci_install::
 	make build
 	make release
+
+ci_test::
+	make testinit
+	make gentest
+	make eqtest
 
 # multiple steps for jenkins pipeline view
 testinit::
