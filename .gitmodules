@@ -5,7 +5,7 @@
 [submodule "superopt"]
 	path = superopt
 	url = https://github.com/bsorav/superopt
-	branch = perf
+	branch = prove_memlabels
 [submodule "superoptdbs"]
 	path = superoptdbs
 	url = https://github.com/bsorav/superoptdbs
