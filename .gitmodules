@@ -17,4 +17,4 @@
 [submodule "superopt-tests"]
 	path = superopt-tests
 	url = https://github.com/iitd-plos/superopt-tests
-	branch = perf
+	branch = ipa
