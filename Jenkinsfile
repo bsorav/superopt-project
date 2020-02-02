@@ -23,7 +23,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 buildName '${PROJECT_DISPLAY_NAME}_${BUILD_NUMBER}'
-                checkout([$class: 'GitSCM', branches: [[name: '*/perf']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'compilerai-bot', url: 'https://github.com/bsorav/superopt-project']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/ipa']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'compilerai-bot', url: 'https://github.com/bsorav/superopt-project']]])
             }
         }
         stage('Build') {
