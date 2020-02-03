@@ -92,11 +92,14 @@ release::
 	$(SUDO) rsync -rtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
 	#echo "Run '$(SUDO) cp -r $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)' to complete the release\n"
 
-ci::
-	make ci_install
+test::
 	make testinit
 	make gentest
 	make eqtest
+
+ci::
+	make ci_install
+	make test
 
 build::
 	# build superopt
@@ -132,7 +135,8 @@ eqtest::
 	make -C superopt-tests runtest
 
 install::
-	make ci_install
+	make build
+	make linkinstall
 
 debian::
 	$(info Checking if SUPEROPT_INSTALL_DIR is equal to /usr/local)
