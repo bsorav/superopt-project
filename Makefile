@@ -122,7 +122,8 @@ ci_install::
 
 # multiple steps for jenkins pipeline view
 testinit::
-	pushd superopt-tests && ./configure && (make clean; true) && make && popd
+	#pushd superopt-tests && ./configure && (make clean; true) && make && popd
+	pushd superopt-tests && ./configure && make && popd
 
 gentest::
 	make -C superopt-tests gentest
