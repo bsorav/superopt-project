@@ -94,6 +94,8 @@ ci::
 	make ci_test
 
 build::
+	# unzip dbs
+	make -C superoptdbs
 	# build superopt
 	pushd superopt && ./configure --use-ninja && popd;
 	make -C superopt solvers
