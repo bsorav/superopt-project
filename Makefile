@@ -68,6 +68,7 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc
+	rm -f $(SUPEROPT_PROJECT_BUILD)/qcc
 
 release::
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/bin
