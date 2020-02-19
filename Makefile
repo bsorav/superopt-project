@@ -13,6 +13,7 @@ Z3=z3-4.8.4-1
 MAJOR_VERSION=0
 MINOR_VERSION=1
 PACKAGE_REVISION=0
+PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 
 all:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	make -C superopt debug
@@ -151,7 +152,8 @@ debian::
 		cp -r $(SUPEROPT_INSTALL_FILES_DIR)/* qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local;\
 		strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/*;\
 		strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/lib/*;\
-		dpkg-deb --build qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION);\
+		dpkg-deb --build $(PACKAGE_NAME);\
+		echo "$(PACKAGE_NAME) created successfully. Use 'sudo apt install $(PACKAGE_NAME)' to install";\
 	else\
 		echo "Rebuild with SUPEROPT_INSTALL_DIR=/usr/local to create a debian package";\
 	fi
