@@ -68,6 +68,7 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc
+	rm -f $(SUPEROPT_PROJECT_BUILD)/qcc
 
 release::
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/bin
@@ -153,9 +154,12 @@ debian::
 		strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/bin/*;\
 		strip qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)/usr/local/lib/*;\
 		dpkg-deb --build $(PACKAGE_NAME);\
-		echo "$(PACKAGE_NAME) created successfully. Use 'sudo apt install $(PACKAGE_NAME)' to install";\
+		echo "$(PACKAGE_NAME) created successfully. Use 'sudo apt install $(PACKAGE_NAME).deb' to install";\
 	else\
 		echo "Rebuild with SUPEROPT_INSTALL_DIR=/usr/local to create a debian package";\
 	fi
+
+pushdebian::
+	scp $(PACKAGE_NAME).deb sbansal@xorav.com:
 
 .PHONY: all ci install ci_install testinit gentest eqtest
