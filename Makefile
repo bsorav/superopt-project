@@ -1,6 +1,6 @@
 include Make.conf
 
-SUPEROPT_PROJECT_DIR ?= $(PWD)
+export SUPEROPT_PROJECT_DIR ?= $(PWD)
 SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 SUPEROPT_INSTALL_FILES_DIR ?= $(SUPEROPT_INSTALL_DIR)
 SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_DIR)/build
@@ -140,7 +140,8 @@ eqtest::
 	make -C superopt-tests runtest
 
 install::
-	make ci_install
+	make build
+	make linkinstall
 
 debian::
 	$(info Checking if SUPEROPT_INSTALL_DIR is equal to /usr/local)
@@ -159,7 +160,14 @@ debian::
 		echo "Rebuild with SUPEROPT_INSTALL_DIR=/usr/local to create a debian package";\
 	fi
 
+printpaths:
+	@echo "SUPEROPT_PROJECT_DIR = $(SUPEROPT_PROJECT_DIR)"
+	@echo "SUPEROPT_INSTALL_DIR = $(SUPEROPT_INSTALL_DIR)"
+	@echo "SUPEROPT_INSTALL_FILES_DIR = $(SUPEROPT_INSTALL_FILES_DIR)"
+	@echo "SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_BUILD)"
+	@echo "SUPEROPT_TARS_DIR = $(SUPEROPT_TARS_DIR)"
+
 pushdebian::
 	scp $(PACKAGE_NAME).deb sbansal@xorav.com:
 
-.PHONY: all ci install ci_install testinit gentest eqtest
+.PHONY: all ci install ci_install testinit gentest eqtest printpaths
