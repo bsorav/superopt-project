@@ -139,6 +139,12 @@ gentest::
 eqtest::
 	make -C superopt-tests runtest
 
+typecheck_test::
+	make -C superopt-tests typecheck_test
+
+codegen_test::
+	make -C superopt-tests codegen_test
+
 install::
 	make build
 	make linkinstall
@@ -166,6 +172,7 @@ printpaths:
 	@echo "SUPEROPT_INSTALL_FILES_DIR = $(SUPEROPT_INSTALL_FILES_DIR)"
 	@echo "SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_BUILD)"
 	@echo "SUPEROPT_TARS_DIR = $(SUPEROPT_TARS_DIR)"
+	@echo "ICC = $(ICC)"
 
 pushdebian::
 	scp $(PACKAGE_NAME).deb sbansal@xorav.com:
