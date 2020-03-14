@@ -3,7 +3,7 @@ Version: 0.0-1
 Section: base
 Priority: optional
 Architecture: amd64
-Depends: z3 (>= 4.4.1-0.3build4)
+Depends: z3 (>= 4.4.1-0.3build4), libz3-dev (>=4.4.1-0.3build4), libsybdb5 (>=1.00.82-2ubuntu0.1), libgmp-dev (>=2:6.1.2+dfsg-2), libboost-all-dev (>= 1.65.1.0ubuntu1)
 Maintainer: Sorav Bansal <sorav@compiler.ai>
 Description: QCC : Verifying and Optimizing Compiler
  Use AI to generate verified and optimized compilations
