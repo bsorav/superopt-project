@@ -1,0 +1,85 @@
+## Pre-requisites
+
+* Install dependencies using script: `sudo ./install-dependencies.sh`
+
+* Copy required tars from: http://www.cse.iitd.ernet.in/~sbansal/software/tars/
+
+```sh
+mkdir tars
+cd tars
+wget http://www.cse.iitd.ernet.in/~sbansal/software/tars/{binutils-2.21.tar.bz2,cvc4-1.7.tgz,elfio-3.2.zip,freetds-1.00.108.tar.gz,libdwarf-code-561de2eef0667fc4d45.tbz2}
+wget https://github.com/SRI-CSL/yices2/archive/45e38fc3ca40708453b8b8ea9e737fa09dd84ec1.zip -O yices2-45e38fc3ca40708453b8b8ea9e737fa09dd84ec1.zip
+wget https://github.com/Boolector/boolector/archive/3.1.0.tar.gz -O boolector-3.1.0.tar.gz
+```
+
+* Export path to tars dir in `SUPEROPT_TARS_DIR`
+
+```sh
+export SUPEROPT_TARS_DIR=<absolute path to tars>
+```
+
+* Build and install z3 4.8.4 from GitHub release
+
+```sh
+wget https://github.com/Z3Prover/z3/archive/z3-4.8.4.tar.gz
+aunpack z3-4.8.4.tar.gz # requires atool to be installed
+cd z3-z3-4.8.4
+python scripts/mk_make.py
+cd build
+make
+sudo make install # installs to /usr
+```
+
+* Clone `superoptdb` in parent directory along with other required tools
+
+```sh
+git clone https://github.com/bsorav/superoptdbs
+...
+```
+
+* Set `SUPEROPT_INSTALL_DIR` to path where other tools are installed
+
+## Building superopt
+
+* Select clang as default C++ compiler
+
+```sh
+sudo update-alternatives --config c++
+  # - select clang++
+```
+
+* Build
+
+```sh
+# assuming CWD is superopt
+./configure
+make debug # builds everything
+make solvers
+```
+
+## Running -- debug
+
+* Setup and build smpbench cint
+
+* Using eq:
+
+```sh
+# switch to smpbench-build/cint
+
+# Verifies bzip2 binary -- takes ~11 hours
+# python {PATH_TO_SUPEROPT}/superopt/utils/eqbin.py bzip2.bc.O0.s bzip2.clang.eqchecker.O3.i386 # | tee eqbin.log
+
+# Verifies function UPHEAP of bzip2 -- takes ~2 minutes
+python {PATH_TO_SUPEROPT}/superopt/utils/eqbin.py -f UPHEAP bzip2.bc.O0.s bzip2.clang.eqchecker.O3.i386 # | tee eqbin.log
+```
+
+## Building and running with `superopt-project`
+
+The easy and recommended way to build run is to clone `superopt` as part of `superopt-project` and use relevant `make <target>` for building everything.
+
+## Environment variables setup
+
+| Environment variable  | Step where it is required |
+|-----------------------|---------------------------|
+|`SUPEROPT_TARS_DIR`    | Before starting build     |
+|`SUPEROPT_INSTALL_DIR` | Before starting build     |

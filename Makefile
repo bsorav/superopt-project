@@ -18,6 +18,7 @@ PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 all:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	make -C superopt debug
 	make -C llvm
+	make -C superoptdbs
 
 $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 	mkdir -p $(SUPEROPT_PROJECT_BUILD)
