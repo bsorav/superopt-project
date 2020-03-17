@@ -18,12 +18,12 @@ wget https://github.com/Boolector/boolector/archive/3.1.0.tar.gz -O boolector-3.
 export SUPEROPT_TARS_DIR=<absolute path to tars>
 ```
 
-* Build and install z3 4.8.4 from GitHub release
+* Build and install z3 4.8.7 from GitHub release
 
 ```sh
-wget https://github.com/Z3Prover/z3/archive/z3-4.8.4.tar.gz
-aunpack z3-4.8.4.tar.gz # requires atool to be installed
-cd z3-z3-4.8.4
+wget https://github.com/Z3Prover/z3/archive/z3-4.8.7.tar.gz
+aunpack z3-4.8.7.tar.gz # requires atool to be installed
+cd z3-z3-4.8.7
 python scripts/mk_make.py
 cd build
 make
