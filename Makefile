@@ -8,7 +8,7 @@ SUDO ?= sudo # sudo is not available in CI
 
 SHELL := /bin/bash
 export SUPEROPT_TARS_DIR ?= ~/tars
-Z3=z3-4.8.4-1
+Z3=z3-4.8.7
 
 MAJOR_VERSION=0
 MINOR_VERSION=1
