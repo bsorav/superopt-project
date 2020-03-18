@@ -9,7 +9,7 @@ SUDO ?= sudo # sudo is not available in CI
 
 SHELL := /bin/bash
 export SUPEROPT_TARS_DIR ?= ~/tars
-Z3=z3-4.8.7-1
+Z3=z3-4.8.7
 
 MAJOR_VERSION=0
 MINOR_VERSION=1
@@ -19,6 +19,7 @@ PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 all:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	make -C superopt debug
 	make -C llvm
+	make -C superoptdbs
 
 $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 	mkdir -p $(SUPEROPT_PROJECT_BUILD)
