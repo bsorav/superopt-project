@@ -8,13 +8,14 @@ then
 fi
 
 build="cmake flex bison unzip ninja-build"
-llvm="llvm-8 llvm-8-dev clang-8"
+llvm="llvm llvm-dev clang-9 clang++-9"
 libs="libboost-all-dev libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox"
 yices="gperf libgmp3-dev autoconf"
 superopt="expect rpcbind"
 db="ruby ruby-dev gem freetds-dev"
 
-tests="libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386"
+GCC=gcc-8
+tests="libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel"
 compcert="menhir ocaml-libs"
 suggested="cscope exuberant-ctags atool"
 
