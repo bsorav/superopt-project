@@ -9,7 +9,7 @@ fi
 
 build="cmake flex bison unzip ninja-build"
 llvm="llvm llvm-dev clang-9 clang++-9"
-libs="libboost-all-dev libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox"
+libs="libboost-all-dev libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-8-dev"
 yices="gperf libgmp3-dev autoconf"
 superopt="expect rpcbind"
 db="ruby ruby-dev gem freetds-dev"

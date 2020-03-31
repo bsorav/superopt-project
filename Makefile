@@ -42,6 +42,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang-8 $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMSuperopt.so $(SUPEROPT_INSTALL_DIR)/lib/LLVMSuperopt.so
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMLockstep.so $(SUPEROPT_INSTALL_DIR)/lib/LLVMLockstep.so
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_DIR)
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/usr/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/usr/lib/libz3.so $(SUPEROPT_INSTALL_DIR)/lib
@@ -57,6 +58,7 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llc
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/LLVMSuperopt.so
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/LLVMLockstep.so
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/eq
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/eqgen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc-codegen
@@ -90,6 +92,7 @@ release::
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang-8 $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang-qcc
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_FILES_DIR)/ # this must be before syncing of llvm-build/lib/LLVMSuperopt.so because this contains a symbolic link to LLVMSuperopt.so that should be overwritten as a regular file by the latter
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMSuperopt.so $(SUPEROPT_INSTALL_FILES_DIR)/lib/LLVMSuperopt.so #this must be after syncing of llvm-project/build/lib/ because the latter contains a link to LLVMSuperopt.so
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMLockstep.so $(SUPEROPT_INSTALL_FILES_DIR)/lib/LLVMLockstep.so #this must be after syncing of llvm-project/build/lib/ because the latter contains a link to LLVMLockstep.so
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_FILES_DIR)
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_FILES_DIR)/bin
