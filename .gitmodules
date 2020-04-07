@@ -5,7 +5,7 @@
 [submodule "superopt"]
 	path = superopt
 	url = https://github.com/bsorav/superopt
-	branch = ipa
+	branch = rewrite_cg_edge
 [submodule "superoptdbs"]
 	path = superoptdbs
 	url = https://github.com/bsorav/superoptdbs
