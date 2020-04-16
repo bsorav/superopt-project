@@ -1,0 +1,18 @@
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+vnoremap // y/<C-R>"<CR>
+set tabstop=2
+
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
+
+set foldmethod=marker
+"set foldnestmax=10
+"set nofoldenable
+set foldlevel=0
+"set foldlevelstart=1
