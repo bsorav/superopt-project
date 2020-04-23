@@ -8,7 +8,7 @@
 	branch = perf
 [submodule "llvm-project"]
 	path = llvm-project
-	url = https://github.com/bsorav/llvm-project
+	url = https://github.com/bsorav/llvm-project2
 	branch = perf
 [submodule "superopt-tests"]
 	path = superopt-tests
