@@ -17,9 +17,9 @@ PACKAGE_REVISION=0
 PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 
 all:: $(SUPEROPT_PROJECT_BUILD)/qcc
-	make -C superopt debug
-	make -C llvm-project
-	make -C superoptdbs
+	$(MAKE) -C superopt debug
+	$(MAKE) -C llvm-project
+	$(MAKE) -C superoptdbs
 
 $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 	mkdir -p $(SUPEROPT_PROJECT_BUILD)
@@ -110,24 +110,24 @@ release::
 	$(SUDO) rsync -lrtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
 
 ci::
-	make ci_install
-	make ci_test
+	$(MAKE) ci_install
+	$(MAKE) ci_test
 
 test::
-	make testinit
-	make gentest
-	make eqtest
+	$(MAKE) testinit
+	$(MAKE) gentest
+	$(MAKE) eqtest
 
 ci::
-	make ci_install
-	make test
+	$(MAKE) ci_install
+	$(MAKE) test
 
 build::
 	# unzip dbs
-	make -C superoptdbs
+	$(MAKE) -C superoptdbs
 	# build superopt
 	pushd superopt && ./configure --use-ninja && popd;
-	make -C superopt solvers
+	$(MAKE) -C superopt solvers
 	cmake --build superopt/build/etfg_i386 --target eq
 	cmake --build superopt/build/etfg_i386 --target smt_helper_process
 	cmake --build superopt/build/etfg_i386 --target eqgen
@@ -136,39 +136,39 @@ build::
 	cmake --build superopt/build/etfg_i386 --target debug_gen
 	cmake --build superopt/build/i386_i386 --target harvest
 	# build our llvm fork and custom llvm-based libs and utils
-	pushd llvm-project && make install && make all && popd
+	pushd llvm-project && $(MAKE) install && $(MAKE) all && popd
 	# build qcc
-	make $(SUPEROPT_PROJECT_BUILD)/qcc
+	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/qcc
 
 ci_install::
-	make build
-	make release
+	$(MAKE) build
+	$(MAKE) release
 
 ci_test::
-	make testinit
-	make gentest
-	make eqtest
+	$(MAKE) testinit
+	$(MAKE) gentest
+	$(MAKE) eqtest
 
 # multiple steps for jenkins pipeline view
 testinit::
 	#pushd superopt-tests && ./configure && (make clean; true) && make && popd
-	pushd superopt-tests && ./configure && make && popd
+	pushd superopt-tests && ./configure && $(MAKE) && popd
 
 gentest::
-	make -C superopt-tests gentest
+	$(MAKE) -C superopt-tests gentest
 
 eqtest::
-	make -C superopt-tests runtest
+	$(MAKE) -C superopt-tests runtest
 
 typecheck_test::
-	make -C superopt-tests typecheck_test
+	$(MAKE) -C superopt-tests typecheck_test
 
 codegen_test::
-	make -C superopt-tests codegen_test
+	$(MAKE) -C superopt-tests codegen_test
 
 install::
-	make build
-	make linkinstall
+	$(MAKE) build
+	$(MAKE) linkinstall
 
 debian::
 	$(info Checking if SUPEROPT_INSTALL_DIR is equal to /usr/local)
