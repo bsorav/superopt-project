@@ -160,6 +160,18 @@ gentest::
 eqtest::
 	$(MAKE) -C superopt-tests runtest
 
+oopsla_test::
+	$(MAKE) gen_oopsla_test
+	$(MAKE) eq_oopsla_test
+
+gen_oopsla_test::
+	$(MAKE) -C superopt-tests gen_oopsla_test
+
+eq_oopsla_test::
+	$(MAKE) -C superopt-tests run_oopsla_test
+
+
+
 typecheck_test::
 	$(MAKE) -C superopt-tests typecheck_test
 
