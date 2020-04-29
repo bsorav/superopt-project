@@ -17,9 +17,9 @@ PACKAGE_REVISION=0
 PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 
 all:: $(SUPEROPT_PROJECT_BUILD)/qcc
-	make -C superopt debug
-	make -C llvm
-	make -C superoptdbs
+	$(MAKE) -C superopt debug
+	$(MAKE) -C llvm-project
+	$(MAKE) -C superoptdbs
 
 $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 	mkdir -p $(SUPEROPT_PROJECT_BUILD)
@@ -29,20 +29,23 @@ $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 linkinstall::
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/include
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-link $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-as $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/opt $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llc $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-link $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-as $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/opt $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llc $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/ld $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc-codegen $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/codegen $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/debug_gen $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/smt_helper_process $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm2tfg $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm2tfg $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang-8 $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMSuperopt.so $(SUPEROPT_INSTALL_DIR)/lib/LLVMSuperopt.so
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_DIR)
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/usr/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/usr/lib/libz3.so $(SUPEROPT_INSTALL_DIR)/lib
@@ -58,11 +61,14 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/opt
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llc
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
-	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/LLVMSuperopt.so
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/eq
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/eqgen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc-codegen
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/codegen
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/debug_gen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/smt_helper_process
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/libmymalloc.a
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm2tfg
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
@@ -79,20 +85,23 @@ release::
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/lib
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/superoptdbs/etfg_i386
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/superoptdbs/i386_i386
-	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-link $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-link
-	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm-as $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-as
-	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/opt $(SUPEROPT_INSTALL_FILES_DIR)/bin/opt
-	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llc $(SUPEROPT_INSTALL_FILES_DIR)/bin/llc
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-link $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-link
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-as $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-as
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/opt $(SUPEROPT_INSTALL_FILES_DIR)/bin/opt
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llc $(SUPEROPT_INSTALL_FILES_DIR)/bin/llc
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/ld $(SUPEROPT_INSTALL_FILES_DIR)/bin/qcc-ld
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_INSTALL_FILES_DIR)/bin/eq
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_INSTALL_FILES_DIR)/bin/eqgen
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc-codegen $(SUPEROPT_INSTALL_FILES_DIR)/bin/qcc-codegen
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/codegen $(SUPEROPT_INSTALL_FILES_DIR)/bin/codegen
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/debug_gen $(SUPEROPT_INSTALL_FILES_DIR)/bin/debug_gen
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/smt_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libLockstepDbg.a $(SUPEROPT_INSTALL_FILES_DIR)/lib
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_FILES_DIR)/lib
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest
-	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-build/bin/llvm2tfg $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm2tfg
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm2tfg $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm2tfg
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang-8 $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang-qcc
-	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_FILES_DIR)/ # this must be before syncing of llvm-build/lib/LLVMSuperopt.so because this contains a symbolic link to LLVMSuperopt.so that should be overwritten as a regular file by the latter
-	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-build/lib/LLVMSuperopt.so $(SUPEROPT_INSTALL_FILES_DIR)/lib/LLVMSuperopt.so #this must be after syncing of llvm-project/build/lib/ because the latter contains a link to LLVMSuperopt.so
+	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_FILES_DIR)/
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_FILES_DIR)
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_FILES_DIR)/bin
@@ -101,67 +110,65 @@ release::
 	$(SUDO) rsync -lrtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
 
 ci::
-	make ci_install
-	make ci_test
+	$(MAKE) ci_install
+	$(MAKE) ci_test
 
 test::
-	make testinit
-	make gentest
-	make eqtest
+	$(MAKE) testinit
+	$(MAKE) gentest
+	$(MAKE) eqtest
 
 ci::
-	make ci_install
-	make test
+	$(MAKE) ci_install
+	$(MAKE) test
 
 build::
 	# unzip dbs
-	make -C superoptdbs
+	$(MAKE) -C superoptdbs
 	# build superopt
 	pushd superopt && ./configure --use-ninja && popd;
-	make -C superopt solvers
+	$(MAKE) -C superopt solvers
 	cmake --build superopt/build/etfg_i386 --target eq
 	cmake --build superopt/build/etfg_i386 --target smt_helper_process
 	cmake --build superopt/build/etfg_i386 --target eqgen
 	cmake --build superopt/build/etfg_i386 --target qcc-codegen
+	cmake --build superopt/build/etfg_i386 --target codegen
+	cmake --build superopt/build/etfg_i386 --target debug_gen
 	cmake --build superopt/build/i386_i386 --target harvest
-	# build llvm2tfg and other custom llvm utils
-	mkdir -p llvm-build
-	pushd llvm-build && bash ../llvm/build.sh && popd
-	pushd llvm && make build && popd
-	# build our llvm fork
-	pushd llvm-project && make install && make first && make all && popd
+	# build our llvm fork and custom llvm-based libs and utils
+	pushd llvm-project && $(MAKE) install && $(MAKE) all && popd
 	# build qcc
-	make $(SUPEROPT_PROJECT_BUILD)/qcc
+	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/qcc
 
 ci_install::
-	make build
-	make release
+	$(MAKE) build
+	$(MAKE) release
 
 ci_test::
-	make testinit
-	make gentest
-	make eqtest
+	$(MAKE) testinit
+	$(MAKE) gentest
+	$(MAKE) eqtest
 
 # multiple steps for jenkins pipeline view
 testinit::
 	#pushd superopt-tests && ./configure && (make clean; true) && make && popd
-	pushd superopt-tests && ./configure && make && popd
+	pushd superopt-tests && ./configure && $(MAKE) && popd
 
 gentest::
-	make -C superopt-tests gentest
+	$(MAKE) -C superopt-tests gentest
 
 eqtest::
-	make -C superopt-tests runtest
+	$(MAKE) -C superopt-tests runtest
 
 typecheck_test::
-	make -C superopt-tests typecheck_test
+	$(MAKE) -C superopt-tests typecheck_test
 
 codegen_test::
-	make -C superopt-tests codegen_test
+	$(MAKE) -C superopt-tests codegen_test
 
 install::
-	make build
-	make linkinstall
+	$(MAKE) build
+	$(MAKE) linkinstall
 
 debian::
 	$(info Checking if SUPEROPT_INSTALL_DIR is equal to /usr/local)
