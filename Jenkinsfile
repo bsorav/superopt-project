@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    parameters {
+        booleanParam(name: 'DEBUG_BUILD', defaultValue: false, description: 'When DEBUG_BUILD, do not re-generate the tests')
+    }
     environment {
         SUPEROPT_TARS_DIR = "/opt/tars"
         // sudo not available
@@ -20,7 +23,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 buildName '${PROJECT_DISPLAY_NAME}_${BUILD_NUMBER}'
-                checkout([$class: 'GitSCM', branches: [[name: '*/perf']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'compilerai-bot', url: 'https://github.com/bsorav/superopt-project']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/ipa']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'SubmoduleOption', disableSubmodules: false, parentCredentials: true, recursiveSubmodules: true, reference: '', trackingSubmodules: false]], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'compilerai-bot', url: 'https://github.com/bsorav/superopt-project']]])
             }
         }
         stage('Build') {
@@ -38,6 +41,9 @@ pipeline {
             }
         }
         stage('Gen test') {
+            when  {
+                not{ expression { return params.DEBUG_BUILD } }
+            }
             steps {
                 sh 'make gentest'
             }
