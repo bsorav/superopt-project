@@ -135,6 +135,8 @@ build::
 	cmake --build superopt/build/etfg_i386 --target codegen
 	cmake --build superopt/build/etfg_i386 --target debug_gen
 	cmake --build superopt/build/i386_i386 --target harvest
+	cmake --build superopt/build/etfg_i386 --target prove_using_local_sprel_expr_guesses
+	cmake --build superopt/build/etfg_i386 --target update_invariant_state_over_edge
 	# build our llvm fork and custom llvm-based libs and utils
 	pushd llvm-project && $(MAKE) install && $(MAKE) all && popd
 	# build qcc
