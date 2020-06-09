@@ -77,26 +77,26 @@ hooks:
 # During the BeforeInstall deployment lifecycle event, run the commands 
 #   in the script specified in "location".
   BeforeInstall:
-    - location: compiler.ai-scripts/install_dependencies.sh
+    - location: compiler.ai-scripts/beforeInstall.sh
       timeout: 1800
       runas: root
 # During the AfterInstall deployment lifecycle event, run the commands 
 #   in the script specified in "location".
   AfterInstall:
-    - location: compiler.ai-scripts/create_user_and_change_permissions.sh
+    - location: compiler.ai-scripts/afterInstall.sh
       timeout: 18000
       runas: root
 # During the ApplicationStart deployment lifecycle event, run the commands 
 #   in the script specified in "location".
   ApplicationStart:
-    - location: compiler.ai-scripts/start_application.sh
+    - location: compiler.ai-scripts/startApp.sh
       timeout: 1800
       runas: user
 # During the ApplicationStop deployment lifecycle event, run the commands 
 #   in the script specified in "location" starting from the root of the 
 #   revision's file bundle.
   ApplicationStop:
-    - location: compiler.ai-scripts/stop_application.sh
+    - location: compiler.ai-scripts/stopApp.sh
       timeout: 1800
       runas: user
 # During the ValidateService deployment lifecycle event, run the commands 
