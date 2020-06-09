@@ -4,6 +4,7 @@ ROOT=/superopt-project
 #cd /compiler.ai/ && rm -rf compiler-explorer && git clone https://bsorav@github.com/bsorav/compiler-explorer
 
 git -C / clone --recurse-submodules https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superopt-project
+git -C /superopt-project submodule update --init --recursive
 
 if [ ! -f "/usr/local/bin/node" ]; then
 	mkdir -p $ROOT/compiler.ai-scripts/build && cd $ROOT/compiler.ai-scripts/build && git clone https://github.com/nodejs/node && cd - && cd $ROOT/compiler.ai-scripts/build/node && git checkout v13.x && ./configure && make && sudo make install && cd - && setcap cap_net_bind_service=+eip /usr/local/bin/node #this is to allow listening on port 80
