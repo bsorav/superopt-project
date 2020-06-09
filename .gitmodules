@@ -14,3 +14,7 @@
 	path = superopt-tests
 	url = https://github.com/iitd-plos/superopt-tests
 	branch = ipa
+[submodule "compiler.ai-scripts/compiler-explorer"]
+	path = compiler.ai-scripts/compiler-explorer
+	url = https://bsorav@github.com/bsorav/compiler-explorer
+	branch = master
