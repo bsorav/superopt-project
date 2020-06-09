@@ -12,4 +12,4 @@
 	url = https://github.com/iitd-plos/superopt-tests
 [submodule "compiler.ai-scripts/compiler-explorer"]
 	path = compiler.ai-scripts/compiler-explorer
-	url = https://bsorav@github.com/bsorav/compiler-explorer
+	url = https://github.com/bsorav/compiler-explorer
