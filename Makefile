@@ -26,6 +26,11 @@ $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang-qcc $(CLANG_I386_EQCHECKER_FLAGS)" '$$*' > $@
 	chmod +x $@
 
+$(SUPEROPT_PROJECT_BUILD)/ooelala: Make.conf Makefile
+	mkdir -p $(SUPEROPT_PROJECT_BUILD)
+	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang -Xclang -load -Xclang $(SUPEROPT_INSTALL_DIR)/lib/UnsequencedAliasVisitor.so -Xclang -add-plugin -Xclang unseq " '$$*' > $@
+	chmod +x $@
+
 linkinstall::
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/include
@@ -43,6 +48,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm2tfg $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_DIR)/lib
@@ -54,6 +60,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_DIR)/bin
 
 cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-link
@@ -72,13 +79,16 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm2tfg
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang
 	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/superoptdbs
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/boolector
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/ooelala
 	rm -f $(SUPEROPT_PROJECT_BUILD)/qcc
+	rm -f $(SUPEROPT_PROJECT_BUILD)/ooelala
 
 release::
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/bin
@@ -101,11 +111,13 @@ release::
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm2tfg $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm2tfg
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang-qcc
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_FILES_DIR)/
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_FILES_DIR)
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_FILES_DIR)/bin
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	cd /tmp && tar xf $(SUPEROPT_TARS_DIR)/$(Z3)-x86_64.pkg.tar.xz && rsync -Lrtv usr/ $(SUPEROPT_INSTALL_FILES_DIR) && cd -
 	$(SUDO) rsync -Lrtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
 
@@ -141,6 +153,8 @@ build::
 	pushd llvm-project && $(MAKE) install && $(MAKE) all && popd
 	# build qcc
 	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/qcc
+	# build ooelala
+	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/ooelala
 
 ci_install::
 	$(MAKE) build
