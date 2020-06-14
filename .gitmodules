@@ -1,16 +1,16 @@
 [submodule "superopt"]
 	path = superopt
-	url = https://github.com/bsorav/superopt
+	url = ../../bsorav/superopt
 	branch = ipa
 [submodule "superoptdbs"]
 	path = superoptdbs
-	url = https://github.com/bsorav/superoptdbs
+	url = ../../bsorav/superoptdbs
 	branch = ipa
 [submodule "llvm-project"]
 	path = llvm-project
-	url = https://github.com/bsorav/llvm-project2
+	url = ../../bsorav/llvm-project2
 	branch = ipa
 [submodule "superopt-tests"]
 	path = superopt-tests
-	url = https://github.com/iitd-plos/superopt-tests
+	url = ../../iitd-plos/superopt-tests
 	branch = ipa
