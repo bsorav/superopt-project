@@ -35,6 +35,7 @@ linkinstall::
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/include
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-link $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-dis $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-as $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/opt $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llc $(SUPEROPT_INSTALL_DIR)/bin
@@ -66,6 +67,7 @@ linkinstall::
 
 cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-link
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-dis
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-as
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/opt
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llc
@@ -100,6 +102,7 @@ release::
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/superoptdbs/etfg_i386
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/superoptdbs/i386_i386
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-link $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-link
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-dis $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-dis
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-as $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-as
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/opt $(SUPEROPT_INSTALL_FILES_DIR)/bin/opt
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llc $(SUPEROPT_INSTALL_FILES_DIR)/bin/llc
