@@ -7,11 +7,11 @@ then
   exit
 fi
 
-build="cmake flex bison unzip ninja-build"
+build="cmake flex bison unzip ninja-build python-pip git"
 llvm="llvm llvm-dev clang-9 clang++-9"
 libs="libboost-all-dev libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-8-dev"
 yices="gperf libgmp3-dev autoconf"
-superopt="expect rpcbind"
+superopt="expect rpcbind z3 libz3-dev"
 db="ruby ruby-dev gem freetds-dev"
 fbgen="camlidl"
 
@@ -23,7 +23,7 @@ suggested="cscope exuberant-ctags atool"
 apt-get install $build $llvm $libs $yices $superopt $db $fbgen $tests
 
 #following is for eqbin.py script
-pip install python-magic
+pip install --proxy=$http_proxy python-magic
 
 #following is for db
 gem install tiny_tds
