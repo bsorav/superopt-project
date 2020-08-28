@@ -14,13 +14,14 @@ yices="gperf libgmp3-dev autoconf"
 superopt="expect rpcbind z3 libz3-dev"
 db="ruby ruby-dev gem freetds-dev"
 fbgen="camlidl"
+compiler_explorer="python3-distutils gcc g++ make"
 
 GCC=gcc-8
 tests="libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel"
 compcert="menhir ocaml-libs"
 suggested="cscope exuberant-ctags atool"
 
-apt-get install $build $llvm $libs $yices $superopt $db $fbgen $tests
+apt-get install $build $llvm $libs $yices $superopt $db $fbgen $tests $compiler_explorer
 
 #following is for eqbin.py script
 pip install --proxy=$http_proxy python-magic

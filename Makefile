@@ -20,6 +20,10 @@ all:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	$(MAKE) -C superopt debug
 	$(MAKE) -C llvm-project
 	$(MAKE) -C superoptdbs
+	pushd superopt-tests && ./configure && $(MAKE) && popd
+
+compiler_explorer_preload_files::
+	cp superopt-tests/build/TSVC_prior_work/*.xml superopt-tests/build/TSVC_new/*.xml compiler.ai-scripts/compiler-explorer/lib/storage/data
 
 $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 	mkdir -p $(SUPEROPT_PROJECT_BUILD)
