@@ -18,12 +18,12 @@ PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 
 all:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	$(MAKE) -C superopt debug
-	$(MAKE) -C llvm-project
+	$(MAKE) -C llvm-project install
 	$(MAKE) -C superoptdbs
-	pushd superopt-tests && ./configure && $(MAKE) && popd
 
 compiler_explorer_preload_files::
-	cp superopt-tests/build/TSVC_prior_work/*.xml superopt-tests/build/TSVC_new/*.xml compiler.ai-scripts/compiler-explorer/lib/storage/data
+	mkdir -p compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
+	cp superopt-tests/build/TSVC_prior_work/*.xml superopt-tests/build/TSVC_new/*.xml compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
 
 $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 	mkdir -p $(SUPEROPT_PROJECT_BUILD)
@@ -32,7 +32,12 @@ $(SUPEROPT_PROJECT_BUILD)/qcc: Make.conf Makefile
 
 $(SUPEROPT_PROJECT_BUILD)/ooelala: Make.conf Makefile
 	mkdir -p $(SUPEROPT_PROJECT_BUILD)
-	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang -Xclang -load -Xclang $(SUPEROPT_INSTALL_DIR)/lib/UnsequencedAliasVisitor.so -Xclang -add-plugin -Xclang unseq " '$$*' > $@
+	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang --dyn_debug=disableSemanticAA -Xclang -load -Xclang $(SUPEROPT_INSTALL_DIR)/lib/UnsequencedAliasVisitor.so -Xclang -add-plugin -Xclang unseq " '$$*' > $@
+	chmod +x $@
+
+$(SUPEROPT_PROJECT_BUILD)/clang11: Make.conf Makefile
+	mkdir -p $(SUPEROPT_PROJECT_BUILD)
+	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang --dyn_debug=disableSemanticAA " '$$*' > $@
 	chmod +x $@
 
 linkinstall::
@@ -68,6 +73,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/clang11 $(SUPEROPT_INSTALL_DIR)/bin
 
 cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-link
@@ -97,8 +103,10 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/ooelala
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang11
 	rm -f $(SUPEROPT_PROJECT_BUILD)/qcc
 	rm -f $(SUPEROPT_PROJECT_BUILD)/ooelala
+	rm -f $(SUPEROPT_PROJECT_BUILD)/clang11
 
 release::
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/bin
@@ -131,6 +139,7 @@ release::
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_FILES_DIR)/bin
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/clang11 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	cd /tmp && tar xf $(SUPEROPT_TARS_DIR)/$(Z3)-x86_64.pkg.tar.xz && rsync -Lrtv usr/ $(SUPEROPT_INSTALL_FILES_DIR) && cd -
 	$(SUDO) rsync -Lrtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
 
@@ -168,6 +177,8 @@ build::
 	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/qcc
 	# build ooelala
 	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/ooelala
+	# build clang11
+	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/clang11
 
 ci_install::
 	$(MAKE) build
