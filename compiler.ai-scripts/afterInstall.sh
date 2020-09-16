@@ -31,7 +31,7 @@ make -C $ROOT/superoptdbs SUPEROPT_INSTALL_DIR=/usr/local
 make -C $ROOT $ROOT/build/qcc $ROOT/build/ooelala SUPEROPT_INSTALL_DIR=/usr/local
 make -C $ROOT cleaninstall SUPEROPT_INSTALL_DIR=/usr/local
 make -C $ROOT linkinstall  SPEROPT_INSTALL_DIR=/usr/local
-cd superopt-tests && ./configure && $(MAKE) && cd -
+cd $ROOT/superopt-tests && ./configure && make && cd -
 make -C $ROOT compiler_explorer_preload_files
 
 $ROOT/compiler.ai-scripts/add-user-script.sh user compiler.ai123
