@@ -31,6 +31,7 @@ ln -sf /tars $ROOT/tars
 cd $ROOT/superopt && ./configure && cd -
 make -C $ROOT/superopt debug SUPEROPT_INSTALL_DIR=/usr/local
 make -C $ROOT/llvm-project install SUPEROPT_INSTALL_DIR=/usr/local
+touch $ROOT/llvm-project/llvm/tools/eqchecker/main.cpp
 make -C $ROOT/llvm-project SUPEROPT_INSTALL_DIR=/usr/local
 make -C $ROOT/superoptdbs SUPEROPT_INSTALL_DIR=/usr/local
 make -C $ROOT $ROOT/build/qcc $ROOT/build/ooelala SUPEROPT_INSTALL_DIR=/usr/local
