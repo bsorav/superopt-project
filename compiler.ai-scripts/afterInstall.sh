@@ -13,15 +13,15 @@ get -C $ROOT/superoptdbs reset --hard
 get -C $ROOT/llvm-project reset --hard
 get -C $ROOT/superopt-tests reset --hard
 get -C $ROOT/compiler.ai-scripts/compiler-explorer reset --hard
-git -C $ROOT pull --recurse-submodules
 git -C $ROOT config --file=.gitmodules submodule.superopt.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superopt
 git -C $ROOT config --file=.gitmodules submodule.llvm-project.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/llvm-project2
 git -C $ROOT config --file=.gitmodules submodule.superoptdbs.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superoptdbs
 #git -C $ROOT config --file=.gitmodules submodule.superopt-tests.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superopt-tests # superopt-tests is at iitd-plos
 git -C $ROOT config --file=.gitmodules submodule.superopt-tests.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/iitd-plos/superopt-tests # superopt-tests is at iitd-plos
 git -C $ROOT config --file=.gitmodules submodule.compiler.ai-scripts/compiler-explorer.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/compiler-explorer
-git -C $ROOT submodule sync
-git -C $ROOT submodule update --init --recursive --remote
+git -C $ROOT pull --recurse-submodules
+#git -C $ROOT submodule sync
+#git -C $ROOT submodule update --init --recursive --remote
 
 if [ ! -f "/usr/bin/node" ]; then
 	mkdir -p $ROOT/compiler.ai-scripts/build && cd $ROOT/compiler.ai-scripts/build && git clone https://github.com/nodejs/node && cd - && cd $ROOT/compiler.ai-scripts/build/node && git checkout v13.x && ./configure && make && make install PREFIX=/usr && cd - && sudo setcap cap_net_bind_service=+eip /usr/bin/node #this is to allow listening on port 80
