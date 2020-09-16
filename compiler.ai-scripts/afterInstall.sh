@@ -13,7 +13,7 @@ get -C $ROOT/superoptdbs reset --hard
 get -C $ROOT/llvm-project reset --hard
 get -C $ROOT/superopt-tests reset --hard
 get -C $ROOT/compiler.ai-scripts/compiler-explorer reset --hard
-git -C $ROOT pull
+git -C $ROOT pull --recurse-submodules
 git -C $ROOT config --file=.gitmodules submodule.superopt.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superopt
 git -C $ROOT config --file=.gitmodules submodule.llvm-project.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/llvm-project2
 git -C $ROOT config --file=.gitmodules submodule.superoptdbs.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superoptdbs
