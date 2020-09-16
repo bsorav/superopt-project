@@ -1,10 +1,13 @@
 #!/bin/bash
 
 ROOT=/superopt-project
+export SUPEROPT_INSTALL_DIR=/usr/local
+export SUPEROPT_PROJECT_DIR=/superopt-project
 
 if [ ! -f "$ROOT" ]; then
 	git -C / clone https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superopt-project
 fi
+git -C $ROOT pull
 git -C $ROOT config --file=.gitmodules submodule.superopt.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superopt
 git -C $ROOT config --file=.gitmodules submodule.llvm-project.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/llvm-project2
 git -C $ROOT config --file=.gitmodules submodule.superoptdbs.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superoptdbs
@@ -14,12 +17,20 @@ git -C $ROOT config --file=.gitmodules submodule.compiler.ai-scripts/compiler-ex
 git -C $ROOT submodule sync
 git -C $ROOT submodule update --init --recursive --remote
 
-if [ ! -f "/usr/local/bin/node" ]; then
-	mkdir -p $ROOT/compiler.ai-scripts/build && cd $ROOT/compiler.ai-scripts/build && git clone https://github.com/nodejs/node && cd - && cd $ROOT/compiler.ai-scripts/build/node && git checkout v13.x && ./configure && make && sudo make install && cd - && sudo setcap cap_net_bind_service=+eip /usr/local/bin/node #this is to allow listening on port 80
+if [ ! -f "/usr/bin/node" ]; then
+	mkdir -p $ROOT/compiler.ai-scripts/build && cd $ROOT/compiler.ai-scripts/build && git clone https://github.com/nodejs/node && cd - && cd $ROOT/compiler.ai-scripts/build/node && git checkout v13.x && ./configure && make && make install PREFIX=/usr && cd - && sudo setcap cap_net_bind_service=+eip /usr/bin/node #this is to allow listening on port 80
 fi
 cd $ROOT/compiler.ai-scripts/compiler-explorer && npm update && npm install webpack-dev-server --save-dev && cd -
-make -C $ROOT
-make -C $ROOT linkinstall
+ln -sf /tars $ROOT/tars
+cd $ROOT/superopt && ./configure && cd -
+make -C $ROOT/superopt debug SUPEROPT_INSTALL_DIR=/usr/local
+make -C $ROOT/llvm-project install SUPEROPT_INSTALL_DIR=/usr/local
+make -C $ROOT/llvm-project SUPEROPT_INSTALL_DIR=/usr/local
+make -C $ROOT/superoptdbs SUPEROPT_INSTALL_DIR=/usr/local
+make -C $ROOT $ROOT/build/qcc $ROOT/build/ooelala SUPEROPT_INSTALL_DIR=/usr/local
+make -C $ROOT cleaninstall SUPEROPT_INSTALL_DIR=/usr/local
+make -C $ROOT linkinstall  SPEROPT_INSTALL_DIR=/usr/local
+cd superopt-tests && ./configure && $(MAKE) && cd -
 make -C $ROOT compiler_explorer_preload_files
 
 $ROOT/compiler.ai-scripts/add-user-script.sh user compiler.ai123

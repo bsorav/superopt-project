@@ -13,3 +13,9 @@ You can use z-a in VIM to fold all foldable sections
 ```
 $ codegen --debug=insn_match.peep_enumerate_transmaps.pc1.fetchlen1.peep_get_all_trans=2 a.etfg
 ```
+
+# Debugging eqcheck
+
+```
+$ eq --debug=eqcheck.update_invariant_state_over_edge a.etfg a.tfg
+```
