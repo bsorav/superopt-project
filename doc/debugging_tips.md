@@ -19,3 +19,24 @@ $ codegen --debug=insn_match.peep_enumerate_transmaps.pc1.fetchlen1.peep_get_all
 ```
 $ eq --debug=eqcheck.update_invariant_state_over_edge a.etfg a.tfg
 ```
+
+# compiler.ai code deployment on AWS
+
+Use the following commands to monitor an ongoing deployment
+```
+$ cd /opt/codedeploy-agent/deployment-root
+$ ls ongoing-deployment
+d-3F7HLZV85
+$ ls
+0543fc78-a41a-4f83-a0e7-9b0ef02db6c1
+deployment-instructions
+ongoing-deployment
+deployment-logs
+$ cd 0543fc78-a41a-4f83-a0e7-9b0ef02db6c1
+$ cd d-3F7HLZV85
+$ ls
+deployment-archive
+logs
+bundle.tar
+$ tail -f logs/scripts.log
+```
