@@ -8,6 +8,11 @@ if [ ! -f "$ROOT" ]; then
 	git -C / clone https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superopt-project
 fi
 get -C $ROOT reset --hard
+get -C $ROOT/superopt reset --hard
+get -C $ROOT/superoptdbs reset --hard
+get -C $ROOT/llvm-project reset --hard
+get -C $ROOT/superopt-tests reset --hard
+get -C $ROOT/compiler.ai-scripts/compiler-explorer reset --hard
 git -C $ROOT pull
 git -C $ROOT config --file=.gitmodules submodule.superopt.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/superopt
 git -C $ROOT config --file=.gitmodules submodule.llvm-project.url https://compilerai-bot:SaouK7or7nJwUBIRDNF9@github.com/bsorav/llvm-project2
