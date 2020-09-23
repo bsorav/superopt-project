@@ -28,16 +28,17 @@ if [ ! -f "/usr/bin/node" ]; then
 fi
 cd $ROOT/compiler.ai-scripts/compiler-explorer && npm update && npm install webpack-dev-server --save-dev && cd -
 ln -sf /tars $ROOT/tars
-cd $ROOT/superopt && ./configure && cd -
-make -C $ROOT/superopt debug SUPEROPT_INSTALL_DIR=/usr/local
-make -C $ROOT/llvm-project install SUPEROPT_INSTALL_DIR=/usr/local
-touch $ROOT/llvm-project/llvm/tools/eqchecker/main.cpp
-make -C $ROOT/llvm-project SUPEROPT_INSTALL_DIR=/usr/local
-make -C $ROOT/superoptdbs SUPEROPT_INSTALL_DIR=/usr/local
-make -C $ROOT cleaninstall SUPEROPT_INSTALL_DIR=/usr/local
-make -C $ROOT $ROOT/build/qcc $ROOT/build/ooelala $ROOT/build/clang11 SUPEROPT_INSTALL_DIR=/usr/local
-make -C $ROOT linkinstall  SPEROPT_INSTALL_DIR=/usr/local
-cd $ROOT/superopt-tests && ./configure && make && cd -
+make -C $ROOT
+#cd $ROOT/superopt && ./configure && cd -
+#make -C $ROOT/superopt debug SUPEROPT_INSTALL_DIR=/usr/local
+#make -C $ROOT/llvm-project install SUPEROPT_INSTALL_DIR=/usr/local
+#touch $ROOT/llvm-project/llvm/tools/eqchecker/main.cpp
+#make -C $ROOT/llvm-project SUPEROPT_INSTALL_DIR=/usr/local
+#make -C $ROOT/superoptdbs SUPEROPT_INSTALL_DIR=/usr/local
+#make -C $ROOT cleaninstall SUPEROPT_INSTALL_DIR=/usr/local
+#make -C $ROOT $ROOT/build/qcc $ROOT/build/ooelala $ROOT/build/clang11 SUPEROPT_INSTALL_DIR=/usr/local
+#make -C $ROOT linkinstall  SPEROPT_INSTALL_DIR=/usr/local
+#cd $ROOT/superopt-tests && ./configure && make && cd -
 make -C $ROOT compiler_explorer_preload_files
 
 $ROOT/compiler.ai-scripts/add-user-script.sh user compiler.ai123
