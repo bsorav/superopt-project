@@ -6,7 +6,10 @@ $ git clone https://<username>@github.com/bsorav/superopt-project
 $ cd superopt-project
 $ git checkout perf
 $ git submodule init
-$ git submodule update
+$ git submodule update -- superopt
+$ git submodule update -- superoptdbs
+$ git submodule update -- llvm-project
+$ git submodule update -- superopt-tests
 $ git clone https://<username>@github.com/compilerai/tars
 ```
 
