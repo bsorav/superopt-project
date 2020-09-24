@@ -1,6 +1,6 @@
 # Getting started
 
-## Cloning the repositories
+## Clone the repositories
 ```
 $ git clone https://<username>@github.com/bsorav/superopt-project
 $ cd superopt-project
@@ -21,13 +21,13 @@ $ sudo apt-get update
 $ sudo apt-get install cmake
 ```
 
-## Setting up the environment
+## Set up the environment
 Ensure that your `http_proxy` environment variable is setup correctly
 ```
 $ sudo -E ./install-dependencies.sh
 ```
 
-## Building
+## Build
 ```
 $ make
 ```
