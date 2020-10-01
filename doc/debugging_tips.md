@@ -17,7 +17,7 @@ $ codegen --debug=insn_match.peep_enumerate_transmaps.pc1.fetchlen1.peep_get_all
 # Debugging eqcheck
 
 ```
-$ eq --debug=eqcheck.update_invariant_state_over_edge a.etfg a.tfg
+$ eq --debug=eqcheck,update_invariant_state_over_edge,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
 ```
 
 # compiler.ai code deployment on AWS
