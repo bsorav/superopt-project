@@ -39,9 +39,13 @@ $ make
 ## Environment variables
 Set your environment variables as follows (you may want to do this in your bashrc/zshrc files so they remain initialized in all your future sessions)
 ```
-export SUPEROPT_INSTALL_DIR=/usr/local
-export SUPEROPT_PROJECT_DIR=$HOME/superopt-project
+export SUPEROPT_PROJECT_DIR=/path/to/superopt-project
+export SUPEROPT_INSTALL_DIR=$SUPEROPT_PROJECT_DIR/usr/local
 export SUPEROPT_TARS_DIR=$SUPEROPT_PROJECT_DIR/tars
+```
+You also need to update your `PATH` environment variable:
+```
+export PATH=$PATH:$SUPEROPT_INSTALL_DIR/bin
 ```
 
 ## Running the tests
