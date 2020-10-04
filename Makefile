@@ -18,13 +18,13 @@ PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 
 all:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	cd $(SUPEROPT_PROJECT_DIR)/superopt && ./configure && cd -
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt debug SUPEROPT_INSTALL_DIR=/usr/local
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install SUPEROPT_INSTALL_DIR=/usr/local
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project SUPEROPT_INSTALL_DIR=/usr/local
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs SUPEROPT_INSTALL_DIR=/usr/local
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall SUPEROPT_INSTALL_DIR=/usr/local
-	make -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang11 SUPEROPT_INSTALL_DIR=/usr/local
-	make -C $(SUPEROPT_PROJECT_DIR) linkinstall  SPEROPT_INSTALL_DIR=/usr/local
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt debug
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
+	make -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang11
+	make -C $(SUPEROPT_PROJECT_DIR) linkinstall
 	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
 
 compiler_explorer_preload_files::

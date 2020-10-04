@@ -28,7 +28,7 @@ if [ ! -f "/usr/bin/node" ]; then
 fi
 cd $ROOT/compiler.ai-scripts/compiler-explorer && npm update && npm install webpack-dev-server --save-dev && cd -
 ln -sf /tars $ROOT/tars
-make -C $ROOT
+make -C $ROOT SUPEROPT_INSTALL_DIR=/usr/local
 #cd $ROOT/superopt && ./configure && cd -
 #make -C $ROOT/superopt debug SUPEROPT_INSTALL_DIR=/usr/local
 #make -C $ROOT/llvm-project install SUPEROPT_INSTALL_DIR=/usr/local
