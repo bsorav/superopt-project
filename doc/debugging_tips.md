@@ -40,3 +40,9 @@ logs
 bundle.tar
 $ tail -f logs/scripts.log
 ```
+
+# Debugging old\_preds != new\_preds
+
+```
+eq32 --dyn_debug=eqcheck,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2 --unroll-factor=4 a.c a.s
+```
