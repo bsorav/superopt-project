@@ -62,7 +62,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/codegen $(SUPEROPT_INSTALL_DIR)/bin/codegen32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/debug_gen $(SUPEROPT_INSTALL_DIR)/bin/debug_gen32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/smt_helper_process $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/typecheck $(SUPEROPT_INSTALL_DIR)/bin/typecheck32
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/ctypecheck $(SUPEROPT_INSTALL_DIR)/bin/ctypecheck32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_DIR)/bin/harvest32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eq $(SUPEROPT_INSTALL_DIR)/bin/eq
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eqgen $(SUPEROPT_INSTALL_DIR)/bin/eqgen
@@ -70,7 +70,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/codegen $(SUPEROPT_INSTALL_DIR)/bin/codegen
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/debug_gen $(SUPEROPT_INSTALL_DIR)/bin/debug_gen
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/x64_x64/harvest $(SUPEROPT_INSTALL_DIR)/bin/harvest
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/typecheck $(SUPEROPT_INSTALL_DIR)/bin/typecheck
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/ctypecheck $(SUPEROPT_INSTALL_DIR)/bin/ctypecheck
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm2tfg $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang
@@ -142,13 +142,13 @@ release::
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc-codegen $(SUPEROPT_INSTALL_FILES_DIR)/bin/qcc-codegen32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/codegen $(SUPEROPT_INSTALL_FILES_DIR)/bin/codegen32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/debug_gen $(SUPEROPT_INSTALL_FILES_DIR)/bin/debug_gen32
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/typecheck $(SUPEROPT_INSTALL_FILES_DIR)/bin/typecheck32
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/ctypecheck $(SUPEROPT_INSTALL_FILES_DIR)/bin/ctypecheck32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eq $(SUPEROPT_INSTALL_FILES_DIR)/bin/eq
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eqgen $(SUPEROPT_INSTALL_FILES_DIR)/bin/eqgen
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qcc-codegen $(SUPEROPT_INSTALL_FILES_DIR)/bin/qcc-codegen
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/codegen $(SUPEROPT_INSTALL_FILES_DIR)/bin/codegen
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/debug_gen $(SUPEROPT_INSTALL_FILES_DIR)/bin/debug_gen
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/typecheck $(SUPEROPT_INSTALL_FILES_DIR)/bin/typecheck
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/ctypecheck $(SUPEROPT_INSTALL_FILES_DIR)/bin/ctypecheck
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/smt_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libLockstepDbg.a $(SUPEROPT_INSTALL_FILES_DIR)/lib/libLockstepDbg32.a
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/libLockstepDbg.a $(SUPEROPT_INSTALL_FILES_DIR)/lib/libLockstepDbg.a
