@@ -8,7 +8,7 @@ SUDO ?= sudo # sudo is not available in CI
 # PARALLEL_LOAD_PERCENT ?= 100  # parallel will start new jobs until number of processes fall below this value
 
 SHELL := /bin/bash
-export SUPEROPT_TARS_DIR ?= ~/tars
+export SUPEROPT_TARS_DIR ?= $(SUPEROPT_PROJECT_DIR)/tars
 Z3=z3-4.8.7
 
 MAJOR_VERSION=0
