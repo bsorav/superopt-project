@@ -39,11 +39,11 @@ add_compilerai_server_user::
 install_compilerai_server::
 	sudo bash compiler.ai-scripts/afterInstall.sh
 
-run_compilerai_server::
-	bash compiler.ai-scripts/startApp.sh
+start_compilerai_server::
+	sudo bash compiler.ai-scripts/startApp.sh
 
 stop_compilerai_server::
-	bash compiler.ai-scripts/stopApp.sh
+	sudo bash compiler.ai-scripts/stopApp.sh
 
 compiler_explorer_preload_files:: # called from afterInstall.sh
 	mkdir -p compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
