@@ -35,6 +35,7 @@ fi
 sudo -u compilerai-server {cd $ROOT/compiler.ai-scripts/compiler-explorer && npm update && npm install webpack-dev-server --save-dev && cd -}
 ln -sf `pwd`/tars $ROOT/tars
 sudo -E -u compilerai-server make -C $ROOT build SUPEROPT_INSTALL_DIR=/usr/local
+sudo -E -u compilerai-server make -C $ROOT install SUPEROPT_INSTALL_DIR=/usr/local
 sudo -E -u compilerai-server make -C $ROOT compiler_explorer_preload_files
 
 chown -R compilerai-server:compilerai-server $ROOT

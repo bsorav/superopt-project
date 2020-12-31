@@ -17,8 +17,8 @@ PACKAGE_REVISION=0
 PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 
 all::
-	make -C $(SUPEROPT_PROJECT_DIR) build
-	make -C $(SUPEROPT_PROJECT_DIR) linkinstall
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) build
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) install
 
 build:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	cd $(SUPEROPT_PROJECT_DIR)/superopt && ./configure && cd -
@@ -26,9 +26,12 @@ build:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
-	make -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang11
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang11
 	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
+
+install::
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) linkinstall
 
 add_compilerai_server_user::
 	sudo $(SUPEROPT_PROJECT_DIR)/compiler.ai-scripts/add-user-script.sh compilerai-server compiler.ai123
@@ -266,9 +269,9 @@ typecheck_test::
 codegen_test::
 	$(MAKE) -C superopt-tests codegen_test
 
-install::
-	$(MAKE) oldbuild
-	$(MAKE) linkinstall
+#install::
+#	$(MAKE) oldbuild
+#	$(MAKE) linkinstall
 
 debian::
 	$(info Checking if SUPEROPT_INSTALL_DIR is equal to /usr/local)
