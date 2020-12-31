@@ -16,7 +16,11 @@ MINOR_VERSION=1
 PACKAGE_REVISION=0
 PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 
-all:: $(SUPEROPT_PROJECT_BUILD)/qcc
+all::
+	make -C $(SUPEROPT_PROJECT_DIR) build
+	make -C $(SUPEROPT_PROJECT_DIR) linkinstall
+
+build:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	cd $(SUPEROPT_PROJECT_DIR)/superopt && ./configure && cd -
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt debug
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install
@@ -24,10 +28,21 @@ all:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
 	make -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang11
-	make -C $(SUPEROPT_PROJECT_DIR) linkinstall
 	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
 
-compiler_explorer_preload_files::
+add_compilerai_server_user::
+	sudo $(SUPEROPT_PROJECT_DIR)/compiler.ai-scripts/add-user-script.sh compilerai-server compiler.ai123
+
+install_compilerai_server::
+	sudo bash compiler.ai-scripts/afterInstall.sh
+
+run_compilerai_server::
+	bash compiler.ai-scripts/startApp.sh
+
+stop_compilerai_server::
+	bash compiler.ai-scripts/stopApp.sh
+
+compiler_explorer_preload_files:: # called from afterInstall.sh
 	mkdir -p compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
 	cp superopt-tests/build/TSVC_prior_work/*.xml superopt-tests/build/TSVC_new/*.xml compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
 
@@ -182,7 +197,7 @@ ci::
 	$(MAKE) ci_install
 	$(MAKE) test
 
-build::
+oldbuild::
 	# unzip dbs
 	$(MAKE) -C superoptdbs
 	# build superopt
@@ -216,7 +231,7 @@ build::
 	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/clang11
 
 ci_install::
-	$(MAKE) build
+	$(MAKE) oldbuild
 	$(MAKE) release
 
 ci_test::
@@ -252,7 +267,7 @@ codegen_test::
 	$(MAKE) -C superopt-tests codegen_test
 
 install::
-	$(MAKE) build
+	$(MAKE) oldbuild
 	$(MAKE) linkinstall
 
 debian::
