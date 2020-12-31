@@ -13,7 +13,7 @@ if [ $? -ne 0 ]; then
 			exit 1
 		else
 			pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-			useradd -m -p "$pass" "$username"
+			useradd -s /bin/bash -m -p "$pass" "$username"
 			[ $? -eq 0 ] && echo "User $username added successfully!" || echo "Failed to add a user $username!"
 		fi
 	else

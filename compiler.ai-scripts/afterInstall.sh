@@ -32,7 +32,7 @@ sudo -u compilerai-server git -C $ROOT submodule update
 if [ ! -f "/usr/bin/node" ]; then
 	sudo -u compilerai-server {mkdir -p $ROOT/compiler.ai-scripts/build && cd $ROOT/compiler.ai-scripts/build && git clone https://github.com/nodejs/node && cd - && cd $ROOT/compiler.ai-scripts/build/node && git checkout v13.x && ./configure && make && cd -} && make -C $ROOT/compiler.ai-scripts/build/node install PREFIX=/usr && setcap cap_net_bind_service=+eip /usr/bin/node #this is to allow listening on port 80)
 fi
-sudo -u compilerai-server {cd $ROOT/compiler.ai-scripts/compiler-explorer && npm update && npm install webpack-dev-server --save-dev && cd -}
+sudo -E -u compilerai-server {cd $ROOT/compiler.ai-scripts/compiler-explorer && npm update && npm install webpack-dev-server --save-dev && cd -}
 ln -sf `pwd`/tars $ROOT/tars
 sudo -E -u compilerai-server make -C $ROOT build SUPEROPT_INSTALL_DIR=/usr/local
 make -C $ROOT install SUPEROPT_INSTALL_DIR=/usr/local
