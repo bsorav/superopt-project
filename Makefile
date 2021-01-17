@@ -19,7 +19,7 @@ PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 all:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	cd $(SUPEROPT_PROJECT_DIR)/superopt && ./configure && cd -
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt debug
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install install32
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
@@ -75,8 +75,6 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf
-	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32
-	$(SUDO) cp -f  $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32 # use copy as otherwise libz3 would not be found by loader
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg32.a
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
@@ -162,7 +160,6 @@ release::
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang-qcc
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/harvest-dwarf $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest-dwarf
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest-dwarf32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_FILES_DIR)/
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_FILES_DIR)
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_FILES_DIR)/bin
@@ -211,7 +208,7 @@ build::
 	cmake --build superopt/build/etfg_x64 --target prove_using_local_sprel_expr_guesses
 	cmake --build superopt/build/etfg_x64 --target update_invariant_state_over_edge
 	# build our llvm fork and custom llvm-based libs and utils
-	pushd llvm-project && $(MAKE) install install32 && $(MAKE) all && popd
+	pushd llvm-project && $(MAKE) install install && $(MAKE) all && popd
 	# build qcc
 	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/qcc
 	# build ooelala
