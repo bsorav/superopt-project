@@ -1,16 +1,15 @@
 [submodule "superopt"]
 	path = superopt
 	url = ../../bsorav/superopt
-	branch = ipa
 [submodule "superoptdbs"]
 	path = superoptdbs
 	url = ../../bsorav/superoptdbs
-	branch = ipa
 [submodule "llvm-project"]
 	path = llvm-project
 	url = ../../bsorav/llvm-project2
-	branch = ipa
 [submodule "superopt-tests"]
 	path = superopt-tests
 	url = ../../iitd-plos/superopt-tests
-	branch = ipa
+[submodule "compiler.ai-scripts/compiler-explorer"]
+	path = compiler.ai-scripts/compiler-explorer
+	url = ../../bsorav/compiler-explorer
