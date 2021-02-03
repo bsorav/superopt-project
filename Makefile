@@ -19,7 +19,7 @@ PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 all:: $(SUPEROPT_PROJECT_BUILD)/qcc
 	cd $(SUPEROPT_PROJECT_DIR)/superopt && ./configure && cd -
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt debug
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install install32
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
