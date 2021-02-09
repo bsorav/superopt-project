@@ -13,3 +13,13 @@ remains well-structured and easy to use.
 ## Git commit message
 
 Please use clear and descriptive git commit messages.  Among our current team members, perhaps Abhishek Rose's commit messages (and code comments) are clearest and most descriptive.  Please look through them to get a sense of what are good commit messages and code comments.
+
+## Deterministic execution in the presence of pointer comparisons
+
+Many data structures involve indexing based on pointer values.  Given that
+pointer values can be random, to preserve determinism, we need to follow two
+disciplines:
+- All "managed" objects (that are de-duplicated) are allocated from a deterministic memory allocator (based on slight modifications to jemalloc)
+- All "unmanaged" objects are allocated using `make_dshared` to generate `dshared_ptr` objects which cannot be compared through inequalities (the corresponding operators are deleted for these objects).
+
+Thus the only occurrence of the `make_shared` function in the superopt/ code should be in support/dshared\_ptr.h
