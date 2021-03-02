@@ -95,7 +95,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf
 	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32
-	$(SUDO) cp -f  $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32 # use copy as otherwise libz3 would not be found by loader
+	#$(SUDO) cp -f  $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32 # use copy as otherwise libz3 would not be found by loader
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg32.a
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
@@ -107,9 +107,9 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/clang12 $(SUPEROPT_INSTALL_DIR)/bin
+	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
+	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_DIR)/bin
+	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/clang12 $(SUPEROPT_INSTALL_DIR)/bin
 
 cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-link
@@ -220,23 +220,24 @@ oldbuild::
 	cmake --build superopt/build/i386_i386 --target harvest
 	cmake --build superopt/build/etfg_i386 --target prove_using_local_sprel_expr_guesses
 	cmake --build superopt/build/etfg_i386 --target update_invariant_state_over_edge
-	cmake --build superopt/build/etfg_x64 --target eq
-	cmake --build superopt/build/etfg_x64 --target smt_helper_process
-	cmake --build superopt/build/etfg_x64 --target eqgen
-	cmake --build superopt/build/etfg_x64 --target qcc-codegen
-	cmake --build superopt/build/etfg_x64 --target codegen
-	cmake --build superopt/build/etfg_x64 --target debug_gen
-	cmake --build superopt/build/x64_x64 --target harvest
-	cmake --build superopt/build/etfg_x64 --target prove_using_local_sprel_expr_guesses
-	cmake --build superopt/build/etfg_x64 --target update_invariant_state_over_edge
+	#cmake --build superopt/build/etfg_x64 --target eq
+	#cmake --build superopt/build/etfg_x64 --target smt_helper_process
+	#cmake --build superopt/build/etfg_x64 --target eqgen
+	#cmake --build superopt/build/etfg_x64 --target qcc-codegen
+	#cmake --build superopt/build/etfg_x64 --target codegen
+	#cmake --build superopt/build/etfg_x64 --target debug_gen
+	#cmake --build superopt/build/x64_x64 --target harvest
+	#cmake --build superopt/build/etfg_x64 --target prove_using_local_sprel_expr_guesses
+	#cmake --build superopt/build/etfg_x64 --target update_invariant_state_over_edge
 	# build our llvm fork and custom llvm-based libs and utils
-	pushd llvm-project && $(MAKE) install install32 && $(MAKE) all && popd
+	#pushd llvm-project && $(MAKE) install install32 && $(MAKE) all && popd
+	pushd llvm-project && $(MAKE) install && $(MAKE) all && popd
 	# build qcc
-	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/qcc
+	#$(MAKE) $(SUPEROPT_PROJECT_BUILD)/qcc
 	# build ooelala
-	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/ooelala
+	#$(MAKE) $(SUPEROPT_PROJECT_BUILD)/ooelala
 	# build clang12
-	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/clang12
+	#$(MAKE) $(SUPEROPT_PROJECT_BUILD)/clang12
 
 ci_install::
 	$(MAKE) oldbuild
