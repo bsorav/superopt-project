@@ -1,15 +1,18 @@
 #!/bin/bash
 # installs dependency pacakges
 
+# strict mode
+set -euo pipefail
+
 if [[ "$EUID" -ne 0 ]];
 then
   echo "Please run as root"
   exit
 fi
 
-build="cmake flex bison unzip ninja-build python-pip git"
-llvm="llvm llvm-dev clang-9 clang++-9"
-libs="libboost-all-dev libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-8-dev"
+build="cmake flex bison unzip ninja-build python3-pip git"
+llvm="llvm llvm-dev clang-9"
+libs="gcc-multilib g++-multilib libboost-all-dev libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-8-dev"
 yices="gperf libgmp3-dev autoconf"
 superopt="expect rpcbind z3 libz3-dev"
 db="ruby ruby-dev gem freetds-dev"
