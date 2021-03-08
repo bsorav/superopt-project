@@ -28,7 +28,7 @@ build::
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
 	# build qcc, ooelala, clang12
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang12
-	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
+	#cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
 
 install::
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
@@ -94,8 +94,6 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf
-	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32
-	$(SUDO) cp -f  $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32 # use copy as otherwise libz3 would not be found by loader
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg32.a
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
@@ -181,7 +179,6 @@ release::
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang-qcc
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/harvest-dwarf $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest-dwarf
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest-dwarf32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_FILES_DIR)/
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_FILES_DIR)
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_FILES_DIR)/bin
