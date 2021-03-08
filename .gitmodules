@@ -1,15 +1,15 @@
 [submodule "superopt"]
 	path = superopt
-	url = ../../bsorav/superopt
+	url = ./superopt
 [submodule "superoptdbs"]
 	path = superoptdbs
-	url = ../../bsorav/superoptdbs
+	url = ./superoptdbs
 [submodule "llvm-project"]
 	path = llvm-project
-	url = ../../bsorav/llvm-project2
+	url = ./llvm-project
 [submodule "superopt-tests"]
 	path = superopt-tests
-	url = ../../iitd-plos/superopt-tests
-[submodule "compiler.ai-scripts/compiler-explorer"]
-	path = compiler.ai-scripts/compiler-explorer
-	url = ../../bsorav/compiler-explorer
+	url = ./superopt-tests
+#[submodule "compiler.ai-scripts/compiler-explorer"]
+#	path = compiler.ai-scripts/compiler-explorer
+#	url = ../superopt-project/compiler-explorer
