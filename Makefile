@@ -95,7 +95,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_DIR)/bin/clang
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf
 	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32
-	$(SUDO) cp -f  $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32 # use copy as otherwise libz3 would not be found by loader
+	#$(SUDO) cp -f  $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32 # use copy as otherwise libz3 would not be found by loader
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg32.a
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
@@ -132,7 +132,7 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf
-	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32
+	#$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32
 	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/superoptdbs
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
@@ -181,7 +181,7 @@ release::
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang-qcc
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/harvest-dwarf $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest-dwarf
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest-dwarf32
+	#rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build32/bin/harvest-dwarf $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest-dwarf32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_FILES_DIR)/
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_FILES_DIR)
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_FILES_DIR)/bin
