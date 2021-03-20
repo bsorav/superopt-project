@@ -16,18 +16,37 @@ MINOR_VERSION=1
 PACKAGE_REVISION=0
 PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 
-all:: $(SUPEROPT_PROJECT_BUILD)/qcc
+all::
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) build
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) install
+
+build::
 	cd $(SUPEROPT_PROJECT_DIR)/superopt && ./configure && cd -
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt debug
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
-	make -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang11
-	make -C $(SUPEROPT_PROJECT_DIR) linkinstall
+	# build qcc, ooelala, clang12
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang12
 	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
 
-compiler_explorer_preload_files::
+install::
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) linkinstall
+
+add_compilerai_server_user::
+	sudo $(SUPEROPT_PROJECT_DIR)/compiler.ai-scripts/add-user-script.sh compilerai-server compiler.ai123
+
+install_compilerai_server::
+	sudo bash compiler.ai-scripts/afterInstall.sh
+
+start_compilerai_server::
+	sudo bash compiler.ai-scripts/startApp.sh
+
+stop_compilerai_server::
+	sudo bash compiler.ai-scripts/stopApp.sh
+
+compiler_explorer_preload_files:: # called from afterInstall.sh
 	mkdir -p compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
 	cp superopt-tests/build/TSVC_prior_work/*.xml superopt-tests/build/TSVC_new/*.xml compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
 
@@ -41,7 +60,7 @@ $(SUPEROPT_PROJECT_BUILD)/ooelala: Make.conf Makefile
 	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang --dyn_debug=disableSemanticAA -Xclang -load -Xclang $(SUPEROPT_INSTALL_DIR)/lib/UnsequencedAliasVisitor.so -Xclang -add-plugin -Xclang unseq " '$$*' > $@
 	chmod +x $@
 
-$(SUPEROPT_PROJECT_BUILD)/clang11: Make.conf Makefile
+$(SUPEROPT_PROJECT_BUILD)/clang12: Make.conf Makefile
 	mkdir -p $(SUPEROPT_PROJECT_BUILD)
 	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang --dyn_debug=disableSemanticAA " '$$*' > $@
 	chmod +x $@
@@ -88,7 +107,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/clang11 $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/clang12 $(SUPEROPT_INSTALL_DIR)/bin
 
 cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/llvm-link
@@ -111,7 +130,7 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang-qcc
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf
-	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32
+	#$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf32
 	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/superoptdbs
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
@@ -119,10 +138,10 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/ooelala
-	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang11
-	rm -f $(SUPEROPT_PROJECT_BUILD)/qcc
-	rm -f $(SUPEROPT_PROJECT_BUILD)/ooelala
-	rm -f $(SUPEROPT_PROJECT_BUILD)/clang11
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang12
+	#rm -f $(SUPEROPT_PROJECT_BUILD)/qcc
+	#rm -f $(SUPEROPT_PROJECT_BUILD)/ooelala
+	#rm -f $(SUPEROPT_PROJECT_BUILD)/clang12
 
 release::
 	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/bin
@@ -166,7 +185,7 @@ release::
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/clang11 $(SUPEROPT_INSTALL_FILES_DIR)/bin
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/clang12 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	cd /tmp && tar xf $(SUPEROPT_TARS_DIR)/$(Z3)-x86_64.pkg.tar.xz && rsync -Lrtv usr/ $(SUPEROPT_INSTALL_FILES_DIR) && cd -
 	$(SUDO) rsync -Lrtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
 
@@ -183,7 +202,7 @@ ci::
 	$(MAKE) ci_install
 	$(MAKE) test
 
-build::
+oldbuild::
 	# unzip dbs
 	$(MAKE) -C superoptdbs
 	# build superopt
@@ -213,11 +232,11 @@ build::
 	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/qcc
 	# build ooelala
 	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/ooelala
-	# build clang11
-	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/clang11
+	# build clang12
+	$(MAKE) $(SUPEROPT_PROJECT_BUILD)/clang12
 
 ci_install::
-	$(MAKE) build
+	$(MAKE) oldbuild
 	$(MAKE) release
 
 ci_test::
@@ -252,9 +271,9 @@ typecheck_test::
 codegen_test::
 	$(MAKE) -C superopt-tests codegen_test
 
-install::
-	$(MAKE) build
-	$(MAKE) linkinstall
+#install::
+#	$(MAKE) oldbuild
+#	$(MAKE) linkinstall
 
 debian::
 	$(info Checking if SUPEROPT_INSTALL_DIR is equal to /usr/local)
@@ -284,4 +303,4 @@ printpaths:
 pushdebian::
 	scp $(PACKAGE_NAME).deb sbansal@xorav.com:
 
-.PHONY: all ci install ci_install testinit gentest eqtest printpaths
+.PHONY: all build ci install ci_install testinit gentest eqtest printpaths
