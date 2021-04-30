@@ -23,7 +23,7 @@ $ eq --dyn_debug=oopsla_log,eqcheck,update_invariant_state_over_edge,decide_hoar
 # Debugging old\_preds != new\_preds
 
 ```
-eq32 --dyn_debug=eqcheck,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,prove_using_local_sprel_expr_guesses_dump --unroll-factor=4 a.c a.s
+eq32 --dyn_debug=eqcheck,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_using_local_sprel_expr_guesses_dump --unroll-factor=4 a.c a.s
 ```
 1. Look for "propagating across &lt;edge&gt;"
 2. Look for "edge = &lt;CG-EDGE&gt;[src: ..., dst: ...]
