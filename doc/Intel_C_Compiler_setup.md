@@ -40,7 +40,7 @@
 ```
 
 
-4. Configute the compiler. If code gen for 32 bit architecture pass `ia32` argument as well while configuring.
+4. Configure the compiler. If code gen for 32 bit architecture pass `ia32` argument as well while configuring.
 
 ```
    $ source /opt/intel/oneapi/setvars.sh        # If configuration for 64-bit arch
