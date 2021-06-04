@@ -23,3 +23,16 @@ disciplines:
 - All "unmanaged" objects are allocated using `make_dshared` to generate `dshared_ptr` objects which cannot be compared through inequalities (the corresponding operators are deleted for these objects).
 
 Thus the only occurrence of the `make_shared` function in the superopt/ code should be in support/dshared\_ptr.h
+
+# Coding guidelines
+
+Here is some basic information to help developers understand the source code layout, and some coding guidelines that try and ensure that the repository remains consistent and easy to use over time.
+
+## Layered library architecture
+- The source code is organized as layers of libraries, where a higher-level library may depend on the routines implemented in the lower-level library, but not vice-versa.  For example, the `tfg` library depends on the `expr` library, but not vice-versa.
+- The names of the libraries and their dependence order is evident from the "libs" line in `superopt/CMakeLists.txt`
+- A single library is formed by all the .cpp (also .ypp, .l, etc.) files in the corresponding directories.  For example, the `tfg` library corresponds to the `tfg` directory. Similarly, the `eqchecker` library corresponds to the `eq` and `egen` directory.
+- The following coding discipline ensures that this one-way dependence property is preserved
+  - A file belonging to the higher-level library can only include files from its own library or lower-level libraries (relative to itself).
+  - The include headers in a file must be listed in the order of the libraries that they represent (from lower-level to higher-level). This discipline is not currently implemented globally in all files yet; but we expect this to be followed, so over time, the entire repository follows this discipline.
+- It is a good practice to have an include subdirectory in `include/` for each `lib` subdirectory, and put all the corresponding .h files in the include subdirectories
