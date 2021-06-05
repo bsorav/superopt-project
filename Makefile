@@ -221,7 +221,7 @@ oldbuild::
 	cmake --build superopt/build/i386_i386 --target harvest
 	cmake --build superopt/build/etfg_i386 --target prove_using_local_sprel_expr_guesses
 	cmake --build superopt/build/etfg_i386 --target update_invariant_state_over_edge
-	#cmake --build superopt/build/etfg_x64 --target eq
+	cmake --build superopt/build/etfg_x64 --target eq
 	#cmake --build superopt/build/etfg_x64 --target smt_helper_process
 	#cmake --build superopt/build/etfg_x64 --target eqgen
 	#cmake --build superopt/build/etfg_x64 --target qcc-codegen
