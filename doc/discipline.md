@@ -10,6 +10,11 @@ remains well-structured and easy to use.
 - Please do not name branches on people (e.g., sorav). Instead name it on features. For example, if you are working on performance optimizations, you may want to call your branch 'perf'.  Also, please avoid naming branches with numbers, e.g., perf1, perf2, etc.  Use the same branch name on all the repositories.
 - After you are done making changes to your branch, send a review request to the relevant people.  If you get consent, you (or your colleague) may merge your branch into an existing branch.
 
+## Deciding Git commit boundaries
+
+- Keep the commits as short as possible, e.g., split your changeset into multiple parts, such that after each part, the system is still in a functional state.  Smaller commits are easier to review.
+- Keep committing at periodic intervals (e.g., every 1 to 2 days) even if the system is not in a functional state at the commit boundary.  In these cases where you are committing when the system is not in a functional state, please begin your commit message with the phrase "tmp commit: ...".  Periodic commits by you with descriptive commit messages (e.g., Working on xyz and currently achieved abc, stuck at def, ..) allow other team members to have visibility into your progress, and allows them to potentially help/course-correct.
+
 ## Git commit message
 
 Please use clear and descriptive git commit messages.  Among our current team members, perhaps Abhishek Rose's commit messages (and code comments) are clearest and most descriptive.  Please look through them to get a sense of what are good commit messages and code comments.
