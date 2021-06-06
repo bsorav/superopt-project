@@ -42,7 +42,7 @@ Here is some basic information to help developers understand the source code lay
   - The include headers in a file must be listed in the order of the libraries that they represent (from lower-level to higher-level). This discipline is not currently implemented globally in all files yet; but we expect this to be followed, so over time, the entire repository follows this discipline.
 - It is a good practice to have an include subdirectory in `include/` for each `lib` subdirectory, and put all the corresponding .h files in the include subdirectories
 
-## Used Managed (Smart) Pointers
+## Use Smart Pointers / Avoid Raw Pointers
 - Please completely avoid new/malloc
 - Instead use make\_dshared to create dynamic objects.  Unlike make\_shared, the pointers returned by make\_dshared (of type dshared\_ptr) cannot be compared using less-than, greater-than, etc.  The "d" stands for deterministic (deterministic because the control flow is independent of the values of these pointers).
 - Also, avoid using the "get()" functions in these managed pointer classes; instead pass the full smart pointer objects around.
