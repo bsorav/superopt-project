@@ -43,3 +43,7 @@ Here is some basic information to help developers understand the source code lay
 - Also, avoid using the "get()" functions in these managed pointer classes; instead pass the full smart pointer objects around.
 - If you need to use pointers that are comparable (e.g., for performance reasons), please use the hash-consing manager class that produces de-duped references
 - In other words, the "make\_shared" word should never appear in our code
+- Similarly, "new" and "malloc" should be completely avoided (except in legacy code)
+- Also, never construct a shared\_ptr/dshared\_ptr object from a raw pointer as it prevents the use of "shared\_from\_this()"
+- When storing a pointer in heap objects, use "dshared\_ptr" instead of raw pointers
+  - may need to use "this-&gt;shared\_from\_this()"
