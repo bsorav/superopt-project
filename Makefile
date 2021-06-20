@@ -15,6 +15,8 @@ Z3=z3-4.8.7
 Z3_PKGNAME=$(Z3)-x86_64.pkg
 #Z3_PATH=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/$(Z3_PKGNAME)
 Z3_PATH=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/usr
+#Z3_LIB_PATH=$(Z3_PATH)/bin
+Z3_LIB_PATH=$(Z3_PATH)/lib
 
 MAJOR_VERSION=0
 MINOR_VERSION=1
@@ -107,7 +109,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_DIR)
 	$(SUDO) ln -sf $(Z3_PATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(Z3_PATH)/bin/libz3.so* $(SUPEROPT_INSTALL_DIR)/lib
+	$(SUDO) ln -sf $(Z3_LIB_PATH)/libz3.so* $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) ln -sf $(Z3_PATH)/include/z3_*.h $(SUPEROPT_INSTALL_DIR)/include
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
