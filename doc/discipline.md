@@ -10,6 +10,11 @@ remains well-structured and easy to use.
 - Please do not name branches on people (e.g., sorav). Instead name it on features. For example, if you are working on performance optimizations, you may want to call your branch 'perf'.  Also, please avoid naming branches with numbers, e.g., perf1, perf2, etc.  Use the same branch name on all the repositories.
 - After you are done making changes to your branch, send a review request to the relevant people.  If you get consent, you (or your colleague) may merge your branch into an existing branch.
 
+## Deciding Git commit boundaries
+
+- Keep the commits as short as possible, e.g., split your changeset into multiple parts, such that after each part, the system is still in a functional state.  Smaller commits are easier to review.
+- Keep committing at periodic intervals (e.g., every 1 to 2 days) even if the system is not in a functional state at the commit boundary.  In these cases where you are committing when the system is not in a functional state, please begin your commit message with the phrase "tmp commit: ...".  Periodic commits by you with descriptive commit messages (e.g., Working on xyz and currently achieved abc, stuck at def, ..) allow other team members to have visibility into your progress, and allows them to potentially help/course-correct.
+
 ## Git commit message
 
 Please use clear and descriptive git commit messages.  Among our current team members, perhaps Abhishek Rose's commit messages (and code comments) are clearest and most descriptive.  Please look through them to get a sense of what are good commit messages and code comments.
@@ -36,3 +41,14 @@ Here is some basic information to help developers understand the source code lay
   - A file belonging to the higher-level library can only include files from its own library or lower-level libraries (relative to itself).
   - The include headers in a file must be listed in the order of the libraries that they represent (from lower-level to higher-level). This discipline is not currently implemented globally in all files yet; but we expect this to be followed, so over time, the entire repository follows this discipline.
 - It is a good practice to have an include subdirectory in `include/` for each `lib` subdirectory, and put all the corresponding .h files in the include subdirectories
+
+## Use Smart Pointers / Avoid Raw Pointers
+- Please completely avoid new/malloc
+- Instead use make\_dshared to create dynamic objects.  Unlike make\_shared, the pointers returned by make\_dshared (of type dshared\_ptr) cannot be compared using less-than, greater-than, etc.  The "d" stands for deterministic (deterministic because the control flow is independent of the values of these pointers).
+- Also, avoid using the "get()" functions in these managed pointer classes; instead pass the full smart pointer objects around.
+- If you need to use pointers that are comparable (e.g., for performance reasons), please use the hash-consing manager class that produces de-duped references
+- In other words, the "make\_shared" word should never appear in our code
+- Similarly, "new" and "malloc" should be completely avoided (except in legacy code)
+- Also, never construct a shared\_ptr/dshared\_ptr object from a raw pointer as it prevents the use of "shared\_from\_this()"
+- When storing a pointer in heap objects, use "dshared\_ptr" instead of raw pointers
+  - may need to use "this-&gt;shared\_from\_this()"
