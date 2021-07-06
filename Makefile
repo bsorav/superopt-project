@@ -30,6 +30,13 @@ build::
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang12
 	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
 
+tags::
+	ctags -R superopt/include/ superopt/lib/ superopt/tools/ llvm-project/llvm/lib llvm-project/llvm/include
+	find superopt/include/ superopt/lib/ superopt/tools/ llvm-project/llvm/lib llvm-project/llvm/include -name "*.h" > cscope.files
+	find superopt/include/ superopt/lib/ superopt/tools/ llvm-project/llvm/lib llvm-project/llvm/include -name "*.c" >> cscope.files
+	find superopt/include/ superopt/lib/ superopt/tools/ llvm-project/llvm/lib llvm-project/llvm/include -name "*.cpp" >> cscope.files
+	GTAGSFORCECPP=1 gtags -f cscope.files
+
 install::
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) linkinstall
