@@ -17,13 +17,13 @@ $ codegen --dyn_debug=insn_match.peep_enumerate_transmaps.pc1.fetchlen1.peep_get
 # Debugging eqcheck
 
 ```
-$ eq --dyn_debug=oopsla_log,eqcheck,update_invariant_state_over_edge,decide_hoare_triple_dump,prove_using_local_sprel_expr_guesses_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
+$ eq --dyn_debug=oopsla_log,eqcheck,update_invariant_state_over_edge,decide_hoare_triple_dump,prove_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
 ```
 
 # Debugging old\_preds != new\_preds
 
 ```
-eq32 --dyn_debug=eqcheck,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_using_local_sprel_expr_guesses_dump --unroll-factor=4 a.c a.s
+update_invariant_state_over_edge32 --dyn_debug=eqcheck,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_dump --unroll-factor=4 a.c a.s
 ```
 1. Look for "propagating across &lt;edge&gt;"
 2. Look for "edge = &lt;CG-EDGE&gt;[src: ..., dst: ...]
@@ -31,7 +31,7 @@ eq32 --dyn_debug=eqcheck,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_
 4. Look for "dst out ce" and "src out ce" strings to identify the break between src-side propagation and dst-side propagation. The counter example printed after "src out ce" is the final translated counterexample.
 5. The hash on the counterexample is only meant to identify duplicate CEs (with exact same key-value pairs)
 6. You can evaluate the final translated counterexample on the src=dst expression of the decide-hoare-triple query file
-7. You can evaluate the intial counterexample (at the from-pcpair) on the src=dst expression of the prove-using-local-sprel-expr-guesses query file
+7. You can evaluate the intial counterexample (at the from-pcpair) on the src=dst expression of the prove-dump query file
 8. Ideally they should both evaluate to FALSE, but at least one of them will likely evaluate to TRUE and that is the reason for this assertion failure
    - if the initial counterexample evaluation evaluates to TRUE, there is likely a bug in the expr-evaluation logic
    - if the final counterexample evaluation evaluates to TRUE, and the initial counterexample evaluation evaluates to FALSE, there is likely a bug in the counterexample-translation logic
