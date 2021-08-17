@@ -29,7 +29,7 @@ all::
 
 build::
 	cd $(SUPEROPT_PROJECT_DIR)/superopt && ./configure && cd -
-#	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt debug
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt debug
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
