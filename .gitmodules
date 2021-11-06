@@ -1,15 +1,19 @@
 [submodule "superopt"]
 	path = superopt
 	url = ../../bsorav/superopt
+  branch = dwarf-upto_backward_dfa
 [submodule "superoptdbs"]
 	path = superoptdbs
 	url = ../../bsorav/superoptdbs
+  branch = dwarf-perf
 [submodule "llvm-project"]
 	path = llvm-project
 	url = ../../bsorav/llvm-project2
+  branch = dwarf-perf
 [submodule "superopt-tests"]
 	path = superopt-tests
 	url = ../../iitd-plos/superopt-tests
+  branch = perf_with_icc_tsvc_enabled
 [submodule "compiler.ai-scripts/compiler-explorer"]
 	path = compiler.ai-scripts/compiler-explorer
 	url = ../../bsorav/compiler-explorer
