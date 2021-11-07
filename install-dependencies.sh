@@ -14,20 +14,21 @@ build="cmake flex bison unzip ninja-build python3-pip git"
 llvm="llvm llvm-dev clang-9"
 libs="gcc-multilib g++-multilib libboost-all-dev libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-8-dev"
 yices="gperf libgmp3-dev autoconf"
-superopt="expect rpcbind z3 libz3-dev libyaml-cpp0.5v5 libyaml-cpp-dev"
+superopt="expect rpcbind z3 libz3-dev libyaml-cpp0.6 libyaml-cpp-dev"
 db="ruby ruby-dev gem freetds-dev"
 fbgen="camlidl"
 compiler_explorer="python3-distutils gcc g++ make"
+test_infra="python"
 
 GCC=gcc-8
 tests="libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel"
 compcert="menhir ocaml-libs"
 suggested="cscope exuberant-ctags atool"
 
-apt-get install $build $llvm $libs $yices $superopt $db $fbgen $tests $compiler_explorer
+apt-get install $build $llvm $libs $yices $superopt $db $fbgen $tests $compiler_explorer $test_infra
 
 #following is for eqbin.py script
-pip install --proxy=$http_proxy python-magic
+#pip install --proxy=$http_proxy python-magic
 
 #following is for db
 gem install tiny_tds
