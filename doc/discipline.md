@@ -61,3 +61,9 @@ Here is some basic information to help developers understand the source code lay
 - Also, never construct a shared\_ptr/dshared\_ptr object from a raw pointer as it prevents the use of "shared\_from\_this()"
 - When storing a pointer in heap objects, use "dshared\_ptr" instead of raw pointers
   - may need to use "this-&gt;shared\_from\_this()"
+
+## Abstractions for expr class
+- Before adding an operator to "class expr", please ask the following question: "Is this operator supported by one of the current programming languages (including IRs and assembly)?".  If not, then it is likely that the operator that you are adding is over-specialized for your use case, and should not be added.
+- The expr language is supposed to be lower-level than most PLs (PLs should easily translate to expr).  Thus it should be kept neutral, we should try and avoid operators that are specific to a particular PL
+- Please note that if you are interested in better debuggability of expressions and predicates, the predicate class contains an "comment" field that can be used for this purpose
+- Better optimization opportunity is perhaps the only reason why complex operators in the expr class may be tolerated.
