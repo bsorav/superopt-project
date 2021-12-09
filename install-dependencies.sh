@@ -24,7 +24,7 @@ tests="libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel
 compcert="menhir ocaml-libs"
 suggested="cscope exuberant-ctags atool"
 
-apt-get install $build $llvm $libs $yices $superopt $db $fbgen $tests $compiler_explorer
+apt-get install -y $build $llvm $libs $yices $superopt $db $fbgen $tests $compiler_explorer
 
 #following is for eqbin.py script
 pip install --proxy=$http_proxy python-magic
