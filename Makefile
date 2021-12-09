@@ -111,4 +111,4 @@ printpaths:
 	@echo "SUPEROPT_TARS_DIR = $(SUPEROPT_TARS_DIR)"
 	@echo "ICC = $(ICC)"
 
-.PHONY: all build install run printpaths
+.PHONY: all build linkinstall cleaninstall install run run_paper_ex printpaths
