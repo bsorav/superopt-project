@@ -14,6 +14,3 @@
 	path = superopt-tests
 	url = ../../iitd-plos/superopt-tests
 	branch = cgo22
-[submodule "compiler.ai-scripts/compiler-explorer"]
-	path = compiler.ai-scripts/compiler-explorer
-	url = ../../bsorav/compiler-explorer
