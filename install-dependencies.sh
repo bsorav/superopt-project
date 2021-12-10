@@ -32,7 +32,11 @@ suggested="cscope exuberant-ctags atool"
 apt-get install -y $build $llvm $libs $yices $superopt $db $fbgen $tests $compiler_explorer
 
 #following is for eqbin.py script
-pip install --proxy=$http_proxy python-magic
+if [[ -n $http_proxy ]]; then
+	pip3 install --proxy=$http_proxy python-magic
+else
+	pip3 install python-magic
+fi
 
 #following is for db
 gem install tiny_tds
