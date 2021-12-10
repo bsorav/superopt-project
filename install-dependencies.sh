@@ -10,7 +10,12 @@ then
   exit
 fi
 
-build="cmake flex bison unzip ninja-build python3-pip git"
+curl https://apt.kitware.com/keys/kitware-archive-latest.asc | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ bionic main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
+apt-get update
+rm /usr/share/keyrings/kitware-archive-keyring.gpg
+
+build="kitware-archive-keyring cmake flex bison unzip ninja-build python3-pip git"
 llvm="llvm llvm-dev clang-9"
 libs="gcc-multilib g++-multilib libboost-all-dev libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-8-dev"
 yices="gperf libgmp3-dev autoconf"
