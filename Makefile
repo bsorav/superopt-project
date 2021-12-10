@@ -8,8 +8,6 @@ SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_DIR)/build
 
 SHELL := /bin/bash
 export SUPEROPT_TARS_DIR ?= $(SUPEROPT_PROJECT_DIR)/tars
-Z3=z3-4.8.10
-Z3_PKGNAME=$(Z3)-x64-ubuntu-18.04
 
 all: install
 
@@ -55,9 +53,9 @@ linkinstall:
 	ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
 	ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_DIR)/lib
 	ln -sf $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_DIR)
-	ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/$(Z3_PKGNAME)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin
-	ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/$(Z3_PKGNAME)/bin/libz3.so* $(SUPEROPT_INSTALL_DIR)/lib
-	ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/$(Z3_PKGNAME)/include/z3_*.h $(SUPEROPT_INSTALL_DIR)/include
+	ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/usr/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin
+	ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/usr/lib/libz3.so* $(SUPEROPT_INSTALL_DIR)/lib
+	ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/usr/include/z3_*.h $(SUPEROPT_INSTALL_DIR)/include
 	ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
 
