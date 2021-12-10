@@ -26,6 +26,8 @@ build:
 	cmake --build superopt/build/etfg_x64 --target smt_helper_process
 	# build our llvm fork and custom llvm-based libs and utils
 	pushd llvm-project && $(MAKE) install && $(MAKE) all && popd
+	# build debug-headers tool
+	$(MAKE) -C superopt update_debug_headers
 
 linkinstall:
 	mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
