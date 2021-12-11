@@ -101,6 +101,8 @@ run::
 
 run_paper_ex:
 	$(MAKE) -C superopt-tests run_paper_ex
+	superopt/populate_hdrs.sh all superopt-tests/build/paper_ex/s000_s000.gcc.eqchecker.O3.i386.ALL.proof superopt-tests/build/paper_ex paper_ex.gcc.csv gcc paper-ex-gcc-rewrite-dir
+	superopt/populate_hdrs.sh all superopt-tests/build/paper_ex/s000_s000.clang.eqchecker.O3.i386.ALL.proof superopt-tests/build/paper_ex paper_ex.clang.csv clang paper-ex-clang-rewrite-dir
 
 printpaths:
 	@echo "SUPEROPT_PROJECT_DIR = $(SUPEROPT_PROJECT_DIR)"
