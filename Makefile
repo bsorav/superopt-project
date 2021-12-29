@@ -19,6 +19,10 @@ Z3_BINPATH=$(Z3_DIR)/${Z3_PKGNAME}
 #Z3_LIB_PATH=$(Z3_PATH)/bin
 Z3_LIB_PATH=$(Z3_BINPATH)/bin
 
+Z3v487=z3-4.8.7
+Z3v487_DIR=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3v487
+Z3v487_BINPATH=$(Z3v487_DIR)/usr
+
 MAJOR_VERSION=0
 MINOR_VERSION=1
 PACKAGE_REVISION=0
@@ -111,6 +115,7 @@ linkinstall::
 	$(SUDO) ln -sf $(Z3_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(Z3_LIB_PATH)/libz3.so* $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) ln -sf $(Z3_BINPATH)/include/z3_*.h $(SUPEROPT_INSTALL_DIR)/include
+	$(SUDO) ln -sf $(Z3v487_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin/z3v487
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
 	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
