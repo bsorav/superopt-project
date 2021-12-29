@@ -10,13 +10,14 @@ SUDO ?= sudo # sudo is not available in CI
 SHELL := /bin/bash
 export SUPEROPT_TARS_DIR ?= $(SUPEROPT_PROJECT_DIR)/tars
 #Z3=z3-4.8.10
-Z3=z3-4.8.7
+Z3=z3-4.8.14
 #Z3_PKGNAME=$(Z3)-x64-ubuntu-18.04
-Z3_PKGNAME=$(Z3)-x86_64.pkg
+Z3_PKGNAME=$(Z3)-x64-glibc-2.31
 #Z3_PATH=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/$(Z3_PKGNAME)
-Z3_PATH=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/usr
+Z3_DIR=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3
+Z3_BINPATH=$(Z3_DIR)/${Z3_PKGNAME}
 #Z3_LIB_PATH=$(Z3_PATH)/bin
-Z3_LIB_PATH=$(Z3_PATH)/lib
+Z3_LIB_PATH=$(Z3_BINPATH)/bin
 
 MAJOR_VERSION=0
 MINOR_VERSION=1
@@ -107,9 +108,9 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_DIR)
-	$(SUDO) ln -sf $(Z3_PATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(Z3_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(Z3_LIB_PATH)/libz3.so* $(SUPEROPT_INSTALL_DIR)/lib
-	$(SUDO) ln -sf $(Z3_PATH)/include/z3_*.h $(SUPEROPT_INSTALL_DIR)/include
+	$(SUDO) ln -sf $(Z3_BINPATH)/include/z3_*.h $(SUPEROPT_INSTALL_DIR)/include
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
 	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
