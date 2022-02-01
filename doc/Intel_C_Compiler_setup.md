@@ -48,11 +48,12 @@
 ```
 
 
-5. Path of the intalled compiler:
+5. Set the path of the intalled compiler:
 
 ```
    $ which icpc
-   /opt/intel/oneapi/compiler/2021.2.0/linux/bin/intel64/icpc
+   /opt/intel/oneapi/compiler/2021.2.0.VER/linux/bin/intel64/icpc
+   $ export ICC_INSTALL_DIR=/opt/intel/oneapi/compiler/2021.2.0.VER/linux
 ```
 
 

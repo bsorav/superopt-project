@@ -17,7 +17,7 @@ $ codegen --dyn_debug=insn_match.peep_enumerate_transmaps.pc1.fetchlen1.peep_get
 # Debugging eqcheck
 
 ```
-$ eq --dyn_debug=oopsla_log,eqcheck,update_invariant_state_over_edge,decide_hoare_triple_dump,prove_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
+$ eq --dyn_debug=oopsla_log,eqcheck,update_invariant_state_over_edge,decide_hoare_triple_dump,graph_propagate_CEs_across_new_edge_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
 ```
 
 # Debugging old\_preds != new\_preds
