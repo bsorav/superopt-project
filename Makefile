@@ -95,6 +95,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/ctypecheck $(SUPEROPT_INSTALL_DIR)/bin/ctypecheck32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_DIR)/bin/harvest32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/smt_helper_process $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qd_helper_process $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eq $(SUPEROPT_INSTALL_DIR)/bin/eq
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eqgen $(SUPEROPT_INSTALL_DIR)/bin/eqgen
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qcc-codegen $(SUPEROPT_INSTALL_DIR)/bin/qcc-codegen
@@ -137,6 +138,7 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/codegen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/debug_gen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/smt_helper_process
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qd_helper_process
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/libmymalloc.a
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest
@@ -189,6 +191,7 @@ release::
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_FILES_DIR)/lib
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/smt_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qd_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/x64_x64/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm2tfg $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm2tfg
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang-qcc
@@ -226,6 +229,7 @@ oldbuild::
 	$(MAKE) -C superopt solvers
 	cmake --build superopt/build/etfg_i386 --target eq
 	cmake --build superopt/build/etfg_i386 --target smt_helper_process
+	cmake --build superopt/build/etfg_i386 --target qd_helper_process
 	cmake --build superopt/build/etfg_i386 --target eqgen
 	cmake --build superopt/build/etfg_i386 --target qcc-codegen
 	cmake --build superopt/build/etfg_i386 --target codegen
@@ -235,6 +239,7 @@ oldbuild::
 	cmake --build superopt/build/etfg_i386 --target update_invariant_state_over_edge
 	cmake --build superopt/build/etfg_x64 --target eq
 	cmake --build superopt/build/etfg_x64 --target smt_helper_process
+	cmake --build superopt/build/etfg_x64 --target qd_helper_process
 	cmake --build superopt/build/etfg_x64 --target eqgen
 	cmake --build superopt/build/etfg_x64 --target qcc-codegen
 	cmake --build superopt/build/etfg_x64 --target codegen
