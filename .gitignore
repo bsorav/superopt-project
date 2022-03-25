@@ -1,3 +1,5 @@
+cscope.files
+.vscode/
 build
 llvm-build
 smpbench
