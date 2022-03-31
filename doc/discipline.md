@@ -6,7 +6,7 @@ remains well-structured and easy to use.
 
 ## Branch-management
 - Do not clobber a branch that is being used by others unless you have already consulted with all relevant people who are working on that branch
-- Instead if you would like to change something, please create another branch.  You may have to create that branch in all the different repositories that you modify (including the top-level repository).
+- Instead if you would like to change something, please create another branch.  You need to create that branch in *all* the repositories (the top-level repository and all the submodules).  This makes it easier for everyone to reproduce your work, and collaborate with you on your branch.
 - Please do not name branches on people (e.g., sorav). Instead name it on features. For example, if you are working on performance optimizations, you may want to call your branch 'perf'.  Also, please avoid naming branches with numbers, e.g., perf1, perf2, etc.  Use the same branch name on all the repositories.
 - After you are done making changes to your branch, send a review request to the relevant people.  If you get consent, you (or your colleague) may merge your branch into an existing branch.
 
@@ -61,3 +61,9 @@ Here is some basic information to help developers understand the source code lay
 - Also, never construct a shared\_ptr/dshared\_ptr object from a raw pointer as it prevents the use of "shared\_from\_this()"
 - When storing a pointer in heap objects, use "dshared\_ptr" instead of raw pointers
   - may need to use "this-&gt;shared\_from\_this()"
+
+## Abstractions for expr class
+- Before adding an operator to "class expr", please ask the following question: "Is this operator supported by one of the current programming languages (including IRs and assembly)?".  If not, then it is likely that the operator that you are adding is over-specialized for your use case, and should not be added.
+- The expr language is supposed to be lower-level than most PLs (PLs should easily translate to expr).  Thus it should be kept neutral, we should try and avoid operators that are specific to a particular PL
+- Please note that if you are interested in better debuggability of expressions and predicates, the predicate class contains an "comment" field that can be used for this purpose
+- Better optimization opportunity is perhaps the only reason why complex operators in the expr class may be tolerated.
