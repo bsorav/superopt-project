@@ -7,7 +7,7 @@ SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_DIR)/build
 SUDO ?= sudo # sudo is not available in CI
 # PARALLEL_LOAD_PERCENT ?= 100  # parallel will start new jobs until number of processes fall below this value
 
-SHELL := /bin/bash
+SHELL := /bin/bash -O failglob
 export SUPEROPT_TARS_DIR ?= $(SUPEROPT_PROJECT_DIR)/tars
 #Z3=z3-4.8.10
 Z3=z3-4.8.14
@@ -95,6 +95,7 @@ linkinstall::
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/ctypecheck $(SUPEROPT_INSTALL_DIR)/bin/ctypecheck32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_DIR)/bin/harvest32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/smt_helper_process $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qd_helper_process $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eq $(SUPEROPT_INSTALL_DIR)/bin/eq
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eqgen $(SUPEROPT_INSTALL_DIR)/bin/eqgen
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qcc-codegen $(SUPEROPT_INSTALL_DIR)/bin/qcc-codegen
@@ -137,6 +138,7 @@ cleaninstall::
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/codegen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/debug_gen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/smt_helper_process
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qd_helper_process
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/libmymalloc.a
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest
@@ -189,6 +191,7 @@ release::
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_FILES_DIR)/lib
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/smt_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qd_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/x64_x64/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm2tfg $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm2tfg
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang-qcc
