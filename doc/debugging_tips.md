@@ -17,13 +17,13 @@ $ codegen --dyn_debug=insn_match.peep_enumerate_transmaps.pc1.fetchlen1.peep_get
 # Debugging eqcheck
 
 ```
-$ eq --dyn_debug=oopsla_log,eqcheck,update_invariant_state_over_edge,decide_hoare_triple_dump,prove_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
+$ eq --dyn_debug=oopsla_log,print_progress_debug,update_invariant_state_over_edge,decide_hoare_triple_dump,prove_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
 ```
 
 # Debugging old\_preds != new\_preds
 
 ```
-update_invariant_state_over_edge32 --dyn_debug=eqcheck,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_dump --unroll-factor=4 a.c a.s
+update_invariant_state_over_edge32 --dyn_debug=print_progress_debug,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_dump --unroll-factor=4 a.c a.s
 ```
 1. Look for "propagating across &lt;edge&gt;"
 2. Look for "edge = &lt;CG-EDGE&gt;[src: ..., dst: ...]
