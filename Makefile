@@ -4,7 +4,7 @@ export SUPEROPT_PROJECT_DIR ?= $(PWD)
 export SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 SUPEROPT_INSTALL_FILES_DIR ?= $(SUPEROPT_INSTALL_DIR)
 SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_DIR)/build
-SUDO ?= sudo # sudo is not available in CI
+SUDO ?= #sudo # sudo is not available in CI
 # PARALLEL_LOAD_PERCENT ?= 100  # parallel will start new jobs until number of processes fall below this value
 
 SHELL := /bin/bash
