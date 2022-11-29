@@ -17,13 +17,13 @@ $ codegen --dyn-debug=insn_match.peep_enumerate_transmaps.pc1.fetchlen1.peep_get
 # Debugging eqcheck
 
 ```
-$ eq --dyn-debug=oopsla_log,print_progress_debug,update_invariant_state_over_edge,decide_hoare_triple_dump,prove_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
+$ eq --dyn-debug=oopsla_log,print_progress_debug,update_invariant_state_for_edges,decide_hoare_triple_dump,prove_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
 ```
 
 # Debugging old\_preds != new\_preds
 
 ```
-update_invariant_state_over_edge32 --dyn-debug=print_progress_debug,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_dump,dst_to_src_submap_debug=2 a.ui
+update_invariant_state_for_edges32 --dyn-debug=print_progress_debug,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_dump,dst_to_src_submap_debug=2 a.ui
 ```
 1. Look for the last decide-hoare-triple-dump
 2. Look for "edge = &lt;CG-EDGE&gt;[src: ..., dst: ...]
@@ -35,6 +35,11 @@ update_invariant_state_over_edge32 --dyn-debug=print_progress_debug,ce_add=2,smt
 8. Ideally they should both evaluate to FALSE, but at least one of them will likely evaluate to TRUE and that is the reason for this assertion failure
    - if the initial counterexample evaluation evaluates to TRUE, there is likely a bug in the expr-evaluation logic
    - if the final counterexample evaluation evaluates to TRUE, and the initial counterexample evaluation evaluates to FALSE, there is likely a bug in the counterexample-translation logic
+
+# Debugging ce-translation-failure
+
+1. Try to localize the problem as a DHT query
+2. Use the `expr_is_provable_check` dyn-debug flag
 
 # Record/Replay of SMT queries
 
