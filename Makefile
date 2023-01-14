@@ -31,6 +31,7 @@ PACKAGE_NAME=qcc_$(MAJOR_VERSION).$(MINOR_VERSION)-$(PACKAGE_REVISION)
 all::
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) build
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) install
+	#$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests
 
 build::
 	cd $(SUPEROPT_PROJECT_DIR)/superopt && ./configure && cd -
@@ -40,7 +41,7 @@ build::
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
 	# build qcc, ooelala, clang12
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang12
-	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
+	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure
 
 install::
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
