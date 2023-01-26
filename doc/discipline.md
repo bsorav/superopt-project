@@ -67,3 +67,6 @@ Here is some basic information to help developers understand the source code lay
 - The expr language is supposed to be lower-level than most PLs (PLs should easily translate to expr).  Thus it should be kept neutral, we should try and avoid operators that are specific to a particular PL
 - Please note that if you are interested in better debuggability of expressions and predicates, the predicate class contains an "comment" field that can be used for this purpose
 - Better optimization opportunity is perhaps the only reason why complex operators in the expr class may be tolerated.
+
+## Defining and Using Constants through Macros
+- For any string or integer constants, try and define macros in "include/support/consts.h" and use those macros in your code.
