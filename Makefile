@@ -6,14 +6,10 @@ SUDO = # sudo not available to students
 
 SHELL := /bin/bash -O failglob
 export SUPEROPT_TARS_DIR ?= $(SUPEROPT_PROJECT_DIR)/tars
-#Z3=z3-4.8.10
 Z3=z3-4.8.14
-#Z3_PKGNAME=$(Z3)-x64-ubuntu-18.04
 Z3_PKGNAME=$(Z3)-x64-glibc-2.31
-#Z3_PATH=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3/$(Z3_PKGNAME)
 Z3_DIR=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3
 Z3_BINPATH=$(Z3_DIR)/${Z3_PKGNAME}
-#Z3_LIB_PATH=$(Z3_PATH)/bin
 Z3_LIB_PATH=$(Z3_BINPATH)/bin
 
 Z3v487=z3-4.8.7
