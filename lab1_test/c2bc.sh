@@ -9,7 +9,11 @@ then
 fi
 
 fname=$1
-   ${ROOT}/llvm-project/build/bin/clang -Xclang -disable-llvm-passes -Xclang -disable-O0-optnone -c -m32 -emit-llvm -O0 ${fname} -o ${fname}.tmp.bc \
-&& ${ROOT}/llvm-project/build/bin/opt -mem2reg -o ${fname}.bc ${fname}.tmp.bc \
-&& rm ${fname}.tmp.bc \
-&& ${ROOT}/llvm-project/build/bin/llvm-dis ${fname}.bc
+fname_basename=$(basename "${fname}")
+fname_bc=${fname_basename}.bc
+fname_tmp_bc=${fname_basename}.tmp.bc
+
+   ${ROOT}/llvm-project/build/bin/clang -Xclang -disable-llvm-passes -Xclang -disable-O0-optnone -c -m32 -emit-llvm -O0 "${fname}" -o "${fname_tmp_bc}" \
+&& ${ROOT}/llvm-project/build/bin/opt -mem2reg -o "${fname_bc}" "${fname_tmp_bc}" \
+&& rm "${fname_tmp_bc}" \
+&& ${ROOT}/llvm-project/build/bin/llvm-dis "${fname_bc}"
