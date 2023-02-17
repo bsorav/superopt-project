@@ -1,12 +1,9 @@
-build
-smpbench
-smpbench-build
-superopt-docs
-tars
 eq_funcs_*
 eqlogs_eq_funcs_*
 eqfiles
 *_result_cache
 eqlogs_*
-usr
 qcc_*
+/usr
+/build
+/tars
