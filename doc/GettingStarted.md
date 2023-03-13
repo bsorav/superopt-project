@@ -97,3 +97,8 @@ Finally, run the equivalence checker `eq32` (for 32-bit x86) for a chosen unroll
 ```
 $ eq32 --unroll-factor=8 a.c b.s
 ```
+
+## Axpreds support
+```
+$SUPEROPT_ROOT/superopt/build/etfg_x64/tfg_preprocess_before_eqcheck --axpreds-path $SUPEROPT_ROOT/superopt/utils/axpreds.yml $FILE
+```

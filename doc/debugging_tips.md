@@ -11,41 +11,35 @@ You can use z-a in VIM to fold all foldable sections
 # Debugging pattern matching during codegen
 
 ```
-$ codegen --debug=insn_match.peep_enumerate_transmaps.pc1.fetchlen1.peep_get_all_trans=2 a.etfg
+$ codegen --dyn-debug=insn_match.peep_enumerate_transmaps.pc1.fetchlen1.peep_get_all_trans=2 a.etfg
 ```
 
 # Debugging eqcheck
 
 ```
-$ eq --debug=oopsla_log,eqcheck,update_invariant_state_over_edge,decide_hoare_triple_dump,prove_using_local_sprel_expr_guesses_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
-```
-
-# compiler.ai code deployment on AWS
-
-Use the following commands to monitor an ongoing deployment
-```
-$ cd /opt/codedeploy-agent/deployment-root
-$ ls ongoing-deployment
-d-3F7HLZV85
-$ ls
-0543fc78-a41a-4f83-a0e7-9b0ef02db6c1
-deployment-instructions
-ongoing-deployment
-deployment-logs
-$ cd 0543fc78-a41a-4f83-a0e7-9b0ef02db6c1
-$ cd d-3F7HLZV85
-$ ls
-deployment-archive
-logs
-bundle.tar
-$ tail -f logs/scripts.log
+$ eq --dyn-debug=oopsla_log,print_progress_debug,update_invariant_state_for_edges,decide_hoare_triple_dump,prove_dump,smt_query=2,ce_add=2,ce_translate=2 a.etfg a.tfg
 ```
 
 # Debugging old\_preds != new\_preds
 
 ```
-eq32 --dyn_debug=eqcheck,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2 --unroll-factor=4 a.c a.s
+update_invariant_state_for_edges32 --dyn-debug=print_progress_debug,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_dump,dst_to_src_submap_debug=2 a.ui
 ```
+1. Look for the last decide-hoare-triple-dump
+2. Look for "edge = &lt;CG-EDGE&gt;[src: ..., dst: ...]
+3. Follow the chain of "attempting propagation of counterexample across &lt;edge&gt;"
+4. Look for "dst out ce" and "src out ce" strings to identify the break between src-side propagation and dst-side propagation. The counter example printed after "src out ce" is the final translated counterexample.
+5. The hash on the counterexample is only meant to identify duplicate CEs (with exact same key-value pairs)
+6. You can evaluate the final translated counterexample on the src=dst expression of the decide-hoare-triple query file
+7. You can evaluate the intial counterexample (at the from-pcpair) on the src=dst expression of the prove-dump query file
+8. Ideally they should both evaluate to FALSE, but at least one of them will likely evaluate to TRUE and that is the reason for this assertion failure
+   - if the initial counterexample evaluation evaluates to TRUE, there is likely a bug in the expr-evaluation logic
+   - if the final counterexample evaluation evaluates to TRUE, and the initial counterexample evaluation evaluates to FALSE, there is likely a bug in the counterexample-translation logic
+
+# Debugging ce-translation-failure
+
+1. Try to localize the problem as a DHT query
+2. Use the `expr_is_provable_check` dyn-debug flag
 
 # Record/Replay of SMT queries
 
@@ -70,3 +64,13 @@ responses for the SMT queries. Because the rest of the system is
 deterministic, identical queries are expected during replay, and they
 are answered with identical responses (identical to the responses
 generated during the record phase).
+
+The replay works even if you make debug edits to the program.  As long
+as you don't create any new managed objects (through the hash-consing
+manager class), any debug edits (e.g., print, cout, etc.) make no difference
+to the determinism of the replayed execution.
+
+Caveat: it seems that record and replay must be on the same machine. If
+record and replay are on different machines, this does not work, perhaps
+because of compiler/library incompatibility while compiling the
+jemalloc library (not sure, needs investigation)
