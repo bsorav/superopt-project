@@ -38,8 +38,10 @@ gem install tiny_tds
 
 make -C tars
 apt purge libboost-all-dev
-cd superopt/build/third_party && tar xf ../../../tars/boost_1_79_0.tar.bz2 && cd boost_1_79_0 && ./bootstrap.sh --prefix=/usr/ && ./b2 && ./b2 install && ../../../..
+cd superopt/build/third_party && tar xf ../../../tars/boost_1_79_0.tar.bz2 && cd boost_1_79_0 && ./bootstrap.sh --prefix=/usr/ && ./b2 && ./b2 install # && cd ../../../..
 
+# Changed: Manish
+cd ~/MTP-2/superopt-project
 #following is for eqbin.py script
 #pip install --proxy=$http_proxy python-magic
 pip install python-magic
