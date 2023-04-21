@@ -10,6 +10,6 @@
 [submodule "superopt-tests"]
 	path = superopt-tests
 	url = ../../iitd-plos/superopt-tests
-#[submodule "compiler.ai-scripts/compiler-explorer"]
-#	path = compiler.ai-scripts/compiler-explorer
-#	url = ../superopt-project/compiler-explorer
+[submodule "compiler.ai-scripts/compiler-explorer"]
+	path = compiler.ai-scripts/compiler-explorer
+	url = ../superopt-project/compiler-explorer
