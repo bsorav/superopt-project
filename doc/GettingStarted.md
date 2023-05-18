@@ -78,6 +78,7 @@ In case ```make``` gives an error due to missing ```libjemalloc```, perform the 
 ```
 $ cd superopt/build/etfg_i386
 $ ninja jemalloc_target
+$ ninja binutils_target
 ```
 
 ## Running the tests
