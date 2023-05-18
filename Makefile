@@ -40,7 +40,7 @@ build::
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
 	# build qcc, ooelala, clang12
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_PROJECT_DIR)/build/clang12
-	# cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
+	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure && make && cd -
 
 install::
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
