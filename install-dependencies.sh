@@ -36,7 +36,7 @@ apt install $tests $compcert $suggested
 #pip install python-magic
 
 #following is for db
-gem install tiny_tds
+# gem install tiny_tds
 
 #for installing compcert (http://compcert.inria.fr/download.html): install opam (http://opam.ocaml.org/); type opam install menhir; opam install coq
 
