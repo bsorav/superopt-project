@@ -4,9 +4,9 @@ To build the ```superopt-project```, the following steps need to be followed:
 
 ## Clone the Repositories
 ```
-$ git clone https://<username>@github.com/bsorav/superopt-project
+$ git clone --recursive https://<username>@github.com/bsorav/superopt-project
 $ cd superopt-project
-$ git checkout perf
+$ git checkout graph_inv
 $ git submodule init
 $ git submodule update -- superopt
 $ git submodule update -- superoptdbs
