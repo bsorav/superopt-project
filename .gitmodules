@@ -9,7 +9,7 @@
 	url = ../../bsorav/llvm-project2
 [submodule "superopt-tests"]
 	path = superopt-tests
-	url = ../../iitd-plos/superopt-tests
+	url = ../../compilerai/superopt-tests
 [submodule "compiler.ai-scripts/compiler-explorer"]
 	path = compiler.ai-scripts/compiler-explorer
 	url = ../../bsorav/compiler-explorer
