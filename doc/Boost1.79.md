@@ -14,6 +14,7 @@ $ sudo apt purge libboost1.71-tools-dev
   $ make -C /path/to/tars
   $ cd /tmp
   $ tar xf /path/to/tars/boost_1_79_0.tar.bz2
+  $ cd boost_1_79_0
   $ ./bootstrap.sh
   $ sudo ./b2 install
 ```
