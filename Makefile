@@ -42,6 +42,7 @@ distclean:
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests distclean
+	rm -rf $(SUPEROPT_INSTALL_DIR)
 
 .PHONY: install
 install: build
