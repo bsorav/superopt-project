@@ -10,40 +10,27 @@ then
   exit
 fi
 
-#libboost-all-dev
-
-CLANG_VER=11
-build="cmake flex bison unzip ninja-build python3-pip git lld"
+build="build-essential cmake flex bison unzip ninja-build python3-pip git lld"
 llvm="llvm llvm-dev clang-11"
 libs="gcc-multilib g++-multilib libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-8-dev"
 yices="gperf libgmp3-dev autoconf"
 superopt="expect libtirpc-dev libtirpc3 libtirpc-common rpcbind z3 libz3-dev libyaml-cpp0.6 libyaml-cpp-dev"
 db="ruby ruby-dev gem freetds-dev"
+tests="libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel python3"
+
+apt-get install -y $build $llvm $libs $yices $superopt $db $tests
+
+# optional
 fbgen="camlidl"
-compiler_explorer="python3-distutils gcc g++ make"
-
-GCC=gcc-8
-tests="libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel python3 python3-magic"
 compcert="menhir ocaml-libs"
+compiler_explorer="python3-distutils gcc g++ make"
 suggested="cscope exuberant-ctags atool emacs"
-
-apt install $build $llvm $libs $yices $superopt $db $fbgen $tests $compiler_explorer
-
-apt install $tests $compcert $suggested
-
-#following is for eqbin.py script
-#pip install --proxy=$http_proxy python-magic
-#pip install python-magic
+# apt-get install -y $fbgen $compcert $compiler_explorer $suggested
 
 #following is for db
-gem install tiny_tds
+command -v gem && gem install tiny_tds || true
 
 #for installing compcert (http://compcert.inria.fr/download.html): install opam (http://opam.ocaml.org/); type opam install menhir; opam install coq
 
-make -C tars
-apt purge libboost-all-dev
-cd superopt/build/third_party && tar xf ../../../tars/boost_1_79_0.tar.bz2 && cd boost_1_79_0 && ./bootstrap.sh --prefix=/usr/ && ./b2 && ./b2 install && ../../../..
-
 #following is for eqbin.py script
 #pip install --proxy=$http_proxy python-magic
-pip install python-magic

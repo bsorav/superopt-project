@@ -10,3 +10,6 @@
 [submodule "superopt-tests"]
 	path = superopt-tests
 	url = ../../compilerai/superopt-tests
+[submodule "tars"]
+	path = tars
+	url = ../../compilerai/tars
