@@ -19,4 +19,5 @@ RUN make -C tars install_boost
 # switch to non-root user
 USER user
 ENV SUPEROPT_TARS_DIR /home/user/eqchecker/tars
+ENV SUPEROPT_PROJECT_DIR /home/user/eqchecker
 ENV LOGNAME user
