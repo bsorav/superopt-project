@@ -14,9 +14,9 @@ RUN groupadd -r user && \
 # copy everything to user directory
 COPY --chown=user . /home/user/eqchecker/
 WORKDIR /home/user/eqchecker
+# install boost
+RUN make -C tars install_boost
 # switch to non-root user
 USER user
-# HACK: copy ICC binaries as ICC is not installed inside docker
-RUN mkdir -p superopt-tests/build && cp -r icc_binaries/* superopt-tests/build
 ENV SUPEROPT_TARS_DIR /home/user/eqchecker/tars
 ENV LOGNAME user

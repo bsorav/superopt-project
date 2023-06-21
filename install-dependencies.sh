@@ -32,14 +32,5 @@ command -v gem && gem install tiny_tds || true
 
 #for installing compcert (http://compcert.inria.fr/download.html): install opam (http://opam.ocaml.org/); type opam install menhir; opam install coq
 
-# uninstall system boost
-make -C tars
-apt-get purge -y libboost-all-dev
-
-# install our boost
-pushd superopt/build/third_party
-tar xf ../../../tars/boost_1_79_0.tar.bz2 && cd boost_1_79_0 && ./bootstrap.sh --prefix=/usr/ && ./b2 && ./b2 install
-popd
-
 #following is for eqbin.py script
 #pip install --proxy=$http_proxy python-magic
