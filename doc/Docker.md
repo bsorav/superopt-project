@@ -49,3 +49,7 @@ $ docker ps
 $ docker stop container_name
 $ docker rm container_name
 ```
+10. To copy a file from the container to the host
+```
+$ sudo docker cp container_name:/path/to/file/in/container .
+```

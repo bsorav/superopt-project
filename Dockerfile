@@ -8,6 +8,7 @@ COPY install-dependencies.sh /tmp/install-dependencies.sh
 RUN apt-get update && bash /tmp/install-dependencies.sh
 # add non-root user. The password hash was generated using the mkpasswd utility
 RUN groupadd -r eqcheck && \
+    groupadd -r admin && \
     useradd -r -g eqcheck -G admin -d /home/eqcheck -s /bin/bash -c "Docker image user for eqcheck" -p PbwH5rSGt4BBE eqcheck && \
     mkdir -p /home/eqcheck && \
     chown -R eqcheck:eqcheck /home/eqcheck
@@ -19,7 +20,7 @@ RUN make -C tars install_boost
 RUN make -C vscode-extension node_install
 # switch to non-root user
 USER eqcheck
-RUN make -C vscode-extension node_install_modules
 ENV SUPEROPT_TARS_DIR /home/eqcheck/superopt-project/tars
 ENV SUPEROPT_PROJECT_DIR /home/eqcheck/superopt-project
+RUN make -C vscode-extension server_install_modules client_install_modules
 ENV LOGNAME eqcheck
