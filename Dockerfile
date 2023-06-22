@@ -7,17 +7,17 @@ RUN dpkg --add-architecture i386
 COPY install-dependencies.sh /tmp/install-dependencies.sh
 RUN apt-get update && bash /tmp/install-dependencies.sh
 # add non-root user
-RUN groupadd -r user && \
-    useradd -r -g user -d /home/user -s /bin/bash -c "Docker image user" user && \
-    mkdir -p /home/user && \
-    chown -R user:user /home/user
+RUN groupadd -r eqcheck && \
+    useradd -r -g eqcheck -d /home/eqcheck -s /bin/bash -c "Docker image user for eqcheck" -p PbwH5rSGt4BBE eqcheck && \
+    mkdir -p /home/eqcheck && \
+    chown -R eqcheck:eqcheck /home/eqcheck
 # copy everything to user directory
-COPY --chown=user . /home/user/eqchecker/
-WORKDIR /home/user/eqchecker
+COPY --chown=eqcheck . /home/eqcheck/superopt-project/
+WORKDIR /home/eqcheck/superopt-project
 # install boost
 RUN make -C tars install_boost
 # switch to non-root user
-USER user
-ENV SUPEROPT_TARS_DIR /home/user/eqchecker/tars
-ENV SUPEROPT_PROJECT_DIR /home/user/eqchecker
+USER eqcheck
+ENV SUPEROPT_TARS_DIR /home/eqcheck/superopt-project/tars
+ENV SUPEROPT_PROJECT_DIR /home/eqcheck/superopt-project
 ENV LOGNAME user

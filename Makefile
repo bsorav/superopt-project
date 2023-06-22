@@ -42,6 +42,8 @@ distclean:
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests distclean
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/tars distclean
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/vscode-extension distclean
 	rm -rf $(SUPEROPT_INSTALL_DIR)
 
 .PHONY: install
@@ -240,7 +242,6 @@ debian::
 .PHONY: pushdebian
 pushdebian::
 	scp $(PACKAGE_NAME).deb sbansal@xorav.com:
-
 
 .PHONY: printpaths
 printpaths:
