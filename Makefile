@@ -44,6 +44,7 @@ distclean:
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/tars distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/vscode-extension distclean
+	git clean -df
 	rm -rf $(SUPEROPT_INSTALL_DIR)
 
 .PHONY: install

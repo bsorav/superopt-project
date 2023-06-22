@@ -31,4 +31,9 @@ docker run hello-world
 ```
 This command downloads a test image and runs it in a container. When the container runs, it prints a message and exits.
 
-You have now successfully installed and started Docker Engine.
+7. If you are behind a proxy, create a config directory using `sudo mkdir -p /etc/systemd/system/docker.service.d` and edit `/etc/systemd/system/docker.service.d/http-proxy.conf` as follows:
+```
+[Service]
+Environment="HTTP_PROXY=http://proxy82.iitd.ac.in:3128"
+Environment="HTTPS_PROXY=http://proxy82.iitd.ac.in:3128"
+```

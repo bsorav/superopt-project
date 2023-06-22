@@ -16,3 +16,6 @@
 [submodule "tars"]
 	path = tars
 	url = ../../compilerai/tars
+[submodule "jemalloc"]
+	path = jemalloc
+	url = ../../compilerai/jemalloc
