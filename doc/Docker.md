@@ -37,3 +37,15 @@ This command downloads a test image and runs it in a container. When the contain
 Environment="HTTP_PROXY=http://proxy82.iitd.ac.in:3128"
 Environment="HTTPS_PROXY=http://proxy82.iitd.ac.in:3128"
 ```
+
+8. To convert a container to an image
+```
+$ docker commit container_name image_name
+```
+
+9. List, stop and remove a container
+```
+$ docker ps
+$ docker stop container_name
+$ docker rm container_name
+```

@@ -43,7 +43,7 @@ distclean:
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/tars distclean
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/vscode-extension distclean
+	if [ -d "$(SUPEROPT_PROJECT_DIR)/vscode-extension" ]; then $(MAKE) -C $(SUPEROPT_PROJECT_DIR)/vscode-extension distclean; fi
 	git clean -df
 	rm -rf $(SUPEROPT_INSTALL_DIR)
 

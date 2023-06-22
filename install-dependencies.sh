@@ -16,8 +16,9 @@ libs="gcc-multilib g++-multilib libiberty-dev binutils-dev zlib1g-dev libgmp-dev
 yices="gperf libgmp3-dev autoconf"
 superopt="expect libtirpc-dev libtirpc3 libtirpc-common rpcbind libyaml-cpp0.6 libyaml-cpp-dev"
 tests="g++-8 libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel"
+system="sudo"
 
-apt-get install -y $build $llvm $libs $yices $superopt $tests
+apt-get install -y $build $llvm $libs $yices $superopt $tests $system
 
 # optional
 db="ruby ruby-dev gem freetds-dev"
