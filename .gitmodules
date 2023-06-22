@@ -13,3 +13,9 @@
 [submodule "compiler.ai-scripts/compiler-explorer"]
 	path = compiler.ai-scripts/compiler-explorer
 	url = ../../bsorav/compiler-explorer
+[submodule "tars"]
+	path = tars
+	url = ../../compilerai/tars
+[submodule "jemalloc"]
+	path = jemalloc
+	url = ../../compilerai/jemalloc
