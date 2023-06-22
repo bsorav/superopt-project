@@ -18,11 +18,20 @@ Follow these steps for building and running the equivalence checker inside a Doc
    docker build -t eqchecker .
    ```
    This process can take a while depending upon your internet connection bandwidth.  
-2. Run the container.
+2. [Optional] Saving a docker image
+   ```
+   docker save eqchecker:latest | bzip2 > eqchecker.tar.bz2
+   ```
+3. [Optional] Loading a docker image
+   ```
+   bunzip2 eqchecker.tar.bz2
+   docker load < eqchecker.tar.bz2
+   ```
+4. Run the container.
    ```
    docker run -it eqchecker:latest /bin/bash
    ```
-3. (Inside the container) Build and install the equivalence checker.
+5. (Inside the container) Build and install the equivalence checker.
    ```
    make install
    ```
