@@ -2,7 +2,8 @@
 
 Follow these steps for building and running the equivalence checker inside a Docker container.
 
-0. [Install Docker Engine](https://docs.docker.com/engine/install/) and set it up.  You may need to setup [proxy](https://docs.docker.com/config/daemon/systemd/#httphttps-proxy).  Make sure you are able to run the [hello-world example](https://docs.docker.com/get-started/#test-docker-installation).
+0. [Install Docker Engine](https://docs.docker.com/engine/install/) and set it up.  You may need to setup proxy for [docker daemon](https://docs.docker.com/config/daemon/systemd/#httphttps-proxy) and
+   [docker client](https://docs.docker.com/network/proxy/).  Make sure you are able to run the [hello-world example](https://docs.docker.com/get-started/#test-docker-installation).
 1. Build the Docker image.  Note that internet connectivity is required in this step.
    ```
    docker build -t eqchecker .
