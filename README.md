@@ -6,7 +6,15 @@
 
 # Testing
 
-`cd superopt-tests && make clangv_Od > clangv_Od.out & ../superopt/utils/show-results build`
+```
+cd superopt-tests && make clangv_Od > clangv_Od.out & ../superopt/utils/show-results build
+```
+
+# Viewing the proofs generated from testing
+```
+vscode-extension/scripts/upload-eqcheck --sessionName <sessionName> --eqchecksDir <dir1> --eqchecksDir <dir2>... [--passingOnly]
+```
+The directories `dir1`, `dir2`, ... are traversed recursively to identify any eqchecks that should be picked up.  The `sessionName` can be used to load the session that contains all these eqchecks.
 
 # Installing in a docker environment
 
@@ -15,23 +23,15 @@ Follow these steps for building and running the equivalence checker inside a Doc
 0. See doc/Docker.md for instruction on how to install the Docker engine.
 1. Build the Docker image.  Note that internet connectivity is required in this step.
    ```
-   docker build -t eqchecker .
+   make docker-build
    ```
    This process can take a while depending upon your internet connection bandwidth.  
-2. [Optional] Saving a docker image
+2. Run the container forwarding container's port 80 to host's port 80.
    ```
-   docker save eqchecker:latest | bzip2 > eqchecker.tar.bz2
+   make docker-run
    ```
-3. [Optional] Loading a docker image
-   ```
-   bunzip2 eqchecker.tar.bz2
-   docker load < eqchecker.tar.bz2
-   ```
-4. Run the container.
-   ```
-   docker run -it eqchecker:latest /bin/bash
-   ```
-5. (Inside the container) Build and install the equivalence checker.
+   The 8181 port is used by scan-view.
+3. (Inside the container) Build and install the equivalence checker.
    ```
    make install
    ```

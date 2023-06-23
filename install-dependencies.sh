@@ -17,11 +17,12 @@ yices="gperf libgmp3-dev autoconf"
 superopt="expect libtirpc-dev libtirpc3 libtirpc-common rpcbind libyaml-cpp0.6 libyaml-cpp-dev"
 tests="g++-8 libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel"
 vscode_extension="libsecret-1-dev"
+scanview="python"
 
-apt-get install -y $build $llvm $libs $yices $superopt $tests $vscode_extension
+apt-get install -y $build $llvm $libs $yices $superopt $tests $vscode_extension $scanview
 
 # optional
-system="sudo vim"
+system="sudo vim zsh htop iotop net-tools ssh cscope exuberant-ctags"
 apt-get install -y $system
 
 # optional
@@ -29,7 +30,7 @@ db="ruby ruby-dev gem freetds-dev"
 fbgen="camlidl"
 compcert="menhir ocaml-libs"
 compiler_explorer="python3-distutils gcc g++"
-suggested="cscope exuberant-ctags atool emacs"
+suggested="atool emacs"
 # apt-get install -y $fbgen $compcert $compiler_explorer $suggested $db 
 
 #following is for db

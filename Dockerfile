@@ -23,5 +23,13 @@ RUN npm install --global vsce
 USER eqcheck
 ENV SUPEROPT_TARS_DIR /home/eqcheck/superopt-project/tars
 ENV SUPEROPT_PROJECT_DIR /home/eqcheck/superopt-project
+ENV PATH="${PATH}:/home/eqcheck/bin"
 RUN make -C vscode-extension server_install_modules client_install_modules
+RUN ssh-keygen -t rsa && ssh-copy-id eqcheck@0:
+RUN mkdir /home/eqcheck/bin \
+    && ln -s ../superopt-project/superopt/build/etfg_i386/eq /home/eqcheck/bin/eq32 \
+    && ln -s ../superopt-project/superopt/build/etfg_i386/analyze /home/eqcheck/bin/analyze32 \
+    && ln -s ../superopt-project/superopt/build/etfg_i386/clangv /home/eqcheck/bin/clangv32 \
+    && ln -s ../superopt-project/superopt/utils/show-results /home/eqcheck/bin/show-results \
+    && ln -s ../superopt-project/vscode-extension/scripts/upload-eqcheck /home/eqcheck/bin/upload-eqcheck
 ENV LOGNAME eqcheck

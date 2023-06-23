@@ -67,6 +67,14 @@ $(SUPEROPT_PROJECT_BUILD)/clang12: Makefile
 	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang --dyn_debug=disableSemanticAA " '$$*' > $@
 	chmod +x $@
 
+.PHONY: docker-build
+docker-build:
+	docker build -t eqchecker .
+
+.PHONY: docker-run
+docker-run:
+	docker run -p 80:80 -p 22:22 -p 8181:8181 -it eqchecker:latest /bin/zsh
+
 .PHONY: linkinstall
 linkinstall:
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
@@ -200,22 +208,6 @@ release:
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/clang12 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	cd /tmp && tar xf $(SUPEROPT_TARS_DIR)/$(Z3_PKGNAME).zip && rsync -Lrtv usr/ $(SUPEROPT_INSTALL_FILES_DIR) && cd -
 	$(SUDO) rsync -Lrtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
-
-add_compilerai_server_user::
-	sudo $(SUPEROPT_PROJECT_DIR)/compiler.ai-scripts/add-user-script.sh compilerai-server compiler.ai123
-
-install_compilerai_server::
-	sudo bash compiler.ai-scripts/afterInstall.sh
-
-start_compilerai_server::
-	sudo bash compiler.ai-scripts/startApp.sh
-
-stop_compilerai_server::
-	sudo bash compiler.ai-scripts/stopApp.sh
-
-compiler_explorer_preload_files:: # called from afterInstall.sh
-	mkdir -p compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
-	cp superopt-tests/build/TSVC_prior_work/*.xml superopt-tests/build/TSVC_new/*.xml compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
 
 MAJOR_VERSION=0
 MINOR_VERSION=1

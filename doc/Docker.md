@@ -37,19 +37,30 @@ This command downloads a test image and runs it in a container. When the contain
 Environment="HTTP_PROXY=http://proxy82.iitd.ac.in:3128"
 Environment="HTTPS_PROXY=http://proxy82.iitd.ac.in:3128"
 ```
-
-8. To convert a container to an image
+8. Saving a docker image
+   ```
+   docker save eqcheck:latest | bzip2 > eqchecker-docker-image.tar.bz2
+   ```
+9. Loading a docker image
+   ```
+   bunzip2 eqchecker-docker-image.tar.bz2
+   docker load < eqchecker-docker-image.tar
+   ```
+10. To convert a container to an image
 ```
 $ docker commit container_name image_name
 ```
-
-9. List, stop and remove a container
+11. List, stop and remove a container
 ```
 $ docker ps
 $ docker stop container_name
 $ docker rm container_name
 ```
-10. To copy a file from the container to the host
+12. To copy a file from the container to the host
 ```
 $ sudo docker cp container_name:/path/to/file/in/container .
+```
+13. To open a shell in a running container
+```
+docker exec -it <container-name-or-id> <shell-executable>
 ```
