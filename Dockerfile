@@ -18,6 +18,7 @@ WORKDIR /home/eqcheck/superopt-project
 # install boost
 RUN make -C tars install_boost
 RUN make -C vscode-extension node_install
+RUN npm install --global vsce
 # switch to non-root user
 USER eqcheck
 ENV SUPEROPT_TARS_DIR /home/eqcheck/superopt-project/tars
