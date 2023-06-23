@@ -17,7 +17,7 @@ yices="gperf libgmp3-dev autoconf"
 superopt="expect libtirpc-dev libtirpc3 libtirpc-common rpcbind libyaml-cpp0.6 libyaml-cpp-dev"
 tests="g++-8 libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel"
 vscode_extension="libsecret-1-dev"
-scanview="python"
+scanview="python python-dev"
 
 apt-get install -y $build $llvm $libs $yices $superopt $tests $vscode_extension $scanview
 
