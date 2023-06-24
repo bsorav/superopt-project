@@ -46,21 +46,29 @@ Environment="HTTPS_PROXY=http://proxy82.iitd.ac.in:3128"
    bunzip2 eqchecker-docker-image.tar.bz2
    docker load < eqchecker-docker-image.tar
    ```
-10. To convert a container to an image
-```
-$ docker commit container_name image_name
-```
-11. List, stop and remove a container
-```
-$ docker ps
-$ docker stop container_name
-$ docker rm container_name
-```
+10. List containers, stop a container
+    ```
+    $ docker ps -a
+    $ docker stop container_name
+    ```
+11. Start/Attach to an existing container that may have exited.
+   ```
+   docker start  container_name # restart it in the background
+   docker attach container_name # reattach the terminal & stdin
+   ```
 12. To copy a file from the container to the host
-```
-$ sudo docker cp container_name:/path/to/file/in/container .
-```
+    ```
+    $ sudo docker cp container_name:/path/to/file/in/container .
+    ```
 13. To open a shell in a running container
-```
-docker exec -it <container-name-or-id> <shell-executable>
-```
+    ```
+    docker exec -it <container-name-or-id> <shell-executable>
+    ```
+14. To convert a container to an image
+    ```
+    $ docker commit container_name image_name
+    ```
+15. To remove a container
+    ```
+    $ docker rm container_name
+    ```
