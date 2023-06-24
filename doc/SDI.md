@@ -3,7 +3,7 @@
 1. While booting the OS from a CD/DVD, set "fsck.mode=skip" to the kernel boot params (after /casper/vmlinuz) via GRUB menu entry. See https://bugs.launchpad.net/ubuntu/+source/casper/+bug/1930880
 2. Install Docker using the instructions in doc/Docker.md
 3. Load the docker image using the instructions in doc/Docker.md
-4. Run a container using the docker image using `make docker-run` in superopt-project
+4. Run a container using the docker image using `make docker-run` in superopt-project. Initialize .zshrc using the zsh prompt menu. Add `alias ls='ls -F --color'` to .zshrc
 5. Run "make install" inside the container
 6. Update the defaultServerURL and build the client using `vsce package` in vscode-extension/eqchecker
 7. Run the server inside the Docker container using `make` in `vscode-extension/server`
