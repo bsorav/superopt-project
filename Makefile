@@ -75,6 +75,10 @@ docker-build:
 docker-run:
 	docker run -p 80:80 -p 2222:22 -p 8181:8181 -it eqchecker:latest /bin/zsh
 
+.PHONY: tarball
+tarball:
+	tar --exclude-vcs -cjf ../superopt-project.tbz2 .
+
 .PHONY: linkinstall
 linkinstall:
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
