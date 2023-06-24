@@ -35,6 +35,6 @@
 
 ## On the command line in the container
 1. Show "clangv" on bzip2 on the command-line
-2. Show "eq32" on the generated executable on the command-line
+2. Show "eq32" on the generated executable for quicksort.c on the command-line
 3. Show "upload-eqcheck" on the command-line
 4. Show "analyze" on the command-line
