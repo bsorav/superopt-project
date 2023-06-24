@@ -23,7 +23,8 @@ apt-get install -y $build $llvm $libs $yices $superopt $tests $vscode_extension 
 
 # optional
 system="sudo vim zsh htop iotop net-tools ssh cscope exuberant-ctags"
-apt-get install -y $system
+docs="retext"
+apt-get install -y $system $docs
 
 # optional
 db="ruby ruby-dev gem freetds-dev"
