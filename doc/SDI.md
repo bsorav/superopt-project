@@ -4,10 +4,11 @@
 2. Install Docker using the instructions in doc/Docker.md
 3. Load the docker image using the instructions in doc/Docker.md
 4. Run a container using the docker image using `make docker-run` in superopt-project. Initialize .zshrc using the zsh prompt menu. Add `alias ls='ls -F --color'` to .zshrc
-5. Run "make install" inside the container
-6. Update the defaultServerURL and build the client using `vsce package` in vscode-extension/eqchecker
-7. Run the server inside the Docker container using `make` in `vscode-extension/server`
-8. Inside the container, run `ssh-copy-id eqcheck@0:` (to allow password-less ssh for upload-eqchecks script)
+5. "mkdir /home/eqcheck/vscode-server-files" in the container
+6. Change /tmp to /home/eqcheck/vscode-server-files in vscode-extension/scripts/upload-eqcheck script
+7. Inside the container, run `ssh-copy-id eqcheck@0:` (to allow password-less ssh for upload-eqchecks script)
+8. Run "make install" inside the container
+9. Run the server inside the Docker container using `make` in `vscode-extension/server`
 
 # Install vscode and load vscode extension
 
@@ -35,7 +36,8 @@
 
 ## On the command line in the container
 1. Show "clangv" on bzip2 on the command-line
-2. Show "eq32" on the generated executable for quicksort.c on the command-line
+2. Show "eq32" on the generated executable for `nestedLoops_dst.c` on the command-line
 3. Show "upload-eqcheck" on the command-line for quicksort.c
 4. Show "analyze" on `bzip2_locals.c` the command-line and use a browser to view the report
 5. Discuss the checkers using `retext doc/analyzer-checkers.md` (preview mode)
+6. Be careful, not to show "Code Analysis Report" on uploaded eqchecks
