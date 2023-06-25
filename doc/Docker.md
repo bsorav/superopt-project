@@ -1,6 +1,6 @@
 # Installing Docker
 
-Instruction taken from [Install Docker Engine](https://docs.docker.com/engine/install/)
+Instruction taken from [Install Docker Engine](https://docs.docker.com/engine/install/). Download the static binary archive from [Install Docker Engine from binaries](https://docs.docker.com/engine/install/binaries/) which leads to [this directory listing](https://download.docker.com/linux/static/stable)
 
 1. The tar file is available in tars/docker-24.0.2.tgz
 2. Extract the archive using the tar utility. The dockerd and docker binaries are extracted.

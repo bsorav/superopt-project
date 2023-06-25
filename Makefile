@@ -77,7 +77,7 @@ docker-run:
 
 .PHONY: tarball
 tarball:
-	tar --exclude-vcs -cjf ../superopt-project.tbz2 .
+	cd .. && tar --exclude-vcs -cjf superopt-project.tbz2 superopt-project && cd -
 
 .PHONY: linkinstall
 linkinstall:

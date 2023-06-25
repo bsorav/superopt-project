@@ -7,9 +7,9 @@ RUN dpkg --add-architecture i386
 COPY install-dependencies.sh /tmp/install-dependencies.sh
 RUN apt-get update && bash /tmp/install-dependencies.sh
 # add non-root user. The password hash was generated using the mkpasswd utility
-RUN groupadd -r eqcheck && \
+RUN groupadd eqcheck && \
     groupadd -r admin && \
-    useradd -r -g eqcheck -G admin -d /home/eqcheck -s /bin/bash -c "Docker image user for eqcheck" -p PbwH5rSGt4BBE eqcheck && \
+    useradd -g eqcheck -G admin -d /home/eqcheck -s /bin/bash -c "Docker image user for eqcheck" -p PbwH5rSGt4BBE eqcheck && \
     mkdir -p /home/eqcheck && \
     chown -R eqcheck:eqcheck /home/eqcheck
 # copy everything to user directory
