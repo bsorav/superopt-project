@@ -1,10 +1,12 @@
-# Getting started
+# Building the Project
 
-## Clone the repositories
+To build the ```superopt-project```, the following steps need to be followed:
+
+## Clone the Repositories
 ```
-$ git clone https://<username>@github.com/bsorav/superopt-project
+$ git clone --recursive https://<username>@github.com/bsorav/superopt-project
 $ cd superopt-project
-$ git checkout perf
+$ git checkout graph_inv
 $ git submodule init
 $ git submodule update -- superopt
 $ git submodule update -- superoptdbs
@@ -13,7 +15,9 @@ $ git submodule update -- superopt-tests
 $ git clone https://<username>@github.com/compilerai/tars
 ```
 
-## Install the latest version of cmake
+## Install Latest Version of CMake 
+There are two methods for doing this:
+### Using Apt Kitware
 ```
 $ sudo apt-get update
 $ sudo apt-get install apt-transport-https ca-certificates gnupg \
@@ -23,29 +27,58 @@ $ sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
 $ sudo apt-get update
 $ sudo apt-get install cmake
 ```
+### Building from Source
+```
+$ sudo apt update
+$ sudo apt install build-essential libtool autoconf unzip wget
+```
+Set ```version``` and ```build``` to the latest values.
+```
+$ version=3.25
+$ build=1
+$ mkdir ~/temp
+$ cd ~/temp
+$ wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz
+$ tar -xzvf cmake-$version.$build.tar.gz
+$ cd cmake-$version.$build/
+$ ./bootstrap
+$ make
+$ sudo make install
+```
 
-## Set up the environment
-Ensure that your `http_proxy` environment variable is setup correctly
+## Setup the Environment 
+Ensure that your proxy variables, i.e. ```http_proxy, https_proxy, HTTP_PROXY, HTTPS_PROXY``` are set correctly. 
+
+First, run ```make``` once in the ```superopt-project``` directory. This will fail, but will create some subdirectories needed for the ```install-dependencies``` script.
+```
+$ cd superopt-project
+$ make
+```
+After this, run the ```install_dependencies``` script.
 ```
 $ cd superopt-project
 $ sudo -E ./install-dependencies.sh
 ```
-
-## Build
+### Troubleshooting
+In case the script stalls on  ```gem install tiny_tds``` for a long time, try the following: 
 ```
-$ make
+$ gem install --http-proxy http://proxy_server:port tiny_tds
 ```
-
-## Environment variables
-Set your environment variables as follows (you may want to do this in your bashrc/zshrc files so they remain initialized in all your future sessions)
+The script installs Boost 1.79, however some Boost 1.71 libraries may still remain, which cause issues during ```make```. To remove those, 
 ```
-export SUPEROPT_PROJECT_DIR=/path/to/superopt-project
-export SUPEROPT_INSTALL_DIR=$SUPEROPT_PROJECT_DIR/usr/local
-export SUPEROPT_TARS_DIR=$SUPEROPT_PROJECT_DIR/tars
+$ sudo apt purge libboost-all-dev
+$ sudo apt autoremove
 ```
-You also need to update your `PATH` environment variable:
+## Build 
 ```
-export PATH=$PATH:$SUPEROPT_INSTALL_DIR/bin
+$ make 
+```
+### Troubleshooting
+In case ```make``` gives an error due to missing ```libjemalloc```, perform the following steps:
+```
+$ cd superopt/build/etfg_i386
+$ ninja jemalloc_target
+$ ninja binutils_target
 ```
 
 ## Running the tests
