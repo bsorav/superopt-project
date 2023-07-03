@@ -23,6 +23,7 @@ all: install
 .PHONY: build
 build: $(SUPEROPT_TARS_DIR)
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
 	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure # && make && cd -
@@ -40,6 +41,11 @@ distclean:
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs distclean
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests distclean
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/tars distclean
+	if [ -d "$(SUPEROPT_PROJECT_DIR)/vscode-extension" ]; then $(MAKE) -C $(SUPEROPT_PROJECT_DIR)/vscode-extension distclean; fi
+	git clean -df
+	rm -rf $(SUPEROPT_INSTALL_DIR)
 
 .PHONY: install
 install: build
@@ -61,6 +67,18 @@ $(SUPEROPT_PROJECT_BUILD)/clang12: Makefile
 	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang --dyn_debug=disableSemanticAA " '$$*' > $@
 	chmod +x $@
 
+.PHONY: docker-build
+docker-build:
+	docker build -t eqchecker .
+
+.PHONY: docker-run
+docker-run:
+	docker run -p 80:80 -p 2222:22 -p 8181:8181 -it eqchecker:latest /bin/zsh
+
+.PHONY: tarball
+tarball:
+	cd .. && tar --exclude-vcs -cjf superopt-project.tbz2 superopt-project && cd -
+
 .PHONY: linkinstall
 linkinstall:
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
@@ -79,6 +97,7 @@ linkinstall:
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/debug_gen $(SUPEROPT_INSTALL_DIR)/bin/debug_gen32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/ctypecheck $(SUPEROPT_INSTALL_DIR)/bin/ctypecheck32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_DIR)/bin/harvest32
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/vir_gen $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/smt_helper_process $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qd_helper_process $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eq $(SUPEROPT_INSTALL_DIR)/bin/eq
@@ -126,6 +145,7 @@ cleaninstall:
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc-codegen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/codegen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/debug_gen
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/vir_gen
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/smt_helper_process
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qd_helper_process
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
@@ -177,6 +197,7 @@ release:
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/libLockstepDbg.a $(SUPEROPT_INSTALL_FILES_DIR)/lib/libLockstepDbg.a
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_FILES_DIR)/lib
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest32
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/vir_gen $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/smt_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qd_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/x64_x64/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest
@@ -237,7 +258,6 @@ debian::
 .PHONY: pushdebian
 pushdebian::
 	scp $(PACKAGE_NAME).deb sbansal@xorav.com:
-
 
 .PHONY: printpaths
 printpaths:
