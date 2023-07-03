@@ -19,3 +19,6 @@
 [submodule "jemalloc"]
 	path = jemalloc
 	url = ../../compilerai/jemalloc
+[submodule "fbgen"]
+	path = fbgen
+	url = ../../bsorav/fbgen

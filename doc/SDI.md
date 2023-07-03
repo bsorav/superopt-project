@@ -41,3 +41,6 @@
 4. Show "analyze" on `bzip2_locals.c` the command-line and use a browser to view the report
 5. Discuss the checkers using `retext doc/analyzer-checkers.md` (preview mode)
 6. Be careful, not to show "Code Analysis Report" on uploaded eqchecks
+
+# People
+IT manager of SDI: YP Sastry
