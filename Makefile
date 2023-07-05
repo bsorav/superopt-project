@@ -216,6 +216,22 @@ release:
 	cd /tmp && tar xf $(SUPEROPT_TARS_DIR)/$(Z3_PKGNAME).zip && rsync -Lrtv usr/ $(SUPEROPT_INSTALL_FILES_DIR) && cd -
 	$(SUDO) rsync -Lrtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
 
+add_compilerai_server_user::
+	sudo $(SUPEROPT_PROJECT_DIR)/compiler.ai-scripts/add-user-script.sh compilerai-server compiler.ai123
+
+install_compilerai_server::
+	sudo bash compiler.ai-scripts/afterInstall.sh
+
+start_compilerai_server::
+	sudo bash compiler.ai-scripts/startApp.sh
+
+stop_compilerai_server::
+	sudo bash compiler.ai-scripts/stopApp.sh
+
+compiler_explorer_preload_files:: # called from afterInstall.sh
+	mkdir -p compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
+	cp superopt-tests/build/TSVC_prior_work/*.xml superopt-tests/build/TSVC_new/*.xml compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
+
 MAJOR_VERSION=0
 MINOR_VERSION=1
 PACKAGE_REVISION=0
