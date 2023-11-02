@@ -52,7 +52,7 @@ export PATH=$PATH:$SUPEROPT_INSTALL_DIR/bin
 ## Running the tests
 ```
 $ cd superopt-project/superopt-tests
-$ make eqtest_i386
+$ make regression_i386
 ```
 Some of these tests are expected to pass while some may fail currently.
 
