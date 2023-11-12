@@ -35,7 +35,7 @@ suggested="atool emacs"
 # apt-get install -y $fbgen $compcert $compiler_explorer $suggested $db 
 
 #following is for db
-command -v gem && gem install tiny_tds || true
+#command -v gem && gem install tiny_tds || true
 
 #for installing compcert (http://compcert.inria.fr/download.html): install opam (http://opam.ocaml.org/); type opam install menhir; opam install coq
 

@@ -11,6 +11,7 @@ $ git submodule update -- superoptdbs
 $ git submodule update -- llvm-project
 $ git submodule update -- superopt-tests
 $ git submodule update -- jemalloc
+$ git submodule update -- vscode-extension  #optional
 $ git clone https://<username>@github.com/compilerai/tars
 ```
 
