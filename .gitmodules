@@ -7,9 +7,18 @@
 [submodule "llvm-project"]
 	path = llvm-project
 	url = ../../bsorav/llvm-project2
+[submodule "vscode-extension"]
+	path = vscode-extension
+	url = ../../bsorav/vscode-extension
 [submodule "superopt-tests"]
 	path = superopt-tests
 	url = ../../compilerai/superopt-tests
-[submodule "compiler.ai-scripts/compiler-explorer"]
-	path = compiler.ai-scripts/compiler-explorer
-	url = ../../bsorav/compiler-explorer
+[submodule "tars"]
+	path = tars
+	url = ../../compilerai/tars
+[submodule "jemalloc"]
+	path = jemalloc
+	url = ../../compilerai/jemalloc
+[submodule "fbgen"]
+	path = fbgen
+	url = ../../bsorav/fbgen
