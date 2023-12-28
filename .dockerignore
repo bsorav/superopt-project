@@ -1,2 +1,7 @@
 .git/
 */.git/
+.gitignore
+*/.gitignore
+usr/
+build/
+*/build/
