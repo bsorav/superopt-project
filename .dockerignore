@@ -1,2 +1,6 @@
 .git/
 */.git/
+build/
+superopt/build
+superopt-tests/build
+llvm-project/build
