@@ -185,8 +185,8 @@ printpaths:
 
 .PHONY: gen_bzip2_tables
 gen_bzip2_tables:
-	python3 bzip2_tables.py
+	python3 bzip2_tables.py -d superopt-tests
 
 .PHONY: gen_graphs
 gen_graphs:
-	python3 plot_grouped_bars.py
+	MPLBACKEND=pdf python3 plot_grouped_bars.py -s -d superopt-tests
