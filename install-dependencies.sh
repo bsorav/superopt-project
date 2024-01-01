@@ -41,3 +41,4 @@ command -v gem && gem install tiny_tds || true
 
 #following is for eqbin.py script
 #pip install --proxy=$http_proxy python-magic
+python3 -m pip install -U matplotlib
