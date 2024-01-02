@@ -128,57 +128,6 @@ cleaninstall:
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang12
 
-.PHONY: release
-release:
-	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/lib
-	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/superoptdbs/etfg_i386
-	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/superoptdbs/i386_i386
-	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/superoptdbs/etfg_x64
-	mkdir -p $(SUPEROPT_INSTALL_FILES_DIR)/superoptdbs/i386_x64
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-link $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-link
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-dis $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-dis
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-as $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-as
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/opt $(SUPEROPT_INSTALL_FILES_DIR)/bin/opt
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llc $(SUPEROPT_INSTALL_FILES_DIR)/bin/llc
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_INSTALL_FILES_DIR)/bin/eq32
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_INSTALL_FILES_DIR)/bin/eqgen32
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eq $(SUPEROPT_INSTALL_FILES_DIR)/bin/eq
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/eqgen $(SUPEROPT_INSTALL_FILES_DIR)/bin/eqgen
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/i386_i386/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest32
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/vir_gen $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/smt_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/qd_helper_process $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/x64_x64/harvest $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm2tfg $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm2tfg
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/clang++ $(SUPEROPT_INSTALL_FILES_DIR)/bin/clang++
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/harvest-dwarf $(SUPEROPT_INSTALL_FILES_DIR)/bin/harvest-dwarf
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_FILES_DIR)/
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_FILES_DIR)
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/clang12 $(SUPEROPT_INSTALL_FILES_DIR)/bin
-	cd /tmp && tar xf $(SUPEROPT_TARS_DIR)/$(Z3_PKGNAME).zip && rsync -Lrtv usr/ $(SUPEROPT_INSTALL_FILES_DIR) && cd -
-	$(SUDO) rsync -Lrtv $(SUPEROPT_INSTALL_FILES_DIR)/* $(SUPEROPT_INSTALL_DIR)
-
-# add_compilerai_server_user::
-# 	sudo $(SUPEROPT_PROJECT_DIR)/compiler.ai-scripts/add-user-script.sh compilerai-server compiler.ai123
-
-# install_compilerai_server::
-# 	sudo bash compiler.ai-scripts/afterInstall.sh
-# 
-# start_compilerai_server::
-# 	sudo bash compiler.ai-scripts/startApp.sh
-# 
-# stop_compilerai_server::
-# 	sudo bash compiler.ai-scripts/stopApp.sh
-# 
-# compiler_explorer_preload_files:: # called from afterInstall.sh
-# 	mkdir -p compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
-# 	cp superopt-tests/build/TSVC_prior_work/*.xml superopt-tests/build/TSVC_new/*.xml compiler.ai-scripts/compiler-explorer/lib/storage/data/eqcheck_preload
-# 
 .PHONY: printpaths
 printpaths:
 	@echo "SUPEROPT_PROJECT_DIR = $(SUPEROPT_PROJECT_DIR)"
@@ -187,6 +136,10 @@ printpaths:
 	@echo "SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_BUILD)"
 	@echo "SUPEROPT_TARS_DIR = $(SUPEROPT_TARS_DIR)"
 	@echo "ICC = $(ICC)"
+
+.PHONY: oopsla24_results demo_results
+oopsla24_results demo_results:
+	$(MAKE) -C superopt-tests $@
 
 .PHONY: gen_bzip2_tables
 gen_bzip2_tables:
