@@ -12,27 +12,24 @@ RUN groupadd eqcheck && \
     useradd -g eqcheck -G admin -d /home/eqcheck -s /bin/bash -c "Docker image user for eqcheck" -p PbwH5rSGt4BBE eqcheck && \
     mkdir -p /home/eqcheck && \
     chown -R eqcheck:eqcheck /home/eqcheck
-# copy everything to user directory
-COPY --chown=eqcheck . /home/eqcheck/artifact
-WORKDIR /home/eqcheck/artifact
 # install boost
-RUN make -C tars install_boost
-# RUN make -C vscode-extension node_install
-# RUN npm install --global vsce
-# RUN systemctl enable ssh
+COPY --chown=eqcheck tars                        /home/eqcheck/artifact/tars
+RUN make -C /home/eqcheck/artifact/tars install_boost
+# copy relevant files to user directory
+COPY --chown=eqcheck superoptdbs                 /home/eqcheck/artifact/superoptdbs
+COPY --chown=eqcheck jemalloc                    /home/eqcheck/artifact/jemalloc
+COPY --chown=eqcheck superopt-tests              /home/eqcheck/artifact/superopt-tests
+COPY --chown=eqcheck llvm-project                /home/eqcheck/artifact/llvm-project
+COPY --chown=eqcheck superopt                    /home/eqcheck/artifact/superopt
+COPY --chown=eqcheck *.py icc_bins.tgz Makefile  /home/eqcheck/artifact
 # switch to non-root user
 USER eqcheck
+WORKDIR /home/eqcheck/artifact
 ENV SUPEROPT_TARS_DIR /home/eqcheck/artifact/tars
 ENV SUPEROPT_PROJECT_DIR /home/eqcheck/artifact
-# ENV PATH="${PATH}:/home/eqcheck/bin"
 ENV PS1="%~$ "
-# RUN make -C vscode-extension server_install_modules client_install_modules
-# RUN ssh-keygen -t rsa -f /home/eqcheck/.ssh/id_rsa -N ""
-# RUN mkdir /home/eqcheck/bin \
-#     && ln -s ../artifact/superopt/build/etfg_i386/eq /home/eqcheck/bin/eq32 \
-#     && ln -s ../artifact/superopt/build/etfg_i386/analyze /home/eqcheck/bin/analyze32 \
-#     && ln -s ../artifact/superopt/build/etfg_i386/clangv /home/eqcheck/bin/clangv32 \
-#     && ln -s ../artifact/superopt/utils/show-results /home/eqcheck/bin/show-results \
-#     && ln -s ../artifact/vscode-extension/scripts/upload-eqcheck /home/eqcheck/bin/upload-eqcheck
-RUN mkdir -p superopt-tests/build/localmem-tests && unzip icc_bins.zip -d superopt-tests/build/localmem-tests/
 ENV LOGNAME eqcheck
+# this must happen AFTER copying superopt-tests
+RUN mkdir -p /home/eqcheck/artifact/superopt-tests/build/localmem-tests && tar xmvf /home/eqcheck/artifact/icc_bins.tgz -C /home/eqcheck/artifact/superopt-tests/build/localmem-tests
+# stop that pesky message
+RUN touch /home/eqcheck/.zshrc
