@@ -10,7 +10,7 @@ RUN apt-get update && bash /tmp/install-dependencies.sh
 RUN groupadd eqcheck && \
     groupadd -r admin && \
     useradd -g eqcheck -G admin -d /home/eqcheck -s /bin/bash -c "Docker image user for eqcheck" -p PbwH5rSGt4BBE eqcheck && \
-    mkdir -p /home/eqcheck && \
+    mkdir -p /home/eqcheck/artifact && \
     chown -R eqcheck:eqcheck /home/eqcheck
 # install boost
 COPY --chown=eqcheck tars                        /home/eqcheck/artifact/tars
@@ -21,7 +21,7 @@ COPY --chown=eqcheck jemalloc                    /home/eqcheck/artifact/jemalloc
 COPY --chown=eqcheck superopt-tests              /home/eqcheck/artifact/superopt-tests
 COPY --chown=eqcheck llvm-project                /home/eqcheck/artifact/llvm-project
 COPY --chown=eqcheck superopt                    /home/eqcheck/artifact/superopt
-COPY --chown=eqcheck *.py icc_bins.tgz Makefile  /home/eqcheck/artifact
+COPY --chown=eqcheck *.py icc_bins.tgz Makefile  /home/eqcheck/artifact/
 COPY --chown=eqcheck binlibs                     /home/eqcheck/artifact/binlibs
 # switch to non-root user
 USER eqcheck
