@@ -7,9 +7,6 @@
 [submodule "llvm-project"]
 	path = llvm-project
 	url = ../../bsorav/llvm-project2
-[submodule "vscode-extension"]
-	path = vscode-extension
-	url = ../../bsorav/vscode-extension
 [submodule "superopt-tests"]
 	path = superopt-tests
 	url = ../../compilerai/superopt-tests
@@ -19,6 +16,3 @@
 [submodule "jemalloc"]
 	path = jemalloc
 	url = ../../compilerai/jemalloc
-[submodule "fbgen"]
-	path = fbgen
-	url = ../../bsorav/fbgen
