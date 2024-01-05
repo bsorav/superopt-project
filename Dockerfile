@@ -30,7 +30,5 @@ ENV SUPEROPT_TARS_DIR /home/eqcheck/artifact/tars
 ENV SUPEROPT_PROJECT_DIR /home/eqcheck/artifact
 ENV PS1="%~$ "
 ENV LOGNAME eqcheck
-# this must happen AFTER copying superopt-tests
-RUN mkdir -p /home/eqcheck/artifact/superopt-tests/build/localmem-tests && tar xmvf /home/eqcheck/artifact/icc_bins.tgz -C /home/eqcheck/artifact/superopt-tests/build/localmem-tests
 # stop that pesky message
 RUN touch /home/eqcheck/.zshrc

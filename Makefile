@@ -29,6 +29,17 @@ build: $(SUPEROPT_TARS_DIR)
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
 	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure
 
+.PHONY: install
+install: build
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) linkinstall
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) install_icc_bins
+
+.PHONY: install_icc_bins
+install_icc_bins: icc_bins.tgz
+	mkdir -p $(SUPEROPT_PROJECT_DIR)/superopt-tests/build/localmem-tests
+	tar xmvf $(SUPEROPT_PROJECT_DIR)/icc_bins.tgz -C $(SUPEROPT_PROJECT_DIR)/superopt-tests/build/localmem-tests
+
 .PHONY: clean
 clean:
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/binlibs clean
@@ -46,23 +57,6 @@ distclean:
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/tars distclean
 	git clean -df
 	rm -rf $(SUPEROPT_INSTALL_DIR)
-
-.PHONY: install
-install: build
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) linkinstall
-
-.PHONY: docker-build
-docker-build:
-	docker build -t eqchecker .
-
-.PHONY: docker-run
-docker-run:
-	docker run --name artifact-container -it eqchecker:latest /bin/zsh
-
-.PHONY: docker-shell
-docker-shell:
-	docker exec -it artifact-container /bin/bash
 
 .PHONY: linkinstall
 linkinstall:
@@ -124,7 +118,7 @@ printpaths:
 	@echo "SUPEROPT_INSTALL_FILES_DIR = $(SUPEROPT_INSTALL_FILES_DIR)"
 	@echo "SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_BUILD)"
 	@echo "SUPEROPT_TARS_DIR = $(SUPEROPT_TARS_DIR)"
-	@echo "ICC = $(ICC)"
+	@echo "ICC_INSTALL_DIR = $(ICC_INSTALL_DIR)"
 
 .PHONY: oopsla24_results lt_results tsvc_results bzip2_results demo_results
 oopsla24_results lt_results tsvc_results bzip2_results demo_results:
@@ -142,3 +136,15 @@ gen_demo_tables:
 .PHONY: gen_graphs
 gen_graphs:
 	MPLBACKEND=pdf python3 plot_grouped_bars.py -s -d superopt-tests
+
+.PHONY: docker-build
+docker-build:
+	docker build -t eqchecker .
+
+.PHONY: docker-run
+docker-run:
+	docker run --name artifact-container -it eqchecker:latest /bin/zsh
+
+.PHONY: docker-shell
+docker-shell:
+	docker exec -it artifact-container /bin/bash
