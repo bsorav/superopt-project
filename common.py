@@ -59,20 +59,20 @@ def read_data(fname, target_functions = None, only_passing = True):
             ret.append(entry)
     return ret
 
-def gen_detailed_table(fname, target_functions):
-    assert len(target_functions) > 0
+def gen_detailed_table(fname, target_functions=None, csv_name='tab_bzip2_short.csv'):
+    if target_functions is not None:
+        assert len(target_functions) > 0
     dl = read_data(fname, target_functions)
     assert len(dl) > 0
     hdr = dl[0].keys()
-    fname = 'tab_bzip2_short.csv'
-    with open(fname, 'w') as csvfile:
+    with open(csv_name, 'w') as csvfile:
         tablewriter = csv.writer(csvfile)
         tablewriter.writerow(hdr) # header
 
         unpk = lambda d: [v for k,v in d.items()]
         for d in dl:
             tablewriter.writerow(unpk(d))
-        return fname
+        return csv_name
 
 def find_matching(l, n:str):
     for d in l:
