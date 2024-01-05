@@ -22,6 +22,7 @@ COPY --chown=eqcheck superopt-tests              /home/eqcheck/artifact/superopt
 COPY --chown=eqcheck llvm-project                /home/eqcheck/artifact/llvm-project
 COPY --chown=eqcheck superopt                    /home/eqcheck/artifact/superopt
 COPY --chown=eqcheck *.py icc_bins.tgz Makefile  /home/eqcheck/artifact
+COPY --chown=eqcheck binlibs                     /home/eqcheck/artifact/binlibs
 # switch to non-root user
 USER eqcheck
 WORKDIR /home/eqcheck/artifact

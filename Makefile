@@ -22,28 +22,30 @@ all: install
 
 .PHONY: build
 build: $(SUPEROPT_TARS_DIR)
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/binlibs
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project install
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
-	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure # && make && cd -
+	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure
 	# build clang12
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/clang12
 
 .PHONY: clean
 clean:
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/binlibs clean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt clean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project clean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs clean
 
 .PHONY: distclean
 distclean:
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/binlibs clean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests distclean
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/tars distclean
-	if [ -d "$(SUPEROPT_PROJECT_DIR)/vscode-extension" ]; then $(MAKE) -C $(SUPEROPT_PROJECT_DIR)/vscode-extension distclean; fi
 	git clean -df
 	rm -rf $(SUPEROPT_INSTALL_DIR)
 
@@ -63,7 +65,6 @@ docker-build:
 
 .PHONY: docker-run
 docker-run:
-	# docker run -p 80:80 -p 2222:22 -p 8181:8181 -it eqchecker:latest /bin/zsh
 	docker run --name artifact-container -it eqchecker:latest /bin/zsh
 
 .PHONY: docker-shell
@@ -119,11 +120,11 @@ cleaninstall:
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang++
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf
-	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/lib
-	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/superoptdbs
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang12
+	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/lib
+	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/superoptdbs
 
 .PHONY: printpaths
 printpaths:
