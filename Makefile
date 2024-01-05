@@ -135,13 +135,18 @@ printpaths:
 	@echo "SUPEROPT_TARS_DIR = $(SUPEROPT_TARS_DIR)"
 	@echo "ICC = $(ICC)"
 
-.PHONY: oopsla24_results demo_results
-oopsla24_results demo_results:
+.PHONY: oopsla24_results lt_results tsvc_results bzip2_results demo_results
+oopsla24_results lt_results tsvc_results bzip2_results demo_results:
 	$(MAKE) -C superopt-tests $@
 
 .PHONY: gen_bzip2_tables
 gen_bzip2_tables:
 	python3 bzip2_tables.py -d superopt-tests
+
+.PHONY: gen_demo_tables
+gen_demo_tables:
+	python3 gen_tables.py superopt-tests/demo_gcc.csv    -o tab_demo_gcc.csv
+	python3 gen_tables.py superopt-tests/demo_clang.csv  -o tab_demo_clang.csv
 
 .PHONY: gen_graphs
 gen_graphs:
