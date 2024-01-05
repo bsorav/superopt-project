@@ -28,8 +28,6 @@ build: $(SUPEROPT_TARS_DIR)
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/llvm-project
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superoptdbs
 	cd $(SUPEROPT_PROJECT_DIR)/superopt-tests && ./configure
-	# build clang12
-	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) $(SUPEROPT_PROJECT_DIR)/build/clang12
 
 .PHONY: clean
 clean:
@@ -53,11 +51,6 @@ distclean:
 install: build
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) linkinstall
-
-$(SUPEROPT_PROJECT_BUILD)/clang12: Makefile
-	mkdir -p $(SUPEROPT_PROJECT_BUILD)
-	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang --dyn_debug=disableSemanticAA " '$$*' > $@
-	chmod +x $@
 
 .PHONY: docker-build
 docker-build:
@@ -101,7 +94,6 @@ linkinstall:
 	$(SUDO) ln -sf $(Z3v487_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin/z3v487
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/clang12 $(SUPEROPT_INSTALL_DIR)/bin
 
 .PHONY: cleaninstall
 cleaninstall:
@@ -122,7 +114,6 @@ cleaninstall:
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
-	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang12
 	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) rm -rf $(SUPEROPT_INSTALL_DIR)/superoptdbs
 
