@@ -59,10 +59,10 @@ We will refer to the default directory of the container, `/home/eqcheck/artifact
    ALL.log passed
    ```
 
-6. The run summary files (in `superopt-tests/` directory) can be transformed to user-friendly CSV files (with similar headers as table 4) by running `make gen_demo_tables` which will generate `tab_demo_gcc.csv` and `tab_demo_clang.csv`.
+6. The run summary files (generated inside `superopt-tests/` directory) can be transformed to user-friendly CSV files (with similar headers as table 4) by running `make gen_demo_tables` which will generate `tab_demo_gcc.csv` and `tab_demo_clang.csv`.
 7. The whole procedure should take around 15 minutes on the recommended machine configuration.
 
-Instructions for interpreting the generated CSV files are discussed in a [later section](#howto-csv)
+Instructions for interpreting the generated CSV files, `tab_demo_gcc.csv` and `tab_demo_clang.csv`, are discussed in a [later section](#howto-csv)
 
 # Step-by-Step instructions for running the benchmarks {#running-instructions}
 
@@ -88,11 +88,11 @@ docker cp artifact-container:/home/eqcheck/artifact/graph_lt.pdf .
 docker cp artifact-container:/home/eqcheck/artifact/graph_tsvc.pdf .
 ```
 
-Note that the runtimes are sensitive to the counter-examples returned by the SMT solvers and may be vary (in rare cases, extremely) under certain circumstances.
+Note that the runtimes are sensitive to the counter-examples returned by the SMT solvers and may vary (in rare cases, extremely) under certain circumstances.
 
 **Generating Table 4 like table for fig 8 benchmarks**
 
-After executing the benchmarks, run `make gen_lt_tables` and `make gen_tsvc_tables` for generating table 4 like table for benchmarks in figure 8 of the paper (see [this section](#howto-csv) for explanation of the CSV file).
+After executing the benchmarks, run `make gen_lt_tables` and `make gen_tsvc_tables` for generating table 4 like CSV files for benchmarks in figure 8 of the paper (see [this section](#howto-csv) for explanation of the generated CSV files).
 
 The names of the generated files are printed by the above commands and correspond to run configuration as shown below.
 
@@ -124,7 +124,7 @@ It is possible to use an installed `icc` for building the binaries though it req
    ```
 5. Run `make lt_results`
    * All binaries will be re-generated including ICC ones.
-   * An error should only happen if the path `ICC_INSTALL_DIR` is not correct or `icc` is not configured properly for building 32-bit binaries.
+   * An error should only occur if the path `ICC_INSTALL_DIR` is not correct or `icc` is not configured properly for building 32-bit binaries.
 
 ## Reproducing Table 4 results {#bzip2-tab-gen}
 
@@ -174,7 +174,7 @@ The following steps describe how to achieve it.
 3. Run `make gen_demo_tables` in top-level directory to get run summary.
    * The format of the generated CSV files (`tab_demo_gcc.csv` and `tab_demo_clang.csv`) is explained in [previous section](#howto-csv).
 
-The result of the run will appear in the form of output messages
+The result of the run will appear in the form of output messages:
 
 ```
 build/demo/eqcheck.sample.gcc.eqchecker.O3.i386.s/sample-sample.gcc.eqchecker.O3.i386.ALL.log
@@ -251,6 +251,8 @@ To additionally run the benchmark with forced non-full interval encoding (partia
 3. Delete `#` from lines 35, 36: `# mv csv_eqcheck_slow_...`
 4. Use `make demo_results` to build and run again.
 
+Steps 2. and 3. are required for generation of run summary files.
+
 ## Benchmarks and directory structure {#path-info}
 
 ### Source code of the benchmarks
@@ -258,19 +260,19 @@ To additionally run the benchmark with forced non-full interval encoding (partia
 The benchmarks are present in the `superopt-tests` directory.
 Three benchmark suites are available:
 
- * local allocation programming patterns benchmarks (`localmem-tests`)
- * vectorization benchmarks (`TSVC_prior_work_globals` and `TSVC_prior_work_locals`)
- * bzip2 (`bzip2_locals`)
+1. local allocation programming patterns benchmarks (`localmem-tests`)
+2. vectorization benchmarks (`TSVC_prior_work_globals` and `TSVC_prior_work_locals`)
+3. bzip2 (`bzip2_locals`)
 
-#### Local allocation programming patterns benchmark suite {#localmem}
+#### Local allocation programming patterns benchmark suite (`localmem-tests`) {#localmem}
 
  - The `localmem-tests` directory contains the 18 benchmarks
    - 17 of them are from table 3 of the paper and contain one C function each.
    - 1 new benchmark, `vilN`, is included to address scalability questions raised by the reviewers.
      - This benchmarks contains 4 functions: `vil1`, `vil2`, `vil3`, `vil4`
- - The benchmarks are compiled using three compilers -- GCC, Clang/LLVM, and ICC -- at O3 optimization level with vectorization disabled through compiler flags and pragma(s).
+ - The benchmarks are compiled using three compilers -- GCC, Clang/LLVM, and ICC -- at O3 optimization level with vectorization disabled through compiler flags and `#pragma`.
 
-#### Vectorization benchmark suite {#tsvc}
+#### Vectorization benchmark suite (`TSVC_prior_work_globals` and `TSVC_prior_work_locals`) {#tsvc}
 
  - Two versions of the TSVC suite of vectorization benchmarks are present:
    - 'globals' version where all arrays are preallocated global variables.
@@ -280,7 +282,7 @@ Three benchmark suites are available:
  - Each version contains 23 C functions.
  - The benchmarks are compiled using Clang/LLVM compiler at O3 optimization level with vectorization enabled using `-msse4.2` compiler flag.
 
-#### bzip2 benchmark {#bzip2}
+#### bzip2 benchmark (`bzip2_locals`) {#bzip2}
 
   - The `bzip2_locals` directory contains the `bzip2.c` file.
   - In the provided default configuration, it contains 72 C functions.
@@ -341,7 +343,7 @@ Important headers (in order as they appear) are explained as follows.
     2. `=Edge.StateTo`: Compressed transfer function for this edge: list of mappings from state variable to _expr_.
         1. Has 0 or more _(statevar, expr)_ tuple as children
         2. Each tuple is formatted as: `=<state-variable name>` followed by _expr_ for this state-variable.
-    3. `=Edge.Assumes`: List of assumptions associated with the edge: these are the (absence of) UB conditions associated with the transfer function of the edge.  A U error is triggered if any of these assumes is falsified.
+    3. `=Edge.Assumes`: List of assumptions associated with the edge: these are the (absence of) UB conditions associated with the transfer function of the edge.  A $\mathscr{U}$ error is triggered if any of these assumes is falsified.
        * For example, the no-multiplication-overflow condition associated with `alloc` is represented as:
 
          ```
@@ -401,7 +403,7 @@ Important headers (in order as they appear) are explained as follows.
     =predicate done
     ```
 4. Pathset representation or the serial-parallel digraph (SP-graph):  The SP-graph is defined recursively as:
-    1. epsilon (empty edge)      `(epsilon)`
+    1. epsilon (empty path)      `(epsilon)`
     2. Singular edge             `<from_pc> => <to_pc>`
     3. A parallel combination    `( <sp_graph> + <sp_graph> )`
     4. A serial combination      `( <sp_graph> * <sp_graph> )`
