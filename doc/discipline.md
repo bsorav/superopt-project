@@ -70,3 +70,17 @@ Here is some basic information to help developers understand the source code lay
 
 ## Defining and Using Constants through Macros
 - For any string or integer constants, try and define macros in "include/support/consts.h" and use those macros in your code.
+
+## Coding style
+- Use curly braces for the body of "if", "else", "while", "for", ...,  constructs even if the body consists of only a single statement.
+- The opening curly brace should be in the same line as the construct's code (i.e., do not spend a separate line only for the opening curly brace).  Dedicate a separate line for the closing curly brace however.
+- For writing if-the-else: do the following
+```
+//put a space between the "if" keyword and the condition opening parenthesis
+if (.... /* the condition can span multiple lines */) {
+  ....
+} else {
+  ...
+}
+```
+- Indent using two spaces.  Completely avoid the tab character.
