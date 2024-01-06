@@ -133,6 +133,21 @@ gen_demo_tables:
 	python3 gen_tables.py superopt-tests/demo_gcc.csv    -o tab_demo_gcc.csv
 	python3 gen_tables.py superopt-tests/demo_clang.csv  -o tab_demo_clang.csv
 
+.PHONY: gen_lt_tables
+gen_lt_tables:
+	python3 gen_tables.py superopt-tests/lt_clang.csv    -o tab_lt_clang.csv
+	python3 gen_tables.py superopt-tests/lt_clang_s.csv  -o tab_lt_clang_s.csv
+	python3 gen_tables.py superopt-tests/lt_gcc.csv      -o tab_lt_gcc.csv
+	python3 gen_tables.py superopt-tests/lt_gcc_s.csv    -o tab_lt_gcc_s.csv
+	python3 gen_tables.py superopt-tests/lt_icc.csv      -o tab_lt_icc.csv
+	python3 gen_tables.py superopt-tests/lt_icc_s.csv    -o tab_lt_icc_s.csv
+
+.PHONY: gen_tsvc_tables
+gen_tsvc_tables:
+	python3 gen_tables.py superopt-tests/tsvc_g.csv      -o tab_tsvc_g.csv
+	python3 gen_tables.py superopt-tests/tsvc_l.csv      -o tab_tsvc_l.csv
+	python3 gen_tables.py superopt-tests/tsvc_l_s.csv    -o tab_tsvc_s.csv
+
 .PHONY: gen_graphs
 gen_graphs:
 	MPLBACKEND=pdf python3 plot_grouped_bars.py -s -d superopt-tests
