@@ -10,3 +10,4 @@ eqfiles
 eqlogs_*
 usr
 qcc_*
+.vscode/
