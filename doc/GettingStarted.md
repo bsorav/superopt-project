@@ -1,5 +1,16 @@
 # Getting started
 
+## Install the latest version of cmake
+```
+$ sudo apt-get update
+$ sudo apt-get install apt-transport-https ca-certificates gnupg \
+                         software-properties-common wget
+$ wget -qO - https://apt.kitware.com/keys/kitware-archive-latest.asc | sudo apt-key add -
+$ sudo apt-add-repository "deb https://apt.kitware.com/ubuntu/ $(lsb_release -c -s) main"
+$ sudo apt-get update
+$ sudo apt-get install cmake
+```
+
 ## Clone the repositories
 ```
 $ git clone https://<username>@github.com/bsorav/superopt-project
@@ -14,18 +25,20 @@ $ git submodule update -- jemalloc
 $ git submodule update -- tars
 ```
 
-## Install the latest version of cmake
+## Environment variables
+Set your environment variables as follows (you may want to do this in your bashrc/zshrc files so they remain initialized in all your future sessions)
 ```
-$ sudo apt-get update
-$ sudo apt-get install apt-transport-https ca-certificates gnupg \
-                         software-properties-common wget
-$ wget -qO - https://apt.kitware.com/keys/kitware-archive-latest.asc | sudo apt-key add -
-$ sudo apt-add-repository "deb https://apt.kitware.com/ubuntu/ $(lsb_release -c -s) main"
-$ sudo apt-get update
-$ sudo apt-get install cmake
+export SUPEROPT_PROJECT_DIR=/path/to/superopt-project
+export SUPEROPT_INSTALL_DIR=$SUPEROPT_PROJECT_DIR/usr/local
+export SUPEROPT_TARS_DIR=$SUPEROPT_PROJECT_DIR/tars
+```
+You may also update your `PATH` environment variable so that the executables can be invoked directly:
+```
+export PATH=$PATH:$SUPEROPT_INSTALL_DIR/bin
 ```
 
-## Set up the environment
+
+## Set up the dependencies
 Ensure that your `http_proxy` environment variable is setup correctly
 ```
 $ cd superopt-project
@@ -37,22 +50,10 @@ $ sudo -E ./install-dependencies.sh
 $ make
 ```
 
-## Environment variables
-Set your environment variables as follows (you may want to do this in your bashrc/zshrc files so they remain initialized in all your future sessions)
-```
-export SUPEROPT_PROJECT_DIR=/path/to/superopt-project
-export SUPEROPT_INSTALL_DIR=$SUPEROPT_PROJECT_DIR/usr/local
-export SUPEROPT_TARS_DIR=$SUPEROPT_PROJECT_DIR/tars
-```
-You also need to update your `PATH` environment variable:
-```
-export PATH=$PATH:$SUPEROPT_INSTALL_DIR/bin
-```
-
 ## Running the tests
 ```
 $ cd superopt-project/superopt-tests
-$ make regression_i386
+$ make run_tests
 ```
 Some of these tests are expected to pass while some may fail currently.
 

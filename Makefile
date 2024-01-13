@@ -52,6 +52,10 @@ install: build
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) linkinstall
 
+.PHONY: run_tests
+run_tests:
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests run_tests_micro
+
 $(SUPEROPT_PROJECT_BUILD)/qcc: Makefile
 	mkdir -p $(SUPEROPT_PROJECT_BUILD)
 	echo "$(SUPEROPT_INSTALL_DIR)/bin/clang-qcc $(CLANG_I386_EQCHECKER_FLAGS)" '$$*' > $@
