@@ -11,7 +11,7 @@ $ git submodule update -- superoptdbs
 $ git submodule update -- llvm-project
 $ git submodule update -- superopt-tests
 $ git submodule update -- jemalloc
-$ git clone https://<username>@github.com/compilerai/tars
+$ git submodule update -- tars
 ```
 
 ## Install the latest version of cmake
