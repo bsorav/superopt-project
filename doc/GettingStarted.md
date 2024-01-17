@@ -52,9 +52,19 @@ export PATH=$PATH:$SUPEROPT_INSTALL_DIR/bin
 ## Running the tests
 ```
 $ cd superopt-project/superopt-tests
-$ make eqtest_i386
+$ make >& make.out &
+$ show-results --verbose .
 ```
 Some of these tests are expected to pass while some may fail currently.
+
+## Running the cmdline tool
+Let `eq32` point to `superopt-project/superopt/build/etfg_i386/eq`.
+
+Run `eq32 a.c` to compile the C program (a.c) and then check equivalence between the generated assembly and the input source.
+
+Run `eq32 a.c --dst b.c` to compute equivalence between two C files (`a.c` and `b.c`)
+
+Run `eq32 a.c --dst a.s` to compute equivalence between a C file and an assembly file (`a.c` and `a.s`)
 
 ## Running a particular test and observing its operation in detail
 First you need to copy the relevant files to your current working directory. We show this for the `s000` TSVC benchmark.
@@ -69,7 +79,7 @@ $ cp superopt-project/superopt-tests/build/TSVC_prior_work/s000.gcc.eqchecker.O0
 ```
 Run the equivalence checker `eq32` (for 32-bit x86) for a chosen unroll factor.
 ```
-$ eq32 --unroll-factor=8 a.c a.s
+$ eq32 --unroll-factor=8 a.c --dst a.s
 ```
 This command prints some messages (with &lt;MSG&gt; tag) on the standard output. Also, it prints the
 final result of the equivalence checker.  For some benchmarks, this command may exceed the running
@@ -96,10 +106,5 @@ $ gcc -m32 -S -g -Wl,--emit-relocs -fdata-sections $GCC_EQCHECKER_FLAGS -O3 b.c 
 ```
 Finally, run the equivalence checker `eq32` (for 32-bit x86) for a chosen unroll factor.
 ```
-$ eq32 --unroll-factor=8 a.c b.s
-```
-
-## Axpreds support
-```
-$SUPEROPT_ROOT/superopt/build/etfg_x64/tfg_preprocess_before_eqcheck --axpreds-path $SUPEROPT_ROOT/superopt/utils/axpreds.yml $FILE
+$ eq32 --unroll-factor=8 a.c --dst b.s
 ```
