@@ -4,6 +4,7 @@
 #         ("subzero", 3)]
 
 vals = [("flagunchanged", 1),
+        
         ("setflags", 8),
         ("getcarry", 2),
         ("getadjust", 2),
@@ -38,6 +39,12 @@ vals = [("flagunchanged", 1),
         ("logicsign", 2),
         ("logiczero", 2),
         ("logicparity", 2),
+
+        ("packss", 3),
+        ("packus", 3),
+        
+        ("bsret", 2),
+        ("bszero", 2),
 
         ("bextres", 3),
         ("bextzero", 3),
