@@ -3,118 +3,209 @@
 #         ("suboverflow", 3),
 #         ("subzero", 3)]
 
-vals = [("flagunchanged", 1),
-        
-        ("setflags", 8),
-        ("getcarry", 2),
-        ("getadjust", 2),
-        ("getdirection", 2),
-        ("getoverflow", 2),
-        ("getsign", 2),
-        ("getzero", 2),
-        ("getparity", 2),
-        
-        ("seteq", 2),
-        ("setne", 2),
-        ("setult", 2),
-        ("setslt", 3),
-        ("setugt", 3),
-        ("setsgt", 4),
-        ("setule", 3),
-        ("setsle", 4),
-        ("setuge", 2),
-        ("setsge", 3),
-        
-        # ("geteq", 2),
-        # ("getne", 2),
-        # ("getult", 2),
-        # ("getslt", 2),
-        # ("getugt", 2),
-        # ("getsgt", 2),
-        # ("getule", 2),
-        # ("getsle", 2),
-        # ("getuge", 2),
-        # ("getsge", 2),
-        
-        ("logicsign", 2),
-        ("logiczero", 2),
-        ("logicparity", 2),
+# three types of comments
+# comments like carry, adjust, direction, add, sub, and etc are 0 argument comments
+# primary operation comments like oper2, oper3, etc can be replaced by their first argument
+# in the vir we will ignore their first argument (not recurse on it)
 
-        ("packss", 3),
-        ("packus", 3),
-        
-        ("bsret", 2),
-        ("bszero", 2),
+flags = ["carry",
+         "adjust",
+         "direction",
+         "overflow",
+         "sign",
+         "zero",
+         "parity",
+         "eq",
+         "ne",
+         "ult",
+         "slt",
+         "ugt",
+         "sgt",
+         "ule",
+         "sle",
+         "uge",
+         "sge"]
 
-        ("bextres", 3),
-        ("bextzero", 3),
-        
-        ("blsires", 2),
-        ("blsicf", 2),
-        ("blsisign", 2),
-        ("blsizero", 2),
-        
-        ("blsmskres", 2),
-        ("blsmskcf", 2),
-        ("blsmsksign", 2),
-        
-        ("blsrres", 2),
-        ("blsrcf", 2),
-        ("blsrsign", 2),
-        ("blsrzero", 2),
+oper3 = ["rotate_left_carry",
+         "rotate_right_carry"
+]
 
-        ("bzhires", 3),
-        ("bzhicf", 3),
-        ("bzhisign", 3),
-        ("bzhizero", 3),
+oper2 = ["add",
+         "sub",
+         "and",
+         "or",
+         "xor",
+         "andnot",
+         "bextr",
+         "bzhi",
+         "shift_left",
+         "shift_right",
+         "shift_right_arith",
+         "rotate_left",
+         "rotate_right",
+         "test",
+         "mul_high",
+         "mul_low",
+         "imul_high",
+         "imul_low",
+         "packss",
+         "packus",
+         "div_quotient",
+         "div_remainder",
+         "idiv_quotient",
+         "floatcmp",
+         "idiv_remainder"]
+
+
+oper1 = ["blsi",
+         "blsmask",
+         "blsr",
+         "bsx",
+         "zcnt"]
+
+primary = [("op1", 3),
+           ("op2", 4),
+           ("op3", 5),
+           ("getflag", 3),
+           ("setflags", 8),
+           ("setflag_float", 4),
+           ("setflag1", 3),
+           ("setflag2", 4),
+           ("setflag3", 5),
+           ("setflag4", 6),
+           ("readmem", 2)]
+
+vals = []
+
+for oper, na in primary:
+    vals.append((oper, na))
+for oper in oper1:
+    vals.append((oper, 0))
+for oper in oper2:
+    vals.append((oper, 0))
+for oper in oper3:
+    vals.append((oper, 0))
+for oper in flags:
+    vals.append((oper, 0))
+
+# helpers = [("getflag", 3),
+#            ("setflags", 8),
+#            ("setflag", 3)]
+
+
+
+# vals = [("flagunchanged", 1),
         
-        ("floatcmpparity", 3),
-        ("floatcmpzero", 3),
-        ("floatcmpcarry", 3),
-        ("floatcmpne", 3),
-        ("floatcmpugt", 3),
-        ("floatcmpule", 3),
-        ("floatcmpuge", 3),
+#         ("setflags", 8),
+#         ("getcarry", 2),
+#         ("getadjust", 2),
+#         ("getdirection", 2),
+#         ("getoverflow", 2),
+#         ("getsign", 2),
+#         ("getzero", 2),
+#         ("getparity", 2),
         
-        ("readmem", 2),
-        # ("writemem", 3),
+#         ("seteq", 2),
+#         ("setne", 2),
+#         ("setult", 2),
+#         ("setslt", 3),
+#         ("setugt", 3),
+#         ("setsgt", 4),
+#         ("setule", 3),
+#         ("setsle", 4),
+#         ("setuge", 2),
+#         ("setsge", 3),
         
-        ("subdiffreg", 3),
-        ("subcarry", 3),
-        ("subadjust", 3),
-        ("suboverflow", 3),
-        ("subsign", 3),
-        ("subzero", 3),
-        ("subparity", 3),
+#         # ("geteq", 2),
+#         # ("getne", 2),
+#         # ("getult", 2),
+#         # ("getslt", 2),
+#         # ("getugt", 2),
+#         # ("getsgt", 2),
+#         # ("getule", 2),
+#         # ("getsle", 2),
+#         # ("getuge", 2),
+#         # ("getsge", 2),
         
-        ("addsumreg", 3),
-        ("addcarry", 3),
-        ("addadjust", 3),
-        ("addoverflow", 3),
-        ("addsign", 3),
-        ("addzero", 3),
-        ("addparity", 3),
+#         ("logicsign", 2),
+#         ("logiczero", 2),
+#         ("logicparity", 2),
+
+#         ("packss", 3),
+#         ("packus", 3),
         
-        ("shiftres", 3),
-        ("shiftcfbit", 3),
-        ("shiftafbit", 3),
-        ("shiftofbit", 3),
-        ("shiftsfbit", 3),
-        ("shiftzfbit", 3),
-        ("shiftpfbit", 3),
+#         ("bsret", 2),
+#         ("bszero", 2),
+
+#         ("bextres", 3),
+#         ("bextzero", 3),
         
-        ("rotateres", 3),
-        ("rotatecfbit", 3),
-        ("rotateofbit", 3),
+#         ("blsires", 2),
+#         ("blsicf", 2),
+#         ("blsisign", 2),
+#         ("blsizero", 2),
         
-        ("mulhigh", 3),
-        ("mullow", 3),
-        ("mulnotzero", 3),
+#         ("blsmskres", 2),
+#         ("blsmskcf", 2),
+#         ("blsmsksign", 2),
         
-        ("divquotient", 3),
-        ("divremainder", 3),
-        ("testzfbit", 3),
-        ("testcfbit", 3)]
+#         ("blsrres", 2),
+#         ("blsrcf", 2),
+#         ("blsrsign", 2),
+#         ("blsrzero", 2),
+
+#         ("bzhires", 3),
+#         ("bzhicf", 3),
+#         ("bzhisign", 3),
+#         ("bzhizero", 3),
+        
+#         ("floatcmpparity", 3),
+#         ("floatcmpzero", 3),
+#         ("floatcmpcarry", 3),
+#         ("floatcmpne", 3),
+#         ("floatcmpugt", 3),
+#         ("floatcmpule", 3),
+#         ("floatcmpuge", 3),
+        
+#         ("readmem", 2),
+#         # ("writemem", 3),
+        
+#         ("subdiffreg", 3),
+#         ("subcarry", 3),
+#         ("subadjust", 3),
+#         ("suboverflow", 3),
+#         ("subsign", 3),
+#         ("subzero", 3),
+#         ("subparity", 3),
+        
+#         ("addsumreg", 3),
+#         ("addcarry", 3),
+#         ("addadjust", 3),
+#         ("addoverflow", 3),
+#         ("addsign", 3),
+#         ("addzero", 3),
+#         ("addparity", 3),
+        
+#         ("shiftres", 3),
+#         ("shiftcfbit", 3),
+#         ("shiftafbit", 3),
+#         ("shiftofbit", 3),
+#         ("shiftsfbit", 3),
+#         ("shiftzfbit", 3),
+#         ("shiftpfbit", 3),
+        
+#         ("rotateres", 3),
+#         ("rotatecfbit", 3),
+#         ("rotateofbit", 3),
+        
+#         ("mulhigh", 3),
+#         ("mullow", 3),
+#         ("mulnotzero", 3),
+        
+#         ("divquotient", 3),
+#         ("divremainder", 3),
+#         ("testzfbit", 3),
+#         ("testcfbit", 3)]
 
 # let smt_donotsimplify_using_solver_suboverflow vc = smt_mk_donotsimplify_using_solver_suboverflow vc.ctx
 def parse1():
@@ -150,10 +241,13 @@ def parse2():
                 continue
             else:
                 for v, ac in vals:
-                    st = findstr + v + "(Context vc, Expr a"
-                    for i in range(1, ac):
-                        st += ", Expr arg" + str(i)
-                    st += ");\n"
+                    if ac == 0:
+                        st = findstr + v + "(Context vc);\n"
+                    else :
+                        st = findstr + v + "(Context vc, Expr a"
+                        for i in range(1, ac):
+                            st += ", Expr arg" + str(i)
+                        st += ");\n"
                     new_lines.append(st)
                 done = True
         else:
@@ -173,15 +267,22 @@ def parse3():
     idx2 = text.find(findend, idx1)
     new_text = text[:idx1]
     for v, ac in vals:
-        new_text += "let smt_mk_donotsimplify_using_solver_" + v + " ctx a "
-        for i in range(1, ac):
-            new_text += "arg" + str(i) + " "
-        new_text += "=\n"
-        new_text += "  let ret = smt_mk_donotsimplify_using_solver_" + v + " ctx a "
-        for i in range(1, ac):
-            new_text += "arg" + str(i) + " "
-        new_text += "in\n"
-        new_text += "  ret\n\n"
+        if ac == 0:
+            new_text += "let smt_mk_donotsimplify_using_solver_" + v + " ctx =\n"
+            new_text += "  let ret = smt_mk_donotsimplify_using_solver_" + v + " ctx "
+            new_text += "in\n"
+            new_text += "  ret\n\n"
+        else:
+            new_text += "let smt_mk_donotsimplify_using_solver_" + v + " ctx a "
+            for i in range(1, ac):
+                new_text += "arg" + str(i) + " "
+            new_text += "=\n"
+            new_text += "  let ret = smt_mk_donotsimplify_using_solver_" + v + " ctx a "
+            for i in range(1, ac):
+                new_text += "arg" + str(i) + " "
+            new_text += "in\n"
+            new_text += "  ret\n\n"
+                
     new_text += text[idx2:]
     open("./fbgen/ml/smt.ml", 'w').write(new_text)
 
@@ -195,10 +296,13 @@ def parse4():
     idx2 = text.find(findend, idx1)
     new_text = text[:idx1]
     for v, ac in vals:
-        new_text += "  expr_ref mk_donotsimplify_using_solver_" + v + "(expr_ref orig"
-        for i in range(1, ac):
-            new_text += ", expr_ref cmp_arg" + str(i)
-        new_text += ", expr_id_t suggested_id = 0);\n"
+        if ac == 0:
+            new_text += "  expr_ref mk_donotsimplify_using_solver_" + v + "(expr_id_t suggested_id = 0);\n"
+        else:
+            new_text += "  expr_ref mk_donotsimplify_using_solver_" + v + "(expr_ref orig"
+            for i in range(1, ac):
+                new_text += ", expr_ref cmp_arg" + str(i)
+            new_text += ", expr_id_t suggested_id = 0);\n"
     new_text += text[idx2:]
     open("./superopt/include/expr/context.h", 'w').write(new_text)
 
@@ -235,17 +339,24 @@ def parse6():
     idx2 = text.find(findend, idx1)
     new_text = text[:idx1]
     for v, ac in vals:
-        new_text += "extern \"C\" expr* smt_mk_donotsimplify_using_solver_" + v + "(context* ctx, expr* a"
-        for i in range(1, ac):
-            new_text += ", expr *arg" + str(i)
-        new_text += """)
+        if ac == 0:
+            new_text += "extern \"C\" expr* smt_mk_donotsimplify_using_solver_" + v + "(context* ctx"
+            new_text += """)
+{\n"""
+            new_text += "  expr_ref ret = ctx->mk_donotsimplify_using_solver_" + v + "("
+            
+        else:
+            new_text += "extern \"C\" expr* smt_mk_donotsimplify_using_solver_" + v + "(context* ctx, expr* a"
+            for i in range(1, ac):
+                new_text += ", expr *arg" + str(i)
+            new_text += """)
 {
   expr_ref const &aref = active_exprs.at(a);\n"""
-        for i in range(1, ac):
-            new_text += """  expr_ref const &arg""" + str(i) + """ref = active_exprs.at(arg""" + str(i) + """);\n"""
-        new_text += "  expr_ref ret = ctx->mk_donotsimplify_using_solver_" + v + "(aref"
-        for i in range(1, ac):
-            new_text += ", arg" + str(i) + "ref"
+            for i in range(1, ac):
+                new_text += """  expr_ref const &arg""" + str(i) + """ref = active_exprs.at(arg""" + str(i) + """);\n"""
+            new_text += "  expr_ref ret = ctx->mk_donotsimplify_using_solver_" + v + "(aref"
+            for i in range(1, ac):
+                new_text += ", arg" + str(i) + "ref"
         new_text += """);
   active_exprs.insert(make_pair(ret.get(), ret));
   return ret.get();
@@ -290,15 +401,20 @@ def parse8():
     idx2 = text.find(findend, idx1)
     new_text = text[:idx1]
     for v, ac in vals:
-        new_text += """expr_ref context::mk_donotsimplify_using_solver_""" + v
-        new_text += "(expr_ref a"
+        new_text += """expr_ref context::mk_donotsimplify_using_solver_""" + v + "("
+        if ac != 0:
+            new_text += "expr_ref a"
         for i in range(1, ac):
                 new_text += ", expr_ref arg" + str(i)
-        new_text += """, expr_id_t suggested_id)
+        if ac != 0:
+            new_text += ", "
+        new_text += """expr_id_t suggested_id)
 {
   return create_new_expr(expr::OP_DONOTSIMPLIFY_USING_SOLVER_"""
         new_text += v.upper()
-        new_text += ", make_args(a"
+        new_text += ", make_args("
+        if ac != 0:
+            new_text += "a"
         for i in range(1, ac):
                 new_text += ", arg" + str(i)
         new_text += """), suggested_id);
@@ -349,8 +465,12 @@ def parse11():
     new_text = text[:idx1]
     for v, ac in vals:
         new_text += """  case expr::OP_DONOTSIMPLIFY_USING_SOLVER_""" + v.upper() + ":\n"
-        new_text += "    assert(args.size() == " + str(ac) +  ");\n"
-        new_text += "    return args.at(0)->get_sort();\n"
+        if ac == 0:
+            new_text += "    assert(args.size() == " + str(ac) +  ");\n"
+            new_text += "    return mk_donotsimplify_label_sort();\n"            
+        else:
+            new_text += "    assert(args.size() == " + str(ac) +  ");\n"
+            new_text += "    return args.at(0)->get_sort();\n"
     new_text += text[idx2:]
     open("./superopt/lib/expr/context.cpp", 'w').write(new_text)
 
@@ -388,6 +508,8 @@ def parse13():
     new_text = text[:idx1]
     i = 0
     for v, ac in vals:
+        if ac == 0:
+            continue
         if i == 0:
             new_text += "(op == OP_DONOTSIMPLIFY_USING_SOLVER_" + v.upper() + ")\n"
         else:

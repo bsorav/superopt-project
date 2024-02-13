@@ -1,4 +1,4 @@
-
+import sys
 
 freq_dic = {}
 
@@ -14,7 +14,61 @@ def getint(x):
     x = x.strip()
     return int(x)
 
-def subchunk_critical_paths(lines, doprint):
+def subchunk_dag(lines, doprint, reg):
+    n = len(lines)
+    depends = []
+    for i in range(n):
+        l = lines[i]
+        sp = l.find(' ')
+        x = getint(l[:sp])
+        assert(x == i + 1)
+        bs = l.find('(')
+        # print(l[:bs])
+        # ignore the first argument of donotsimplify
+        # basically shortens the critical paths
+        if l.find("donotsimplify") != -1 and l.find("()") == -1:
+            flag = True
+            bsp = bs
+            bs = l.find(',', bs)
+            bs2 = l.find(')', bsp)
+            if bs == -1:
+                bs = bs2
+            bs = min(bs, bs2)
+            # print(l)
+            # print(l[bsp+1:bs])
+            pi = int(l[bsp+1:bs].strip())
+        if bs == -1 or l.find("()") != -1:
+            depends.append([])
+            continue
+        else:
+            be = l.find(')', bs)
+        if l[bs+1:be].strip() == "":
+            vals = []
+        else:
+            vals = list(map(lambda x: int(x.strip())-1, l[bs+1:be].split(',')))
+        depends.append(vals)
+        
+    traversed = [False for i in range(n)]
+    st = n-1
+    stack = [st]
+    # setvals = set()
+    cnt = 0
+    if doprint:
+        print(reg)
+    while len(stack) != 0:
+        x = stack[-1]
+        stack.pop(-1)
+        traversed[x] = True
+        if doprint:
+            print(lines[x])
+        cnt += 1
+        # setvals.add(x)
+        for c in depends[x]:
+            if not traversed[c]:
+                stack.append(c)
+    return cnt
+        
+def subchunk_critical_paths(lines, doprint, reg):
     n = len(lines)
     # depends = []
     levels = [0 for i in range(n)]
@@ -60,16 +114,19 @@ def subchunk_critical_paths(lines, doprint):
             if flag:
                 levels[pi-1] = levels[i]
                 tree[pi-1] = tree[i]
+
     # maybe add index here as well
-    ml = max(levels)
-    idx = levels.index(ml)
+    # ml = max(levels)
+    # idx = levels.index(ml)
+    idx = len(levels)-1
     if doprint:
-        print("max level", ml)
+        print("level", levels[-1], "reg:", reg)
         while tree[idx] != idx:
             print(lines[idx])
             idx = tree[idx]
         print(lines[idx])
-    return ml, idx + 1
+
+    return levels[-1]
 
 def chunk_critical_paths(s, doprint):
     lines = s.split('\n')
@@ -78,7 +135,8 @@ def chunk_critical_paths(s, doprint):
     ln = 0
     pl = 0
     paths = []
-    idxs = []
+    names = []
+    # idxs = []
     for l in lines:
         sp = l.find(' ')
         if isint(l[:sp]):
@@ -87,14 +145,15 @@ def chunk_critical_paths(s, doprint):
                 pl = ln
         else:
             if pl != 0:
-                ml, idx = subchunk_critical_paths(lines[pl:ln], doprint)
+                ml = subchunk_dag(lines[pl:ln], doprint, lines[pl-1])
                 paths.append(ml)
-                idxs.append(idx)
+                names.append(lines[pl-1])
+                # idxs.append(idx)
             pl = 0
         ln += 1
     mp = max(paths)
     idx = paths.index(mp)
-    return mp, idx, idxs[idx]
+    return mp, names[idx]
 
 def parsechunk(s):
     lines = s.split('\n')
@@ -114,7 +173,10 @@ def parsechunk(s):
     cnts.reverse()
     return cnts
 
-f = open("src_sym_exec_db").read()
+if len(sys.argv) == 1:
+    f = open("src_sym_exec_db").read()
+else:
+    f = open(sys.argv[1]).read()    
 
 i1 = f.find("=insn")
 
@@ -131,12 +193,12 @@ while i1 != -1:
     i2 = f.find("=tfg", i1)
     i3 = f.find("=state_end", i2)
     chunk = f[i2:i3]
-    mp, id1, id2  = chunk_critical_paths(chunk, insn=="cmpl")
+    mp, id1  = chunk_critical_paths(chunk, False)
     # cnts = parsechunk(chunk)
     if mp in freq_dic:
-        freq_dic[mp].append((insn, id1, id2))
+        freq_dic[mp].append((insn, id1))
     else:
-        freq_dic[mp] = [(insn, id1, id2)]
+        freq_dic[mp] = [(insn, id1)]
     mmax = max(mmax, mp)
     i1 = f.find("=insn", i3)
 
