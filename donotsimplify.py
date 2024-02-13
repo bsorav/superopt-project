@@ -35,6 +35,9 @@ oper2 = ["add",
          "and",
          "or",
          "xor",
+         "avg",
+         "max",
+         "min",
          "andnot",
          "bextr",
          "bzhi",
@@ -54,7 +57,12 @@ oper2 = ["add",
          "div_remainder",
          "idiv_quotient",
          "floatcmp",
-         "idiv_remainder"]
+         "idiv_remainder",
+         "pblend",
+         "pdep",
+         "pext",
+         "pextr",
+         "pinsr"]
 
 
 oper1 = ["blsi",
@@ -73,6 +81,7 @@ primary = [("op1", 3),
            ("setflag2", 4),
            ("setflag3", 5),
            ("setflag4", 6),
+           ("parith", 4),
            ("readmem", 2)]
 
 vals = []
@@ -443,13 +452,32 @@ def parse10():
     filename = "./superopt/lib/expr/eval.cpp"
     text = open(filename).read()
     findstart = """  case expr::OP_DONOTSIMPLIFY_USING_SOLVER_"""
-    findend = """{"""
+    findend = """case expr::OP_MEMMASK:"""
     idx1 = text.find(findstart)
     idx2 = text.find(findend, idx1)
     new_text = text[:idx1]
     for v, ac in vals:
-        new_text += """  case expr::OP_DONOTSIMPLIFY_USING_SOLVER_""" + v.upper() + ":\n"
+        if ac != 0:
+            new_text += """  case expr::OP_DONOTSIMPLIFY_USING_SOLVER_""" + v.upper() + ":\n"
+    new_text += """
+    {
+    pair<expr_eval_status_t, expr_ref> cval0 = m_map.at(e->get_args().at(0)->get_id());
+      ret = cval0.first;
+      const_val = cval0.second;
+      break;
+    }
+
+"""
+    for v, ac in vals:
+        if ac == 0:
+            new_text += """  case expr::OP_DONOTSIMPLIFY_USING_SOLVER_""" + v.upper() + ":\n"
+    new_text += """
+    {
+      break;
+    }
+    """    
     new_text += text[idx2:]
+    
     open("./superopt/lib/expr/eval.cpp", 'w').write(new_text)
 
 #   case expr::OP_DONOTSIMPLIFY_USING_SOLVER_SUBOVERFLOW:
