@@ -17,9 +17,9 @@ Z3v487=z3-4.8.7
 Z3v487_DIR=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3v487
 Z3v487_BINPATH=$(Z3v487_DIR)/usr
 
-Z3v4112=z3-4.11.2
-Z3v4112_DIR=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3v4112
-Z3v4112_BINPATH=$(Z3v4112_DIR)
+Z3v4125=z3-4.12.5
+Z3v4125_DIR=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3v4125
+Z3v4125_BINPATH=$(Z3v4125_DIR)
 
 .PHONY: all
 all: install
@@ -132,7 +132,7 @@ linkinstall:
 	$(SUDO) ln -sf $(Z3_LIB_PATH)/libz3.so* $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) ln -sf $(Z3_BINPATH)/include/z3_*.h $(SUPEROPT_INSTALL_DIR)/include
 	$(SUDO) ln -sf $(Z3v487_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin/z3v487
-	$(SUDO) ln -sf $(Z3v4112_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin/z3v4112
+	$(SUDO) ln -sf $(Z3v4125_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin/z3v4125
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
 	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
