@@ -50,6 +50,12 @@ $ sudo -E ./install-dependencies.sh
 $ make
 ```
 
+If you face an error related to missing `jemalloc.a` or `libbfd.a` or `libiberty.a`, then run the following commands (and re-run `make` afterwards):
+
+```
+$ ninja -C superopt/build/etfg_i386 prj_jemalloc prj_binutils
+```
+
 ## Running the tests
 ```
 $ cd superopt-project/superopt-tests
