@@ -56,8 +56,12 @@ install: build
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) cleaninstall
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR) linkinstall
 
-.PHONY: run_tests
-run_tests:
+.PHONY: run_tests_all
+run_tests_all:
+	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests run_tests_all
+
+.PHONY: run_tests_micro
+run_tests_micro:
 	$(MAKE) -C $(SUPEROPT_PROJECT_DIR)/superopt-tests run_tests_micro
 
 $(SUPEROPT_PROJECT_BUILD)/qcc: Makefile

@@ -62,7 +62,7 @@ $ ninja -C superopt/build/etfg_i386 prj_jemalloc prj_binutils
 
 ```
 $ cd superopt-project/superopt-tests
-$ make run_tests
+$ make run_tests_all
 ```
 
 To see results, run the following commands in a separate terminal:
