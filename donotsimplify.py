@@ -26,11 +26,8 @@ flags = ["carry",
          "uge",
          "sge"]
 
-oper3 = ["rotate_left_carry",
-         "rotate_right_carry"
-]
-
-oper2 = ["add",
+opers = [
+         "add",
          "sub",
          "and",
          "or",
@@ -51,29 +48,44 @@ oper2 = ["add",
          "mul_low",
          "imul_high",
          "imul_low",
+         "float_mul",
          "packss",
          "packus",
          "div_quotient",
          "div_remainder",
          "idiv_quotient",
-         "floatcmp",
          "idiv_remainder",
+         "float_div",
+         "floatcmp",
          "pblend",
          "pdep",
          "pext",
          "pextr",
-         "pinsr"]
-
-
-oper1 = ["blsi",
+         "pinsr",
+         "psadbw",
+         "pmovmskb",
+         "pmovzx",
+         "punpck",
+         "phadd",
+         "bt",
+         "blsi",
          "blsmask",
          "blsr",
          "bsx",
-         "zcnt"]
+         "zcnt",
+         "lahf",
+         "conv_ftoi",
+         "conv_itof",
+         "conv_ftof",
+         "fst",
+         "popcnt",
+]
+
 
 primary = [("op1", 3),
            ("op2", 4),
            ("op3", 5),
+           ("op5", 7),
            ("getflag", 3),
            ("setflags", 8),
            ("setflag_float", 4),
@@ -81,21 +93,26 @@ primary = [("op1", 3),
            ("setflag2", 4),
            ("setflag3", 5),
            ("setflag4", 6),
+           
+           ("getrm", 2),
            ("parith", 4),
-           ("readmem", 2)]
+           ("vector_packed_float", 4),
+           ("vector_scalar_float", 4),
+           ("readmem", 3),
+           ("writemem", 4)]
 
 vals = []
 
 for oper, na in primary:
     vals.append((oper, na))
-for oper in oper1:
-    vals.append((oper, 0))
-for oper in oper2:
-    vals.append((oper, 0))
-for oper in oper3:
+for oper in opers:
     vals.append((oper, 0))
 for oper in flags:
     vals.append((oper, 0))
+# for oper in oper2:
+#     vals.append((oper, 0))
+# for oper in oper3:
+#     vals.append((oper, 0))
 
 # helpers = [("getflag", 3),
 #            ("setflags", 8),
