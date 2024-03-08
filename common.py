@@ -89,13 +89,15 @@ def latex_tt(s:str):
 
 def gen_passing_latex_table(fnames):
     fdata = [read_data(f, None, False) for f in fnames]
-    names = list(map(lambda e: e['name'], fdata[0]))
+    names = list(set(sum((list(map(lambda e: e['name'], fd)) for fd in fdata), [])))
     rows = {}
     for n in names:
         alocs = []
         times = []
         for d in fdata:
             matching_entry = find_matching(d, n)
+            if matching_entry is None: # the run probably didn't finish, generate dummy value
+                matching_entry = { 'ALOC': '0', 'passing': False }
             assert matching_entry is not None
             alocs.append(matching_entry['ALOC'] if matching_entry['ALOC'] != '0' else None)
             times.append(matching_entry['eqT'] if matching_entry['passing'] else None)
