@@ -1,5 +1,5 @@
 ---
-title: Modeling Local Variables for Translation Validation
+title: Modeling Dynamic (De)Allocations of Local Memory for Translation Validation
 geometry: margin=2cm
 ---
 
@@ -48,7 +48,7 @@ We will refer to the default directory of the container, `/home/eqcheck/artifact
 3. Execute `make demo_results` (in top-level directory) to run this unit test.
 4. The command will perform the following actions in sequence:
     1. Compile the C code to generate (unoptimized) ${\tt LLVM}_d$ IR and optimized x86 assemblies using GCC and Clang/LLVM.
-    2. Pass the ${\tt LLVM}_d$ IR and assembly pair to Dynamo for refinement (equivalence) check.
+    2. Pass the ${\tt LLVM}_d$ IR and assembly pair to Dynamo for refinement check.
     3. Display the result of each invocation -- a `passed`/`FAILED` status.
     4. Generate files containing the summary of each run.
 5. The appearance of messages as shown below would confirm a successful run:
@@ -59,8 +59,8 @@ We will refer to the default directory of the container, `/home/eqcheck/artifact
    ALL.log passed
    ```
 
-6. The run summary files (generated inside `superopt-tests/` directory) can be transformed to user-friendly CSV files (with similar headers as table 4) by running `make gen_demo_tables` which will generate `tab_demo_gcc.csv` and `tab_demo_clang.csv`.
-7. The whole procedure should take around 15 minutes on the recommended machine configuration.
+6. The run summary files (generated inside `superopt-tests/` directory) can be transformed to user-friendly CSV files (with similar headers as table 4) by running `make gen_demo_tables` which will generate files `tab_demo_gcc.csv` and `tab_demo_clang.csv` for the refinement check results of GCC and Clang/LLVM compilation respectively.
+7. The whole process should take around 20 minutes on the recommended machine configuration.
 
 Instructions for interpreting the generated CSV files, `tab_demo_gcc.csv` and `tab_demo_clang.csv`, are discussed in a [later section](#howto-csv)
 
@@ -77,9 +77,15 @@ make lt_results tsvc_results      # execute the benchmarks (in parallel) and col
 make gen_graphs                   # generate the graphs from collected run summaries
 ```
 
-Dynamo is executed twice for each function in the benchmark suites [`localmem-tests`](#localmem) and [`TSVC_prior_work_locals`](#tsvc), always using the "slower" non-full interval encoding in the second run.
+Dynamo is executed twice for each function in the benchmark suites [`localmem-tests`](#localmem) and [`TSVC_prior_work_locals`](#tsvc), always using the "slower" partial-interval encoding in the second run.
 
 It takes around 75 hours to finish both set of benchmarks in a non-parallel (single CPU) run.
+A `FAILED` output status, indicating a failed refinement check, is expected for some benchmarks.
+Simlarly, some `WARNING` messages (due to the failures) of the following form are expected:
+```
+WARNING:root:./eqcheck.vilN.gcc.eqchecker.O3.i386.s/submit.vil3/stdout: Result indicator string
+not found ("Equivalence check passed")
+```
 
 The graphs are generated in the same directory and can be copied to the host from the container using the following commands:
 
@@ -97,10 +103,10 @@ After executing the benchmarks, run `make gen_lt_tables` and `make gen_tsvc_tabl
 The names of the generated files are printed by the above commands and correspond to run configuration as shown below.
 
 * `tab_lt_<compiler>.csv`: [`localmem-tests`](#localmem) run for compiler `<compiler>`.  Example: `tab_lt_clang.csv` for the Clang/LLVM run.
-* `tab_lt_<compiler>_s.csv`: [`localmem-tests`](#localmem) run for compiler `<compiler>` with forced non-full interval encoding ("slow" encoding).
+* `tab_lt_<compiler>_s.csv`: [`localmem-tests`](#localmem) run for compiler `<compiler>` with forced partial-interval encoding ("slow" encoding).
 * `tab_tsvc_g.csv`: [`TSVC_prior_work_globals`](#tsvc) run
 * `tab_tsvc_l.csv`: [`TSVC_prior_work_locals`](#tsvc) run
-* `tab_tsvc_l_s.csv`: [`TSVC_prior_work_locals`](#tsvc) run with forced non-full interval encoding ("slow" encoding)
+* `tab_tsvc_l_s.csv`: [`TSVC_prior_work_locals`](#tsvc) run with forced partial-interval encoding ("slow" encoding)
 
 ### Absence of Intel C Compiler (ICC)
 
@@ -135,7 +141,8 @@ make bzip2_results          # execute the benchmarks (in parallel) and collect r
 make gen_bzip2_tables       # generate the data for table 4 as a CSV file
 ```
 
-It takes around 80 hours to finish the benchmarks in a non-parallel (single CPU) run.
+It takes around 80 hours to finish the benchmarks in a non-parallel (single CPU) run.  The run takes a while to finish and does not print anything till it is finished, please be patient.
+A `FAILED` output status is expected as the tool is unable to validate all 72 functions of the `bzip2` binary.
 
 The output is produced in the form of a CSV file named `tab_bzip2_short.csv` in the same directory.  The CSV file structure is explained in the following section.
 
@@ -144,17 +151,17 @@ The output is produced in the form of a CSV file named `tab_bzip2_short.csv` in 
 The CSV file shares same headers as table 4 in the paper and contains summary for a single benchmark,compiler pair.  The headers are explained below.
 
 1. `name`: The name of the C function.
-2. `passing`: boolean indicating success of the equivalence check.
+2. `passing`: boolean indicating success of the refinement check.
 3. `ALOC`: assembly lines of code corresponding to the C function.
 4. `# of locals`: number of `alloc` instructions in the ${\tt LLVM}_d$ input.
-5. `eqT`: Time taken by Dynamo for computing equivalence.
+5. `eqT`: Time taken by Dynamo for computing refinement.
 6. `Nodes`: Number of nodes in the product graph.
 7. `Edges`: Number of edges in the product graph.
 8. `EXP`: Product graphs explored by the best-first search.
 9. `BT`: Number of backtrackings in the best-first search.
-10. `# of q`: Number of SMT queries made by Dynamo during the equivalence check.
+10. `# of q`: Number of SMT queries made by Dynamo during the refinement check.
 11. `Avg. qT`: Avg. time taken (in seconds) by the SMT solvers in discharging a query.
-12. `Frac_q^i`: Fraction of total SMT queries which used full interval encoding.
+12. `Frac_q^i`: Fraction of total SMT queries that used full interval encoding.
 
 It is important to note the final numbers may differ slightly from the paper numbers due to counter-example driven nature of the algorithm.  However, the difference is expected to be small.
 
@@ -164,8 +171,8 @@ Dynamo can be made to run on custom code by editing the `sample.c` file in `supe
 The following steps describe how to achieve it.
 
 1. Edit `sample.c` to add the C code.
-2. Run `make demo_results` in top-level directory.
-   * `sample.c` will be compiled to x86 assembly using GCC and Clang/LLVM at `O3` optimization level to generate assembly files.
+2. Run `make demo_results` in the top-level directory.
+   * `sample.c` will be compiled using GCC and Clang/LLVM at `O3` optimization level to generate x86 assembly files.
      * Compilation is triggered only if the C source is _newer_ than the assembly file or the assembly file is missing.
    * The assembly files are generated in `superopt-tests/build/demo` directory with names:
      * `sample.gcc.eqchecker.O3.i386.s`
@@ -186,12 +193,12 @@ build/demo/eqcheck.sample.clang.eqchecker.O3.i386.s/sample-sample.clang.eqchecke
 A "passed" output will indicate a successful run.
 Detailed passing status for each function can be seen in the CSV file.
 
-> Note that due to availability of untrusted compiler-hints for Clang/LLVM compilations, results for Clang/LLVM equivalence checks are expected to be better (than GCC) in most cases.
+> Note that due to availability of untrusted compiler-hints for Clang/LLVM compilations, results for Clang/LLVM refinement checks are expected to be better (than GCC) in most cases.
 
 ### Inspecting and editing the generated assembly {#asm}
 
-As mentioned in previous section, the assembly files are created inside the `superopt-tests/build/demo` directory with names reflecting the optimization level.
-These files can be inspected and edited and Dynamo can be made to run on the edited files.
+As mentioned in previous section, the assembly files are generated inside the `superopt-tests/build/demo` directory with names reflecting the compiler and optimization level.
+These files can be inspected and edited, and Dynamo can be made to run on the edited files.
 
 The following steps describe the process:
 
@@ -204,6 +211,8 @@ The following steps describe the process:
 3. [Re-running with edited assembly] Run `make demo_results` to run Dynamo on the edited assembly.
     *  If the source C file is edited/modified then running `make demo_results` will overwrite the edited assembly file.
     * Avoid modifying the C source file while editing the assembly file.
+    * If the edited assembly file contains error (i.e., the assembling process fails), then only the `FAILED` output status will be printed with no other explicit message indicating the assembling failure.
+    * Ensure that the edits are correct before running Dynamo.
 
 ### Running with different optimization level {#optlevel}
 
@@ -242,9 +251,9 @@ UNROLL8_CLANG := $(PROGS)
 
 Use `make demo_results` to build and run again.
 
-### Running with forced non-full interval encoding {#slow-encoding}
+### Running with forced partial-interval encoding {#slow-encoding}
 
-To additionally run the benchmark with forced non-full interval encoding (partial interval or array encoding), make the following changes in the `demo/Makefile` file:
+To additionally run the benchmark with forced partial-interval encoding, make the following changes in the `demo/Makefile` file:
 
 1. Delete `#` from line 27: `cmds: cmds_normal_run # cmds_slow_run`
 2. Delete first `#` from line 31: `collect_csv: csv_eqcheck_normal_gcc_O3 csv_eqcheck_normal_clang_O3 # csv_eqcheck_slow_gcc_O3 ...`
@@ -267,10 +276,7 @@ Three benchmark suites are available:
 #### Local allocation programming patterns benchmark suite (`localmem-tests`) {#localmem}
 
  - The `localmem-tests` directory contains the 18 benchmarks
-   - 17 of them are from table 3 of the paper and contain one C function each.
-   - 1 new benchmark, `vilN`, is included to address scalability questions raised by the reviewers.
-     - This benchmarks contains 4 functions: `vil1`, `vil2`, `vil3`, `vil4`
- - The benchmarks are compiled using three compilers -- GCC, Clang/LLVM, and ICC -- at O3 optimization level with vectorization disabled through compiler flags and `#pragma`.
+ - The benchmarks are compiled using three compilers -- GCC, Clang/LLVM, and ICC -- at O3 optimization level with vectorization disabled through compiler flags (and, if required, `#pragma` directives).
 
 #### Vectorization benchmark suite (`TSVC_prior_work_globals` and `TSVC_prior_work_locals`) {#tsvc}
 
@@ -290,9 +296,9 @@ Three benchmark suites are available:
 
 ### Input, Output and intermediate files
 
-The input files to Dynamo viz. unoptimized LLVM IR and optimized assembly code generated by the compiler are created inside a benchmark specific 'run' directory and can be inspected after finishing the equivalence check.
+The input files to Dynamo viz. unoptimized LLVM IR and optimized assembly code generated by the compiler are created inside a benchmark specific 'run' directory and can be inspected after finishing the refinement check.
 
-For source file `<SRC>` of benchmark suite `<BMC>`, compiled using compiler `<COMP>` and optimization level `<OPT>`, the location of its 'run' directory is given by:
+For source file `<SRC>` of benchmark suite `<BMC>`, compiled using compiler `<COMP>`, and optimization level `<OPT>`, the location of its 'run' directory is given by:
   
   ```
   superopt-test/build/<BMC>/eqcheck.<SRC>.<COMP>.eqchecker.<OPT>.i386.s
@@ -310,7 +316,7 @@ The 'run' directory of a benchmark is organized as follows:
 
  - `prepare` directory contains a copy the input C source (`*.c`) and the compiled object (`*.o`) files.
  - `pointsto` directory contain the graph representation of the C source (`*.etfg`).
- - `submit.<function_name>` directory contains the graph representation of the assembly program (`*.tfg`), the run log (`stdout`) and, if found, the proof file (`eq.proof`).
+ - `submit.<function_name>` directory contains, among other files, the graph representation of the assembly program (`*.tfg`), the run log (`stdout`) and, if found, the proof file (`eq.proof`).
 
 The format of the graph representation files (`*.etfg` and `*.tfg`) and proof file (`eq.proof`) is discussed in [next section](#howto-interp)
 
@@ -420,7 +426,7 @@ It contains the serialized representation of the product graph.
 Important bits (in the order as they appear) are:
 
 1. `=FunctionName`: Name of the corresponding C function.
-2. `=result`: Will be 1 if equivalence check succeeded.
+2. `=result`: Will be 1 if refinement check succeeded.
 3. `=corr_graph`: Beginning of dump of the product graph ("correlation graph").  This is followed by `=src_tfg` (graph for ${\tt LLVM}_d$, $C$) and `=dst_tfg` (graph for x86 assembly, $A$) dumps.:
    * The `=dst_tfg` dump includes the annotated edges for `alloc` and `dealloc`.
 4. `=cg_graph`: Beginning of graph structure serialization of the product graph.
@@ -488,3 +494,51 @@ We have included archived results in the `archived-results` directory.
 * The graphs from figure 8 and table 4 are present in `figs_and_tabs.tar.xz`.
   * The files generated by `make gen_bzip2_tables` (`tab_bzip2_short.csv` and `tab_bzip2_full.tex`) can be matched against the provided files in `figs_and_tabs.tar.xz`.
 * The run summary files are present in `run_summaries.tar.xz`.  These can be matched against files generated by a run in `superopt-tests/` directory.
+
+The machine configuration used for generating these results is as following:
+
+* 2 x Intel(R) Xeon(R) Gold 6238 CPU @ 2.10GHz CPUs
+* 504 GiB of RAM
+* 1 TiB SSD
+
+# Code walkthrough {#code-walkthrough}
+
+Dynamo is implemented in C++. The source code is present under `superopt` and `llvm-project` directores.
+
+As mentioned in the paper, the algorithm is implemented as a best-first search (BFS) and uses pathsets instead of individual paths for correlation, similar to Counter [Gupta et al. 2020].
+In the following discussion, we list each high-level component of our algorithm and point to the function (and file that contains the function) that implements the said component. All file paths are relative to the `superopt` directory.
+
+1. The `main` function of the tool is present in `tools/eq_main.cpp`.  The tool accepts a C source filename, an assembly filename, and (optionally) an unroll factor as arguments
+2. As a first step, both the C source and assembly are translated to their transition graphs which are represented in the code by objects of specializations of the `tfg` class.  We will refer to the transition graph representation as TFG henceforth.
+   1. For C source, the `tfg_llvm_t` specialization defined in `include/tfg/tfg_llvm.h` is used. The LLVM-to-TFG translation code is available in `../llvm-project/llvm/lib/Analysis/Superopt/sym_exec_llvm.cpp`.  The top level tool that performs this translation is defined in $\\$ `../llvm-project/llvm/tools/eqchecker/main.cpp`. 
+   2. For assembly, the `tfg_asm_t` specialization defined in `include/tfg/tfg_asm.h` is used. The Assembly-to-TFG translation is done in the `gen_tfg_for_dst_iseq` function in `lib/eqgen/dst_tfg.cpp`.
+3. An edge in the TFG (represented by `tfg_edge` defined in `include/gsupport/tfg_edge.h`) includes the transfer function (represented as `m_to_state` in `include/gsupport/edge_with_cond.h`) and an edge condition (represented by `m_pred` in `include/gsupport/edge_with_cond.h`) and UB assumptions (represented by `m_assumes` in `include/gsupport/edge_with_assumes.h`).  A UB assumption is a predicate that must hold to avoid triggering UB.
+4. The two TFGs are passed to the driver function `compute_eq_proof` which calls the BFS implementation `find_correlation`, defined in `lib/eq/correlate.cpp`.
+5. `find_correlation` constructs the product graph, represented by a `cg_with_asm_annotation` object, incrementally through a back-tracking BFS algorithm.  The `cg_with_asm_annotation` class is defined in `include/eq/cg_with_asm_annotation.h` which derives from `class corr_graph` (defined in `include/eq/corr_graph.h`).
+6. The `corr_graph` class implements a product graph that encodes the path correlations through its edges and the (de)alloc$_{s,v}$ annotations that specify the variable-address correlations ($\mathcal{D}_X$) through the member fields `m_pc_local_addr_assumes_for_alloc` and `m_pc_local_addr_assumes_for_dealloc`. A node and an edge in the product graph are represented by `class corr_graph_node` and `class corr_graph_edge` respectively (in `include/gsupport/corr_graph_edge.h`).  The variable-address correlations are represented through `class pc_local_addr_guesses_t` (in `include/gsupport/pc_local_addr_guesses.h`).
+7. A `corr_graph_edge` consists of two pathsets, one for the C program's TFG and another for the assembly program's TFG.  These pathsets are represented through member fields `m_src_edge` and `m_dst_edge` (both of type `shared_ptr<tfg_full_pathset_t>`) in a `corr_graph_edge` object.
+8. The type `tfg_full_pathset_t` is a specialization of the `graph_full_pathset_t` class (defined in `include/gsupport/graph_full_pathset.h`). The `graph_full_pathset_t` class encodes the from and to PCs, the unroll factor (as defined in the Counter paper), and the actual edge composition `m_graph_ec`.  The edge-composition is represented as a `graph_edge_composition_t` (in `include/gsupport/graph_ec.h`) which in turn is reprsented as a series-parallel directed acyclic graph on edges.  The representation of a series-parallel composition (as used for representing an edge-composition) is defined in `include/support/serpar_composition.h`.
+9. The invariants network ($\phi_X$) is part of the `cg_with_asm_annotation` object (which is formed through a hierarchy of classes layered upon the base class `graph` defined in `include/graph/graph.h`). The invariants network is represented by the member field `m_invariants_state_map` of `class graph_with_guessing` (defined in `include/graph/graph_with_guessing.h`.
+10. `get_next_dst_edge_composition_to_correlate` (defined in `lib/eq/correlate.cpp`) enumerates the set of $A$ TFG pathset choices (`getAllSimplePathsBetweenCutpoints` in the paper).
+    1. The function `get_dst_unrolled_paths_from_pc` (defined in `lib/eq/correlate.cpp`) returns a set of pathsets where a pathset is a set of paths from a given cutpoint to another cutpoint without an intermediate cutpoint.
+    2. Pathset enumeration ensures the constituent paths are mutually exclusive, ensuring (Mutex$\ddot{A}$) requirement for a single pathset.
+11. `get_next_potential_correlations` (defined in `lib/eq/correlate.cpp`) enumerates a set of pair of ($C$ TFG pathset, (potentially empty) $A$ annotation) possibilities corresponding to a given $A$ pathset ($correlatedPathsInCOptions$ and $asmAnnotOptions$ in the paper).
+    1. `get_path_correlations_for_dst_path` (defined in `lib/eq/correlate.cpp`) enumerates a set of candidate $C$ pathsets with unrollings up to the `unroll_factor` (passed as a command line argument).
+        1. The (Similar-speed) is ensured during this enumeration by only enumerating those possibilities that do not result in an empty cycle.
+        2. The enumeration algorithm ensures (Mutex$C$) holds on the enumerated pathsets (see the Counter paper for details on the algorithm).
+        3. (Termination) is ensured by only enumerating pathsets with exit sink nodes if the input $A$ pathset has an exit sink node.
+    4. `corr_graph_generate_local_addr_guesses_for_locals` (defined in `lib/eq/corr_graph.cpp`) guesses a set of annotations for a given $A$,$C$ pathset pair.
+12. `corr_graph_add_correlation` (defined in `lib/eq/correlate.cpp`) ensures (SingletonIO) requirement and constructs the `cg_with_asm_annotation` edges corresponding to the input triple, $A$ pathset, $C$ pathset, and (potentially empty) $A$ annotation.
+    1. The assembly edges are annotated in `update_dst_edge_for_local_allocations_and_deallocations` and the paths are broken into singleton-IO paths (`breakIntoSingletonIOPaths` in the paper) and a set of edge product-graph edges are created in $\\$ `corr_graph_create_and_add_cg_edge_composition_using_src_and_dst_fp`. All these functions are defined in `lib/eq/corr_graph.cpp`.
+13. The function `cg_check_new_cg_ec` (defined in `lib/eq/corr_graph.cpp`) calls the counterexample-guided invariant inference algorithm (`inferInvariantsAndCounterexamples` in the paper) and performs the "well-formedness" checks which implement the stability requirements and (a part of) the soundness requirements (`checkRequirementsExceptCoverage`).
+14. The candidate invariants at a node are enumerated in the `compute_expr_eqclasses_at_pc` function defined in `lib/eq/corr_graph.cpp`.
+     * For example, `compute_mem_allocs_are_equal_eqclasses` computes the [AllocEq] shape and `compute_mem_eqclasses` computes the [MemEq] shape (required for the (MemEq) requirement).
+15. The "well-formedness" conditions are computed in the `cg_compute_well_formedness_conditions_for_edge` function (defined in `lib/eq/corr_graph.cpp`).
+     1. The `WFCOND_DST_EDGECOND_IMPLIES_SRC_EDGECOND` condition is for the (Coverage$C$) requirement.
+     2. Similarly, the functions `cg_compute_well_formedness_conditions_for_alloc_edge`, etc. (called at the end) compute the (Well\-formedness) and some of the (Safety) requirement conditions.
+16. The SMT encoding for the TFG constructs is available in `lib/expr/expr_to_z3_expr.cpp` file.
+     1. The three types of encodings, namely `FULL_ARRAY`, `PARTIAL_ARRAY`, and `INTERVAL` (defined in `include/expr/solver_encoding_attrs.h`) correspond to the full-array, partial-interval, and full-interval encodings in the paper respectively.
+     2. The `gen_region_agrees_with_memlabel_constraints_for_z3_helper` implements the $\alpha{}\in{}\Sigma^r$ predicate described in the paper (for each distinct region identifier $r$).
+     3. A set of region identifiers is identified by `class memlabel` (defined in `include/expr/memlabel.h`). Each different region identifier type is represented in `class alias_region` (in `include/expr/alias_region.h`). For example, `alias_type_symbol`, `alias_type_local`, `alias_type_stack`, `alias_type_heap`, `alias_type_free` correspond to $g$, $z$, $st$, $hp$, and $\mathtt{free}$ respectively.
+17. The (Coverage$\ddot{A}$), (Inductive), and (Well\-Formedness) requirements are (double) checked in the `check_equivalence_proof` function defined in `lib/eq/cg_with_inductive_preds.cpp` through calls to `cg_outgoing_edges_at_pc_cover_all_possibilities` (`checkCoverageRequirements` in the paper), `check_inductive_preds_on_edge`, and `check_wfconds_on_edge` functions respectively.
+18. The (MAC) and parts of the (Safety) requirements are checked in the `check_safety` function defined in `lib/eq/cg_with_safety.cpp`. For (MAC), the `get_potentially_unsafe_heap_accesses` function implements the check.  For (Safety) due to division-by-zero in $A$, `get_potentially_zero_divisors` implements the check.
