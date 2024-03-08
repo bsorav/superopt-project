@@ -1,4 +1,5 @@
 import sys
+import matplotlib.pyplot as plt
 
 freq_dic = {}
 insn_dic = {}
@@ -16,7 +17,7 @@ def getint(x):
     return int(x)
 
 def doprint(reg, insn):
-    if reg == "=exreg.0.0" and insn == "sbbb":
+    if reg == "=exreg.0.0" and insn == "rclb":
         return True
     return False
 
@@ -38,8 +39,8 @@ def traverse_dag(depends, start, reg, insn, lines):
         traversed[x] = True
         if dp:
             print(lines[x])
-        # if lines[x].find("donotsimplify") == -1:
-        cnt += 1
+        if lines[x].find("donotsimplify") == -1:
+            cnt += 1
         # setvals.add(x)
         for c in depends[x]:
             if not traversed[c]:
@@ -254,3 +255,13 @@ for i in range(mmax+1):
         continue
     print(i, ":", arr[i])
     print()
+
+freq_counts = []
+
+for insn in insn_dic.keys():
+    mp, reg = insn_dic[insn]
+    freq_counts.append(mp)
+
+# print(freq_counts)
+# # plt.hist(freq_counts)
+# # plt.save_fig("hist.png")

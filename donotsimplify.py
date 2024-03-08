@@ -93,7 +93,6 @@ primary = [("op1", 3),
            ("setflag2", 4),
            ("setflag3", 5),
            ("setflag4", 6),
-           
            ("getrm", 2),
            ("parith", 4),
            ("vector_packed_float", 4),
@@ -562,6 +561,38 @@ def parse13():
         i += 1
     new_text += text[idx2:]
     open("./superopt/lib/expr/expr.cpp", 'w').write(new_text)
+
+def parse14():
+    filename = "./superopt/lib/expr/expr.cpp"
+    text = open(filename).read()
+    fp = """expr::get_donotsimpify_op_label_string(expr::operation_kind op)"""
+    idx0 = text.find(fp)
+    findstart = "case expr::OP_DONOTSIMPLIFY_USING_SOLVER_"
+    findend = """default"""
+    idx1 = text.find(findstart, idx0)
+    idx2 = text.find(findend, idx1)
+    new_text = text[:idx1]
+    for v in opers:
+        new_text += "  case expr::OP_DONOTSIMPLIFY_USING_SOLVER_" + v.upper() + ":\n"
+        new_text += "    return \"" + v + "\";\n"
+    new_text += text[idx2:]
+    open(filename, 'w').write(new_text)
+
+def parse15():
+    filename = "./superopt/lib/expr/expr.cpp"
+    text = open(filename).read()
+    fp = """expr::get_donotsimpify_flag_label_string(expr::operation_kind op)"""
+    idx0 = text.find(fp)
+    findstart = "case expr::OP_DONOTSIMPLIFY_USING_SOLVER_"
+    findend = """default"""
+    idx1 = text.find(findstart, idx0)
+    idx2 = text.find(findend, idx1)
+    new_text = text[:idx1]
+    for v in flags:
+        new_text += "  case expr::OP_DONOTSIMPLIFY_USING_SOLVER_" + v.upper() + ":\n"
+        new_text += "    return \"" + v + "\";\n"
+    new_text += text[idx2:]
+    open(filename, 'w').write(new_text)
     
 parse1()
 parse2()
@@ -576,3 +607,5 @@ parse10()
 parse11()
 parse12()
 parse13()
+parse14()
+parse15()
