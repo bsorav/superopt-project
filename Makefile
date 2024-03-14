@@ -4,6 +4,19 @@ SUPEROPT_INSTALL_FILES_DIR ?= $(SUPEROPT_INSTALL_DIR)
 SUPEROPT_PROJECT_BUILD = $(SUPEROPT_PROJECT_DIR)/build
 SUDO ?= #sudo # sudo is not available in CI
 
+# ...
+define \n
+
+
+endef
+
+# sanity check
+ifeq ($(CURDIR), $(SUPEROPT_PROJECT_DIR))
+  $(info Building in $(SUPEROPT_PROJECT_DIR)...)
+else
+  $(error Makefile directory does not match SUPEROPT_PROJECT_DIR!$(\n)   Makefile directory   = $(CURDIR)$(\n)   SUPEROPT_PROJECT_DIR = $(SUPEROPT_PROJECT_DIR)$(\n))
+endif
+
 SHELL := /bin/bash -O failglob
 export SUPEROPT_TARS_DIR ?= $(SUPEROPT_PROJECT_DIR)/tars
 
