@@ -74,3 +74,14 @@ Caveat: it seems that record and replay must be on the same machine. If
 record and replay are on different machines, this does not work, perhaps
 because of compiler/library incompatibility while compiling the
 jemalloc library (not sure, needs investigation)
+
+# Build failures
+
+## Due to 'mtime changed' of precompiled-headers (`cmake_pch.hxx.pch`)
+
+Delete all `cmake_pch.hxx.pch` files and rebuild:
+
+```
+$ find -name 'cmake_pch.hxx.pch` -delete
+```
+
