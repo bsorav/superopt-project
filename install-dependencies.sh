@@ -10,16 +10,18 @@ then
   exit
 fi
 
+GCC_VERSION=11
+LLVM_VERSION=12
 build="make cmake flex bison unzip ninja-build python3 python3-pip git"
-llvm="llvm-11 llvm-11-dev clang-11 lld-11"
-libs="gcc-multilib g++-multilib libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-8-dev"
+llvm="llvm-${LLVM_VERSION} llvm-${LLVM_VERSION}-dev clang-${LLVM_VERSION} lld-${LLVM_VERSION}"
+libs="gcc-multilib g++-multilib libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-11-dev"
 yices="gperf libgmp3-dev autoconf"
-superopt="expect libtirpc-dev libtirpc3 libtirpc-common rpcbind libyaml-cpp0.6 libyaml-cpp-dev"
-tests="g++-8 libc6-dev-i386 gcc-8-multilib g++-8-multilib linux-libc-dev:i386 parallel"
+superopt="expect libtirpc-dev libtirpc3 libtirpc-common rpcbind libyaml-cpp-dev"
+tests="g++-${GCC_VERSION} libc6-dev-i386 gcc-${GCC_VERSION}-multilib g++-${GCC_VERSION}-multilib linux-libc-dev:i386 parallel"
 vscode_extension="libsecret-1-dev"
 scanview="python python-dev"
 
-apt-get install -y $build $llvm $libs $yices $superopt $tests $vscode_extension $scanview
+apt-get install -y $build $llvm $libs $yices $superopt $tests $vscode_extension #$scanview
 
 # optional
 system="sudo vim zsh htop iotop net-tools ssh cscope exuberant-ctags"
