@@ -34,6 +34,9 @@ Z3v4125=z3-4.12.5
 Z3v4125_DIR=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3v4125
 Z3v4125_BINPATH=$(Z3v4125_DIR)
 
+binutils_ver=binutils-2.21
+binutils_for_as_ver=binutils-2.42
+
 .PHONY: all
 all: install
 
@@ -113,8 +116,8 @@ linkinstall:
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-as $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/opt $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llc $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/ld $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/as $(SUPEROPT_INSTALL_DIR)/bin/qcc-as
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/$(binutils_for_as_ver)-install/bin/ld $(SUPEROPT_INSTALL_DIR)/bin/qcc-ld
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/$(binutils_for_as_ver)-install/bin/as $(SUPEROPT_INSTALL_DIR)/bin/qcc-as
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_INSTALL_DIR)/bin/eq32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_INSTALL_DIR)/bin/eqgen32
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc-codegen $(SUPEROPT_INSTALL_DIR)/bin/qcc-codegen32
@@ -205,8 +208,8 @@ release:
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-as $(SUPEROPT_INSTALL_FILES_DIR)/bin/llvm-as
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/opt $(SUPEROPT_INSTALL_FILES_DIR)/bin/opt
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llc $(SUPEROPT_INSTALL_FILES_DIR)/bin/llc
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/ld $(SUPEROPT_INSTALL_FILES_DIR)/bin/qcc-ld
-	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/binutils-2.21-install/bin/as $(SUPEROPT_INSTALL_FILES_DIR)/bin/qcc-as
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/$(binutils_for_as_ver)-install/bin/ld $(SUPEROPT_INSTALL_FILES_DIR)/bin/qcc-ld
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/$(binutils_for_as_ver)-install/bin/as $(SUPEROPT_INSTALL_FILES_DIR)/bin/qcc-as
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eq $(SUPEROPT_INSTALL_FILES_DIR)/bin/eq32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/eqgen $(SUPEROPT_INSTALL_FILES_DIR)/bin/eqgen32
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/qcc-codegen $(SUPEROPT_INSTALL_FILES_DIR)/bin/qcc-codegen32
