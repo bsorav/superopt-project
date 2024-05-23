@@ -10,3 +10,5 @@ eqfiles
 eqlogs_*
 usr
 qcc_*
+fbgen-build/
+.vscode/
