@@ -23,7 +23,7 @@ $ eq --dyn-debug=oopsla_log,print_progress_debug,update_invariant_state_for_edge
 # Debugging old\_preds != new\_preds
 
 ```
-update_invariant_state_for_edges32 --dyn-debug=print_progress_debug,ce_add=2,smt_query=2,ce_eval=2,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_dump,dst_to_src_submap_debug=2 a.ui
+update_invariant_state_for_edges32 --dyn-debug=print_progress_debug,ce_add=2,smt_query=2,ce_eval=2,ignore_replay_debug,add_point_using_ce=2,ce_translate=2,decide_hoare_triple_dump,prove_dump,dst_to_src_submap_debug=2 a.ui
 ```
 1. Look for the last decide-hoare-triple-dump
 2. Look for "edge = &lt;CG-EDGE&gt;[src: ..., dst: ...] (printed from within graph_counter_example_translate_on_edge_helper)
