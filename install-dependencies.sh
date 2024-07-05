@@ -13,8 +13,13 @@ fi
 GCC_VERSION=11
 LLVM_VERSION=12
 build="make cmake flex bison unzip ninja-build python3 python3-pip git"
+<<<<<<< HEAD
 llvm="llvm-${LLVM_VERSION} llvm-${LLVM_VERSION}-dev clang-${LLVM_VERSION} lld-${LLVM_VERSION}"
 libs="gcc-multilib g++-multilib libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-11-dev"
+=======
+llvm="llvm-12 llvm-12-dev clang-12 lld-12"
+libs="gcc-multilib g++-multilib libiberty-dev binutils-dev zlib1g-dev libgmp-dev libelf-dev libmagic-dev libssl-dev libswitch-perl ocaml-nox lib32stdc++-8-dev"
+>>>>>>> misrarules
 yices="gperf libgmp3-dev autoconf"
 superopt="expect libtirpc-dev libtirpc3 libtirpc-common rpcbind libyaml-cpp-dev"
 tests="g++-${GCC_VERSION} libc6-dev-i386 gcc-${GCC_VERSION}-multilib g++-${GCC_VERSION}-multilib linux-libc-dev:i386 parallel"

@@ -1,14 +1,6 @@
-# Building
+# Building and Running
 
-* Install dependencies using script: `sudo ./install-dependencies.sh`
-* Create the boost tarfile: `make -C tars install_boost`
-* `make install`
-
-# Testing
-
-```
-cd superopt-tests && make clangv_Od > clangv_Od.out & ../superopt/utils/show-results build
-```
+See [Getting Started](doc/GettingStarted.md)
 
 # Viewing the proofs generated from testing
 ```
