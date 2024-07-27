@@ -109,3 +109,21 @@ Some subtleties:
   - A fixpoint computation is required because the existing `(d,s)` mappings are used during each check.
   - Thus, for soundness, it is necessary that in a given iteration, all picked `(d,s)` pairs are correct before we can return
   - The fixpoint solution is guaranteed to be reached and to be optimal
+
+# Getting started
+
+1. Clone the `perf-18.1.2` branch of the `superopt-project` repo (and update the submodules)
+2. Run `make run_tests_bzip2` in the `superopt-tests` directory
+3. Run `show-results build/bzip2/clangv.bzip2.O0` to see the progress of these tests
+4. You may find that one or more of the following equivalence checks time out. The `[qtN]` annotation indicates that `N` SMT queries timed out
+   - loadAndRLEsource
+   - qSort3
+   - sendMTFValues
+   - sortIt
+5. Look at the `stdout` file for one of the functions, say `submit.loadAndRLEsource/stdout` and search for `WARNING : Solver timeout`
+6. You may find a dump of the `decide_hoare_triple` query in a line that looks like the following.  We call this file the DHT dump (DHT stands for `decide_hoare_triple`)
+```
+decide_hoare_triple query timed out with timeout-all-proof-path-optimizations-num-smt-queries-is-1! filename /tmp/smt-solver-tmp-files/sbansal.2494373/decide_hoare_triple.exit.memeq.symbol.13.from_pcLwhile.body%1%fcallEnd_Lwhile.body.inum50%1%fcallEnd.path_hash391e58fbe992d7c8cbad28ebb997827.pre97.0.gz
+```
+7. Save the DHT dump.  Inside the DHT dump, you will find the exact DHT query, which will also include the `d2s_state` on the CG edge on which the DHT query was executeed.
+8. Identify why the query was not trivial, and how we could (manually) change the d2s state in the DHT dump so that the query may become fast to discharge.
