@@ -126,4 +126,7 @@ Some subtleties:
 decide_hoare_triple query timed out with timeout-all-proof-path-optimizations-num-smt-queries-is-1! filename /tmp/smt-solver-tmp-files/sbansal.2494373/decide_hoare_triple.exit.memeq.symbol.13.from_pcLwhile.body%1%fcallEnd_Lwhile.body.inum50%1%fcallEnd.path_hash391e58fbe992d7c8cbad28ebb997827.pre97.0.gz
 ```
 7. Save the DHT dump.  Inside the DHT dump, you will find the exact DHT query, which will also include the `d2s_state` on the CG edge on which the DHT query was executeed.
-8. Identify why the query was not trivial, and how we could (manually) change the d2s state in the DHT dump so that the query may become fast to discharge.
+8. Identify why the query was not trivial.  The query may not be fast because of one of the following reasons
+   a. The query was not provable, and so `d2s` did not help (perhaps expectedly)
+   b. The query was provable, but `d2s` did not help. This is perhaps unexpected because we are only validating an `O0` compilation where no optimizations are present, and so `d2s` should ideally have been able to correlate all intermediate dst values.  In this case, identify how we could (manually) change the d2s state in the DHT dump so that the query may become fast to discharge.  
+9. Once we have identified the missing pieces of information in the `d2s_state`, we should identify the logic that needs to be implemented in the `d2s` framework to solve this problem in the future (automatically).
