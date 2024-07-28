@@ -132,6 +132,9 @@ decide_hoare_triple query timed out with timeout-all-proof-path-optimizations-nu
 9. Once we have identified the missing pieces of information in the `d2s_state`, we should identify the logic that needs to be implemented in the `d2s` framework to solve this problem in the future (automatically).
 
 ## How to tell if a query is expected to be provable
+There are two things to check: (1) is the current CG the correct one, and (2) is the DHT query expected to be provable
+
+Is the current CG the correct one?
 - As the correlation algorithm proceeds, edges are added incrementally, one at a time, to a CG.
 - Multiple CGs are explored in a search tree, and a best-first-search algorithm is employed (Counter)
 - Each enumerated (potentially partial) CG is given a distinct name (e.g., `simpleSort.A1.B5.C2.D2.E2.F1.G1.H1.I1.J1.K1.L1.M1`) which names the path from the root of the search tree to this CG in the search tree.  The letters `A`, `B`, ... represent the levels of the tree, and the numbers represent the index of the edge that needs to be followed at that level, e.g., follow the fifth edge in the outgoing edges at level `B` of the `A1` node in the search tree.
@@ -152,3 +155,11 @@ decide_hoare_triple query timed out with timeout-all-proof-path-optimizations-nu
   - You can take a look at the edge correlations to convince yourself that the current correlation is the correct (or expected one) by checking that all the PCs in the CG are formed by the correlated PCs in the src and dst programs
     - For example, at `O0`, `Lwhile.cond%1%bbentry_Lwhile.cond.inum20%1%bbentry` seems like a correct PC correlation, because the LLVM PC and the LLVM name of the assembly PC as obtained through the debugging headers are identical, `while.cond` in this case.  On the other hand, `Lwhile.cond%1%bbentry_Lwhile.cond2.inum30%1%bbentry` would be an incorrect PC correlation.
     - Further the unroll factors (indicated by `mu` and `delta` values) should be 1 for all the edges at `O0`
+
+Is the DHT query expected to be provable?
+- In the DHT dump, the the "=pth" and the "=post" indicate the path and the postcondition.
+- The "=Comment" field indicates why this DHT query was generated.  These comments or their prefixes are defined in `superopt/include/support/comments.h` where Here are some example comments and their interpretations:
+  - `d2s-semantic.*` : These are queries created by the `d2s` logic, and they need not be provable (and so their timeout is potentially expected)
+  - `exit.boolbv`, etc.: These are queries that attempt to prove the equality of return values, they are expected to be provable (and so they are not expected to timeout with d2s)
+  -  `linear` : These are queries created due to our counterexample-guided invariant inference algorithm (described in Counter). At `O0`, this inference is ideally expected to yield all the equality relations between bitvectors.  If the postcondition equates src and dst expressions such that they are expected to be equal, this query is not expected to timeout with d2s.  In fact, even if the expressions are not expected to be equal, the query should still perhaps not timeout with d2s.  This can only be confirmed through experimentation.
+  - `houdini-guess` : This is a houdini guess due to the guess-and-check invariant inference algorithm; usually expected to be provable and not timeout in the presence of `d2s`.
