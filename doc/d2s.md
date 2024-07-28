@@ -127,6 +127,28 @@ decide_hoare_triple query timed out with timeout-all-proof-path-optimizations-nu
 ```
 7. Save the DHT dump.  Inside the DHT dump, you will find the exact DHT query, which will also include the `d2s_state` on the CG edge on which the DHT query was executeed.  You can use the `decide_hoare_triple` tool (in `tools/decide_hoare_triple.cpp`) to execute the query in this DHT dump.
 8. Identify why the query was not trivial.  The query may not be fast because of one of the following reasons
-   a. The query was not provable, and so `d2s` did not help (perhaps expectedly)
+   a. The query was not provable, and so `d2s` did not help (perhaps expectedly).  Please see "How to tell if a query is expected to be provable"
    b. The query was provable, but `d2s` did not help. This is perhaps unexpected because we are only validating an `O0` compilation where no optimizations are present, and so `d2s` should ideally have been able to correlate all intermediate dst values.  In this case, identify how we could (manually) change the d2s state in the DHT dump so that the query may become fast to discharge.  
 9. Once we have identified the missing pieces of information in the `d2s_state`, we should identify the logic that needs to be implemented in the `d2s` framework to solve this problem in the future (automatically).
+
+## How to tell if a query is expected to be provable
+- As the correlation algorithm proceeds, edges are added incrementally, one at a time, to a CG.
+- Multiple CGs are explored in a search tree, and a best-first-search algorithm is employed (Counter)
+- Each enumerated (potentially partial) CG is given a distinct name (e.g., `simpleSort.A1.B5.C2.D2.E2.F1.G1.H1.I1.J1.K1.L1.M1`) which names the path from the root of the search tree to this CG in the search tree.  The letters `A`, `B`, ... represent the levels of the tree, and the numbers represent the index of the edge that needs to be followed at that level, e.g., follow the fifth edge in the outgoing edges at level `B` of the `A1` node in the search tree.
+- At `O0`, the required CG is the trivial CG that has a one-to-one correspondence between paths in the src (LLVM) program and the dst (assembly program)
+- One of the common questions that a developer needs to ask is: "Are we on the correct CG?", i.e., are we looking at the correct set of correlated paths (for the correlations performed so far).
+  - To facilitate this, we use the debugging headers to label the basic blocks in the assembly program with their LLVM counterparts.
+  - For example, if a basic block in the assembly program starts at the 20th instruction (called `i20`), and it corresponds to the basic block named `while.cond` in the LLVM program, then the corresponding PC is `Lwhile.cond.inum20%1%bbentry`
+    - A PC is divided into three parts, separated by the `%` delimiter.  The first part is called the index
+      - The `while.cond` label is due to the corresponding LLVM basic block (which is always identifiable at `O0`)
+      - The `inum20` corresponds to `i20`
+    - The second part is called the subindex
+      - For assembly, this subindex is usually `0`
+      - For LLVM, this subindex represents the index of the corresponding instruction in the basic block, counting only non-phi instructions.  For example, the first non-phi instruction in the basic block has a PC with subindex 0, the second has subindex 1, and so on...
+    - The third part is called the subsubindex
+      - If a single (LLVM or assembly) instruction requires multiple edges for its logical modeling, then we use the subsubindex to name the intermediate PCs.
+      - We also use subsubindex to explicitly identify PCs that mark the start of a basic block (using a subsubindex of `bbentry`) from others (using a subsubindex of `d` which stands for "default")
+  - To check if we are on the correct path, search for the last phrase `Chose (for CE propagation)...` or `Chose (after CE propagation)..`.  You can be sure that the current query is being discharged on this chosen CG.
+  - You can take a look at the edge correlations to convince yourself that the current correlation is the correct (or expected one) by checking that all the PCs in the CG are formed by the correlated PCs in the src and dst programs
+    - For example, at `O0`, `Lwhile.cond%1%bbentry_Lwhile.cond.inum20%1%bbentry` seems like a correct PC correlation, because the LLVM PC and the LLVM name of the assembly PC as obtained through the debugging headers are identical, `while.cond` in this case.  On the other hand, `Lwhile.cond%1%bbentry_Lwhile.cond2.inum30%1%bbentry` would be an incorrect PC correlation.
+    - Further the unroll factors (indicated by `mu` and `delta` values) should be 1 for all the edges at `O0`
