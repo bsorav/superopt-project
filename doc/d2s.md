@@ -180,3 +180,5 @@ Here is a proposal to implement the logic for such tightening:
   - `d2s_submap_weaken_using_ce`
   - `d2s_submap_remove_d2s_mapping`
 - Let's maintain a set of "memlabel substitution" entries in `d2s_submap_t` that should be eagerly updated on every mutation.
+  - if the addr, count, and memallocs are equal, then the memlabels can be tightened
+  - if the memallocs are equal, and the dst-addr and dst-count indicate that they definitely lie outside the local variable regions, then the dst-memlabel can be tightened to "stack".
