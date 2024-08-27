@@ -182,3 +182,4 @@ Here is a proposal to implement the logic for such tightening:
 - Let's maintain a set of "memlabel substitution" entries in `d2s_submap_t` that should be eagerly updated on every mutation.
   - if the addr, count, and memallocs are equal, then the memlabels can be tightened
   - if the memallocs are equal, and the dst-addr and dst-count indicate that they definitely lie outside the local variable regions, then the dst-memlabel can be tightened from "locals+stack" to "stack".
+- A yardstick is that after `d2s`, all memlabels should be singleton.  Another indicator is that the syntactic structure of the src and dst sides of a "prove" query (FOL query) should be identical.
