@@ -163,3 +163,20 @@ Is the DHT query expected to be provable?
   - `exit.boolbv`, etc.: These are queries that attempt to prove the equality of return values, they are expected to be provable (and so they are not expected to timeout with d2s)
   -  `linear` : These are queries created due to our counterexample-guided invariant inference algorithm (described in Counter). At `O0`, this inference is ideally expected to yield all the equality relations between bitvectors.  If the postcondition equates src and dst expressions such that they are expected to be equal, this query is not expected to timeout with d2s.  In fact, even if the expressions are not expected to be equal, the query should still perhaps not timeout with d2s.  This can only be confirmed through experimentation.
   - `houdini-guess` : This is a houdini guess due to the guess-and-check invariant inference algorithm; usually expected to be provable and not timeout in the presence of `d2s`.
+
+# Tightening the dst memlabels
+
+A points-to analysis, based on Andersen's algorithm, is used to conservatively identify the memory regions that an address may point to, for a read (select) or write (store) to memory (see OOPSLA24 paper for details). In assembly however, Andersen's analysis is inadequate for disambiguating between accesses to multiple local variables or between accesses to a local variable and to a stack slot.  Thus, the execution of a points-to analysis on the assembly program yields over-approximate results that may cause the proof queries (esp. memmasks-are-equal queries) to take much longer than desired.
+
+If the results of a points-to analysis are precise, our simplifier is able to simplify the expressions, e.g., through select-over-store optimizations where a store to a distinct memlabel can be removed, or a memmasks-are-equal-over-store optimization where again a store to a distinct memlabel can be removed.  However, imprecise results preclude such simplification opportunities.
+
+Using d2s, we identify equality relations between memory-accesses addresses (`TFG_EC_SSA_ADDR_NAME_PREFIX`) and mem-alloc variables (`TFG_EC_SSA_MEMALLOC_NAME_PREFIX`). We also identify equalities at segment-granularity (through memlabel identifiers) for memory variables (`TFG_EC_SSA_MEM_NAME_PREFIX`). Given a set of such equality relations, it is possible to "tighten" the corresponding memlabels for memory accesses in dst.  For example, if the address, count, and mem-alloc variables of two accesses are identical, then the intersection of the two memlabels can be used to tighten the memlabel for each access.
+
+Here is a proposal to implement the logic for such tightening:
+- The `d2s_submap_t` contains the substitution map (or more precisely, the transformation map) that is used to transform the dst expressions using d2s info.
+- Following are the member functions that mutate an object of type `d2s_submap_t`:
+  - `create_dst_to_src_submap`
+  - `add_d2s_mapping`
+  - `d2s_submap_weaken_using_ce`
+  - `d2s_submap_remove_d2s_mapping`
+- Let's maintain a set of "memlabel substitution" entries in `d2s_submap_t` that should be eagerly updated on every mutation.
