@@ -184,9 +184,9 @@ Here is a proposal to implement the logic for such tightening:
   - if the memallocs are equal, and the dst-addr and dst-count indicate that they definitely lie outside the local variable regions, then the dst-memlabel can be tightened from "locals+stack" to "stack".
 - A yardstick is that after `d2s`, `stack` should only appear as a singleton memlabel in dst.  Another indicator is that the syntactic structure of the src and dst sides of a "prove" query (FOL query) should be identical.
 
-# Introducing `region_agrees_with_memlabel_implies_addr_above_stackpointer`
+# Introducing `region_agrees_with_stack_implies_addr_above_stackpointer`
 - In the paper, we explicitly disambiguate between the `stack` and the `free` regions in assembly, by updating the memalloc state upon every stackpointer update
 - In the code, we do not update the memalloc state upon every stackpointer update.  Instead, the stack is treated equivalently to the free space.  We only check that an access to the stack region should always be above the current stackpointer.
 - These checks are currently done through `implies(region_agrees_with_memlabel(..., addr, ..., ml-stack), bvuge(addr, cur_sp))` which can become unwieldy for the solver to handle
-- A potential solution is to introduce a higher-level operator called `region_agrees_with_memlabel_implies_addr_above_stackpointer`; during the encoding of this operator, we can simply check if the addr is certainly a non-stack ml (perhaps through `expr_simplify::is_overlapping_syntactic`), and if so, reduce this predicate to `true` at encoding time itself.
+- A potential solution is to introduce a higher-level operator called `region_agrees_with_stack_implies_addr_above_stackpointer`; during the encoding of this operator, we can simply check if the addr is certainly a non-stack ml (perhaps through `expr_simplify::is_overlapping_syntactic`), and if so, reduce this predicate to `true` at encoding time itself.
 
