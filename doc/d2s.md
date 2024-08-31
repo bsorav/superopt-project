@@ -190,3 +190,15 @@ Here is a proposal to implement the logic for such tightening:
 - These checks are currently done through `implies(region_agrees_with_memlabel(..., addr, ..., ml-stack), bvuge(addr, cur_sp))` which can become unwieldy for the solver to handle
 - A potential solution is to introduce a higher-level operator called `region_agrees_with_stack_implies_addr_above_stackpointer`; during the encoding of this operator, we can simply check if the addr is certainly a non-stack ml (perhaps through `expr_simplify::is_overlapping_syntactic`), and if so, reduce this predicate to `true` at encoding time itself.
 
+
+# Edge conditions
+- A `cg-edge` correlates a `dst-pathset` with a `src-pathset`, such that:
+  - if a path in `dst-pathset` is taken in dst, then one of the paths in the `src-pathset` must be taken in src
+- A `src-pathset` may have extra paths that are never taken (for any path taken in dst)
+- The presence of these extra paths in `src-pathset` has been identified as a problem with SMT query discharge
+  - Consider an example where a `dst-pathset` contains one path, Ad, and a `src-pathset` contains two paths, As and Bs.
+  - The Bs path is extra and is never taken on this `cg-edge`
+  - However, the weakest-precondition now contains extra if-then-else (`ite`) branches that encode the conditions and transfer functions of Bs
+  - We need `d2s` relationships between the edge conditions of the edges constiuting Bs and the constants `true` and `false`.  We also perhaps need `d2s` relationships between an edge condition in src and a correlated edge condition in dst.
+- Solution: introduce extra SSA variables for each non-trivial edge condition in both src and dst (during d2s construction of `tfg_ec_ssa_t`, similar to how it is done for `TFG_EC_SSA_ADDR_NAME_PREFIX` for example), and try to correlate them across src and dst. 
+  - Further, correlate the SSA variables for src edge conditions with `true` and `false` constants.  Notice that no dst variable is involved here; instead the `true` and `false` constants behave as "dst variables".
