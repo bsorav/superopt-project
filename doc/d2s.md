@@ -200,5 +200,5 @@ Here is a proposal to implement the logic for such tightening:
   - The Bs path is extra and is never taken on this `cg-edge`
   - However, the weakest-precondition now contains extra if-then-else (`ite`) branches that encode the conditions and transfer functions of Bs
   - We need `d2s` relationships between the edge conditions of the edges constiuting Bs and the constants `true` and `false`.  We also perhaps need `d2s` relationships between an edge condition in src and a correlated edge condition in dst.
-- Solution: introduce extra SSA variables for each non-trivial edge condition in both src and dst (during d2s construction of `tfg_ec_ssa_t`, similar to how it is done for `TFG_EC_SSA_ADDR_NAME_PREFIX` for example), and try to correlate them across src and dst. 
-  - Further, correlate the SSA variables for src edge conditions with `true` and `false` constants.  Notice that no dst variable is involved here; instead the `true` and `false` constants behave as "dst variables".
+- Solution: introduce extra SSA "edge-condition variables" for each non-trivial edge condition in both src and dst (during d2s construction of `tfg_ec_ssa_t`, similar to how it is done for `TFG_EC_SSA_ADDR_NAME_PREFIX` for example), and try to correlate them across src and dst. 
+  - Further, somewhere closer to the use of the `d2s` information, we could potentially prune out the dead branches in `src-pathset` based on the identified equalities between edge-condition variables.
