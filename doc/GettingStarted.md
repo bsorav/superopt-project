@@ -1,5 +1,7 @@
 # Getting started
 
+Instructions for Ubuntu 22.04
+
 ## Install the latest version of cmake
 ```
 $ sudo apt-get update
@@ -38,7 +40,6 @@ You may also update your `PATH` environment variable so that the executables can
 export PATH=$PATH:$SUPEROPT_INSTALL_DIR/bin
 ```
 
-
 ## Set up the dependencies
 Ensure that your `http_proxy` environment variable is setup correctly
 ```
@@ -59,6 +60,7 @@ $ ninja -C superopt/build/etfg_i386 prj_jemalloc prj_binutils
 
 ## Running the tests
 
+Run _all_ tests (this may take more than a day to finish depending on the machine configuration)
 ```
 $ cd superopt-project/superopt-tests
 $ make run_tests_all
@@ -74,6 +76,7 @@ $ show-results --verbose .
 Some of these tests are expected to pass while some may fail currently.
 
 ## Running the cmdline tool
+
 Let `eq32` point to `superopt-project/superopt/build/etfg_i386/eq`.
 
 Run `eq32 a.c` to compile the C program (a.c) and then check equivalence between the generated assembly and the input source.
@@ -83,6 +86,7 @@ Run `eq32 a.c --dst b.c` to compute equivalence between two C files (`a.c` and `
 Run `eq32 a.c --dst a.s` to compute equivalence between a C file and an assembly file (`a.c` and `a.s`)
 
 ## Running a particular test and observing its operation in detail
+
 First you need to copy the relevant files to your current working directory. We show this for the `s000` TSVC benchmark.
 
 Copy the C source code file.
@@ -103,9 +107,11 @@ time limit (time out).  If the equivalence check succeeds (pass result), the com
 emitted into the `eq.proof.ALL` file.
 
 ## Comparing two different C programs
+
 One way to compare two C programs is to convert one of them to assembly before comparing them.
 
 ### Convert `b.c` to `b.s`
+
 First setup the environment variables for generating the command line options of GCC
 ```
 $ export GCC_NO_INLINING_FLAGS="-fno-inline -fno-inline-functions -fno-inline-small-functions -fno-indirect-inlining -fno-partial-inlining -fno-inline-functions-called-once -fno-early-inlining"
