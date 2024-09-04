@@ -19,9 +19,6 @@ For commercial use you need a Software Usage Agreement from compilerAI.
 The files contained in the llvm-project/ directory and its subdirectories are
 taken from the LLVM project, http://llvm.org.
 The files from the llvm-project/ directory are copyright of the respective
-parties specified in jemalloc/COPYING file and licensed under the terms
-specified in the llvm-project/COPYING file.
-The files from the llvm-project/ directory are copyright of the respective
 contributors and distributed under the terms specified in the
 llvm-project/LICENSE.TXT file.
 
