@@ -22,7 +22,7 @@ scanview="python python-dev"
 apt-get install -y $build $llvm $libs $yices $superopt $tests $vscode_extension $scanview
 
 # optional
-system="sudo vim zsh htop iotop net-tools ssh cscope exuberant-ctags"
+system="sudo vim zsh htop iotop net-tools ssh cscope universal-ctags"
 docs="retext"
 apt-get install -y $system $docs
 
