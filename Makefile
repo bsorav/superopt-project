@@ -34,6 +34,10 @@ Z3v4125=z3-4.12.5
 Z3v4125_DIR=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/z3v4125
 Z3v4125_BINPATH=$(Z3v4125_DIR)
 
+CVC5_PKGNAME=cvc5-1.2.0-shared
+CVC5_DIR=$(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/$(CVC5_PKGNAME)/cvc5-Linux-x86_64-shared/
+CVC5_BINPATH=$(CVC5_DIR)/bin
+
 binutils_ver=binutils-2.21
 binutils_for_as_ver=binutils-2.42
 
@@ -111,6 +115,7 @@ tarball:
 linkinstall:
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/include
+	$(SUDO) mkdir -p $(SUPEROPT_INSTALL_DIR)/lib
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-link $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-dis $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/llvm-as $(SUPEROPT_INSTALL_DIR)/bin
@@ -143,7 +148,7 @@ linkinstall:
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/scan-build $(SUPEROPT_INSTALL_DIR)/bin/scan-build
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/scan-view $(SUPEROPT_INSTALL_DIR)/bin/scan-view
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/bin/harvest-dwarf $(SUPEROPT_INSTALL_DIR)/bin/harvest-dwarf
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR)
+	# $(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/llvm-project/build/lib $(SUPEROPT_INSTALL_DIR) # this overwrites lib :/
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg32.a
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_x64/libLockstepDbg.a $(SUPEROPT_INSTALL_DIR)/lib/libLockstepDbg.a
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/etfg_i386/libmymalloc.a $(SUPEROPT_INSTALL_DIR)/lib
@@ -155,7 +160,8 @@ linkinstall:
 	$(SUDO) ln -sf $(Z3v4125_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin/z3v4125
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc5 $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(CVC5_DIR)/lib/lib*.so.* $(SUPEROPT_INSTALL_DIR)/lib
+	$(SUDO) ln -sf $(CVC5_BINPATH)/cvc5 $(SUPEROPT_INSTALL_DIR)/bin
 	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_DIR)/bin
