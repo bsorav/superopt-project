@@ -155,6 +155,7 @@ linkinstall:
 	$(SUDO) ln -sf $(Z3v4125_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin/z3v4125
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
+	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc5 $(SUPEROPT_INSTALL_DIR)/bin
 	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_DIR)/bin
@@ -191,6 +192,7 @@ cleaninstall:
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/yices_smt2
 	#$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/boolector
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc4
+	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/cvc5
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/qcc
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/ooelala
 	$(SUDO) rm -f $(SUPEROPT_INSTALL_DIR)/bin/clang12
@@ -239,6 +241,7 @@ release:
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superoptdbs $(SUPEROPT_INSTALL_FILES_DIR)
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_FILES_DIR)/bin
+	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc5 $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_FILES_DIR)/bin
 	rsync -Lrtv $(SUPEROPT_PROJECT_DIR)/build/clang12 $(SUPEROPT_INSTALL_FILES_DIR)/bin
