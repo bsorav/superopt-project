@@ -1,3 +1,5 @@
+MAKEFLAGS=--warn-undefined-variables
+
 export SUPEROPT_PROJECT_DIR ?= $(CURDIR)
 export SUPEROPT_INSTALL_DIR ?= $(SUPEROPT_PROJECT_DIR)/usr/local
 SUPEROPT_INSTALL_FILES_DIR ?= $(SUPEROPT_INSTALL_DIR)
@@ -158,7 +160,7 @@ linkinstall:
 	$(SUDO) ln -sf $(Z3v4125_BINPATH)/bin/z3 $(SUPEROPT_INSTALL_DIR)/bin/z3v4125
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/yices_smt2 $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/cvc4 $(SUPEROPT_INSTALL_DIR)/bin
-	$(SUDO) ln -sf $(CVC5v120_BINPATH)/bin/cvc5 $(SUPEROPT_INSTALL_DIR)/bin/
+	$(SUDO) ln -sf $(CVC5v120_DIR)/bin/cvc5 $(SUPEROPT_INSTALL_DIR)/bin/
 	#$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/superopt/build/third_party/boolector $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/qcc $(SUPEROPT_INSTALL_DIR)/bin
 	$(SUDO) ln -sf $(SUPEROPT_PROJECT_DIR)/build/ooelala $(SUPEROPT_INSTALL_DIR)/bin
